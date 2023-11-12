@@ -721,22 +721,20 @@ class _AddStudentViewState extends State<AddStudentView> {
                     addStudent();
                   }
                 },
-                child: Obx(
-                  () => Container(
-                    height: 35,
-                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.pink,
-                    ),
-                    child: isLoading.value
-                        ? const Center(child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator()))
-                        : const Text(
-                            'Thêm',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
-                          ),
+                child: Container(
+                  height: 35,
+                  padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.pink,
                   ),
+                  child: isLoading.value
+                      ? const Center(child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator()))
+                      : const Text(
+                          'Thêm',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                        ),
                 ),
               ),
               const SizedBox(width: 16),

@@ -53,16 +53,15 @@ class _DashboardState extends State<Dashboard> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => FullScreenImageScreen(
-                          imageUrl: authController.teacherData.value?.avatarUrl ??
-                              'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                          imageUrl:
+                              authController.teacherData.value?.avatarUrl ?? 'https://i.stack.imgur.com/l60Hf.png',
                         ),
                       ),
                     );
                   },
                   child: CircleAvatar(
                     backgroundImage: NetworkImage(
-                      authController.teacherData.value?.avatarUrl ??
-                          'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                      authController.teacherData.value?.avatarUrl ?? 'https://i.stack.imgur.com/l60Hf.png',
                     ),
                     radius: 20,
                   ),
@@ -136,73 +135,78 @@ class _DashboardState extends State<Dashboard> {
       ),
       body: Row(
         children: [
-          SingleChildScrollView(
-            controller: ScrollController(),
-            scrollDirection: Axis.vertical,
-            child: IntrinsicHeight(
-              child: NavigationRail(
-                extended: Responsive.isMobile(context)
-                    ? false
-                    : Responsive.isTablet(context)
-                        ? false
-                        : isExpanded,
-                selectedIconTheme: const IconThemeData(color: Colors.pink),
-                selectedLabelTextStyle: const TextStyle(color: Colors.pink, fontSize: 16, fontWeight: FontWeight.w600),
-                unselectedIconTheme: IconThemeData(color: Colors.grey[400]),
-                unselectedLabelTextStyle: TextStyle(color: Colors.grey[400]),
-                destinations: const [
-                  NavigationRailDestination(
-                    icon: Icon(Icons.home),
-                    label: Text('Trang chủ'),
-                    // selectedIcon: Icon(Icons.favorite, color: Colors.green),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.assignment_ind_rounded),
-                    label: Text('Thêm giáo viên mới'),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.person_add),
-                    label: Text('Thêm học sinh mới'),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.assignment_outlined),
-                    label: Text('Danh sách giáo viên'),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.local_library),
-                    label: Text('Danh sách học sinh'),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.auto_stories_rounded),
-                    label: Text('Danh sách các ngành học'),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.account_tree_outlined),
-                    label: Text('Danh sách lớp học'),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.group_add),
-                    label: Text('Thêm học sinh vào lớp học'),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.add_business_outlined),
-                    label: Text('Thêm giáo viên vào lớp học'),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.insert_invitation_outlined),
-                    label: Text('Tạo thời khóa biểu'),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.autorenew_rounded),
-                    label: Text('Học sinh chuyển lớp'),
-                  ),
-                ],
-                selectedIndex: controller.index.value,
-                onDestinationSelected: (index) {
-                  setState(() {
-                    controller.index.value = index;
-                  });
-                },
+          Container(
+            alignment: Alignment.topCenter,
+            padding: const EdgeInsets.only(top: 8),
+            child: SingleChildScrollView(
+              controller: ScrollController(),
+              scrollDirection: Axis.vertical,
+              child: IntrinsicHeight(
+                child: NavigationRail(
+                  extended: Responsive.isMobile(context)
+                      ? false
+                      : Responsive.isTablet(context)
+                          ? false
+                          : isExpanded,
+                  selectedIconTheme: const IconThemeData(color: Colors.pink),
+                  selectedLabelTextStyle:
+                      const TextStyle(color: Colors.pink, fontSize: 16, fontWeight: FontWeight.w600),
+                  unselectedIconTheme: IconThemeData(color: Colors.grey[400]),
+                  unselectedLabelTextStyle: TextStyle(color: Colors.grey[400]),
+                  destinations: const [
+                    NavigationRailDestination(
+                      icon: Icon(Icons.home),
+                      label: Text('Trang chủ'),
+                      // selectedIcon: Icon(Icons.favorite, color: Colors.green),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.assignment_ind_rounded),
+                      label: Text('Thêm giáo viên mới'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.person_add),
+                      label: Text('Thêm học sinh mới'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.assignment_outlined),
+                      label: Text('Danh sách giáo viên'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.local_library),
+                      label: Text('Danh sách học sinh'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.auto_stories_rounded),
+                      label: Text('Danh sách các ngành học'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.account_tree_outlined),
+                      label: Text('Danh sách lớp học'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.group_add),
+                      label: Text('Thêm học sinh vào lớp học'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.add_business_outlined),
+                      label: Text('Thêm giáo viên vào lớp học'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.insert_invitation_outlined),
+                      label: Text('Tạo thời khóa biểu'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.autorenew_rounded),
+                      label: Text('Học sinh chuyển lớp'),
+                    ),
+                  ],
+                  selectedIndex: controller.index.value,
+                  onDestinationSelected: (index) {
+                    setState(() {
+                      controller.index.value = index;
+                    });
+                  },
+                ),
               ),
             ),
           ),
