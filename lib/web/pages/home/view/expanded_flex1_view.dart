@@ -475,7 +475,7 @@ List<BarChartGroupData> get barGroups => [
         x: 1,
         barRods: [
           BarChartRodData(
-            toY: 300,
+            toY: 100,
             gradient: _barsGradient,
           ),
         ],
@@ -485,7 +485,7 @@ List<BarChartGroupData> get barGroups => [
         x: 2,
         barRods: [
           BarChartRodData(
-            toY: 400,
+            toY: 200,
             gradient: _barsGradient,
           ),
         ],
@@ -495,7 +495,7 @@ List<BarChartGroupData> get barGroups => [
         x: 3,
         barRods: [
           BarChartRodData(
-            toY: 100,
+            toY: 300,
             gradient: _barsGradient,
           ),
         ],
@@ -505,7 +505,7 @@ List<BarChartGroupData> get barGroups => [
         x: 4,
         barRods: [
           BarChartRodData(
-            toY: 490,
+            toY: 400,
             gradient: _barsGradient,
           ),
         ],
@@ -515,7 +515,7 @@ List<BarChartGroupData> get barGroups => [
         x: 5,
         barRods: [
           BarChartRodData(
-            toY: 390,
+            toY: 500,
             gradient: _barsGradient,
           ),
         ],
@@ -525,7 +525,7 @@ List<BarChartGroupData> get barGroups => [
         x: 6,
         barRods: [
           BarChartRodData(
-            toY: 200,
+            toY: 600,
             gradient: _barsGradient,
           ),
         ],
