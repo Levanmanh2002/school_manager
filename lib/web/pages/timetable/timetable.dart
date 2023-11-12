@@ -235,7 +235,8 @@ class _TimetablePageState extends State<TimetablePage> {
               if (!isLoading && timeTables.isEmpty) ...[
                 const SizedBox(height: 12),
                 const Text('Tuần này không có lịch')
-              ]
+              ],
+              _getData(),
             ],
           ),
         ),
@@ -243,7 +244,7 @@ class _TimetablePageState extends State<TimetablePage> {
       bottomNavigationBar: Container(
         color: Colors.transparent,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+          padding: const EdgeInsets.only(top: 16, left: 24, right: 24, bottom: 40),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -448,6 +449,246 @@ class _TimetablePageState extends State<TimetablePage> {
         );
       },
     ).toList());
+  }
+
+  Widget buildData(List<Timetable> timetables) {
+    return Column(
+        children: timetables.map(
+      (e) {
+        final startTime = DateFormat.Hm().format(e.startTime!);
+        final endTime = DateFormat.Hm().format(e.endTime!);
+        return GestureDetector(
+          onDoubleTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text(
+                    "Xác nhận",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
+                  ),
+                  content: const Text(
+                    "Bạn có chắc chắn muốn xóa thời khóa biểu này?",
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black),
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text(
+                        "Hủy",
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    const SizedBox(width: 12),
+                    TextButton(
+                      child: const Text(
+                        "Đồng ý",
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.red),
+                      ),
+                      onPressed: () {
+                        deleteTimeTable(e);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          child: Container(
+            width: 300,
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              // borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: const Color(0xFFbdccd6)),
+            ),
+            child: Column(
+              children: [
+                Text(
+                  e.classes?.className ?? '',
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: Color(0xFF991148)),
+                ),
+                Text(
+                  '$startTime - $endTime',
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Color(0xFF0f2e94)),
+                ),
+                Text(
+                  e.majorsData?.name ?? '',
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xFF0a4358)),
+                ),
+                Text(
+                  e.teacher?.fullName ?? '',
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.blue),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    ).toList());
+  }
+
+  Widget _getData() {
+    return Container(
+      padding: const EdgeInsets.only(top: 30, left: 16, right: 16, bottom: 16),
+      child: Column(
+        children: timeTables.map(
+          (e) {
+            final startTime = DateFormat.Hm().format(e.startTime!);
+            final endTime = DateFormat.Hm().format(e.endTime!);
+            return Container(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                border: Border.all(color: const Color(0xFFbdccd6)),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      const Text(
+                        'Lớp học trong tuần : ',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        e.classes?.className ?? '',
+                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: Color(0xFF991148)),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: 'Thời gian học của lớp',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
+                            ),
+                            TextSpan(
+                              text: ' ${e.classes?.className} ',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF991148),
+                              ),
+                            ),
+                            const TextSpan(
+                              text: 'trong tuần : ',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        '$startTime - $endTime',
+                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Color(0xFF0f2e94)),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      RichText(
+                        text: TextSpan(children: [
+                          const TextSpan(
+                            text: 'Ngành học của lớp',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' ${e.classes?.className} ',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF991148),
+                            ),
+                          ),
+                          const TextSpan(
+                            text: 'trong tuần : ',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ]),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        e.majorsData?.name ?? 'null',
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xFF0a4358)),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: 'Giáo viên dạy lớp',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
+                            ),
+                            TextSpan(
+                              text: ' ${e.classes?.className} ',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF991148),
+                              ),
+                            ),
+                            const TextSpan(
+                              text: 'trong tuần : ',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        e.teacher?.fullName ?? '', // Hiển thị tên giáo viên ở đây
+                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.blue),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        ).toList(),
+      ),
+    );
   }
 
   bool isToday(DateTime date) {
