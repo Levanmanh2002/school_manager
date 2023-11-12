@@ -299,7 +299,8 @@ class _CreateViewState extends State<CreateView> {
                                           children: [
                                             CircleAvatar(
                                               backgroundImage: NetworkImage(
-                                                item.avatarUrl ?? 'https://i.stack.imgur.com/l60Hf.png',
+                                                item.avatarUrl ??
+                                                    'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
                                               ),
                                               radius: 20,
                                             ),

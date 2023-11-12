@@ -110,7 +110,7 @@ class _HomePagesState extends State<HomePages> {
                                 MaterialPageRoute(
                                   builder: (context) => FullScreenImageScreen(
                                     imageUrl: authController.teacherData.value!.avatarUrl ??
-                                        'https://i.stack.imgur.com/l60Hf.png',
+                                        'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
                                   ),
                                 ),
                               );
@@ -118,7 +118,8 @@ class _HomePagesState extends State<HomePages> {
                             child: CircleAvatar(
                               radius: 50,
                               backgroundImage: NetworkImage(
-                                authController.teacherData.value?.avatarUrl ?? 'https://i.stack.imgur.com/l60Hf.png',
+                                authController.teacherData.value?.avatarUrl ??
+                                    'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
                               ),
                             ),
                           ),
@@ -348,14 +349,15 @@ class _HomePagesState extends State<HomePages> {
                                                         MaterialPageRoute(
                                                           builder: (context) => FullScreenImageScreen(
                                                             imageUrl: student?.avatarUrl ??
-                                                                'https://i.stack.imgur.com/l60Hf.png',
+                                                                'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
                                                           ),
                                                         ),
                                                       );
                                                     },
                                                     child: CircleAvatar(
                                                       backgroundImage: NetworkImage(
-                                                        student?.avatarUrl ?? 'https://i.stack.imgur.com/l60Hf.png',
+                                                        student?.avatarUrl ??
+                                                            'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
                                                       ),
                                                       radius: 30,
                                                     ),

@@ -290,14 +290,15 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                           MaterialPageRoute(
                             builder: (context) => FullScreenImageScreen(
                               imageUrl: studentController.studentData.value!.avatarUrl ??
-                                  'https://i.stack.imgur.com/l60Hf.png',
+                                  'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
                             ),
                           ),
                         );
                       },
                       child: CircleAvatar(
                         backgroundImage: NetworkImage(
-                          studentController.studentData.value?.avatarUrl ?? 'https://i.stack.imgur.com/l60Hf.png',
+                          studentController.studentData.value?.avatarUrl ??
+                              'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
                         ),
                         radius: 60,
                       ),
