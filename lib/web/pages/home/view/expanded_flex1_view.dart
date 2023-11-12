@@ -4,12 +4,12 @@ import 'dart:convert';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:school_web/web/models/student.dart';
-import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/screen/student/detail/student_detail_screen.dart';
 import 'package:http/http.dart' as http;
-import 'package:school_web/web/widgets/full_screen_image_screen.dart';
 
 class ExpandedFlex1View extends StatefulWidget {
   const ExpandedFlex1View({super.key});
@@ -20,115 +20,81 @@ class ExpandedFlex1View extends StatefulWidget {
 
 class _ExpandedFlex1ViewState extends State<ExpandedFlex1View> {
   final searchController = TextEditingController();
-  bool _isClearIconVisible = false;
   final isLoading = false.obs;
   String errorMessage = '';
   StudentData? student;
   late DateTime currentWeek = DateTime.now();
   var isLoadingChart = false;
 
+  late DateTime selectedStartTimeDate = DateTime.now();
+
+  Future<void> _selectStartTimeDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedStartTimeDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (picked != null) {
+      setState(() {
+        selectedStartTimeDate = picked;
+        const FlutterSecureStorage().write(
+          key: "timeData",
+          value: selectedStartTimeDate.millisecondsSinceEpoch.toString(),
+        );
+      });
+
+      getCountNewStudents();
+    }
+  }
+
   @override
   void initState() {
-    searchController.addListener(_onTextChanged);
-    initializeTimetable();
     super.initState();
+    getCountNewStudents();
+    getTimeData();
   }
 
-  void _onTextChanged() {
-    setState(() {
-      _isClearIconVisible = searchController.text.isNotEmpty;
-    });
-  }
+  String? timeData;
 
-  Future<void> fetchData(String query) async {
-    isLoading(true);
-
-    try {
-      final response = await http.get(Uri.parse('https://backend-shool-project.onrender.com/user/check/$query'));
-
-      if (response.statusCode == 404) {
-        setState(() {
-          errorMessage = 'Không tìm thấy học sinh';
-          student = null;
-        });
-      } else if (response.statusCode == 201) {
-        final jsonData = json.decode(response.body);
-        final studentData = jsonData['student'];
-
-        setState(() {
-          student = StudentData.fromJson(studentData);
-          errorMessage = '';
-        });
-      } else {
-        print('Failed to fetch data: ${response.reasonPhrase}');
-      }
-    } catch (e) {
-      setState(() {
-        errorMessage = 'Lỗi: $e';
-        student = null;
-      });
-    }
-
-    isLoading(false);
-  }
-
-  /// Fake
-  Future<List<StudentData>> _getActiveStudent() async {
-    var response = await http.get(Uri.parse('https://backend-shool-project.onrender.com/admin/students/active'));
-
-    if (response.statusCode == 201) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      final List<dynamic> data = responseData['data'];
-
-      if (data is List) {
-        List<StudentData> student = data.map((studentData) => StudentData.fromJson(studentData)).toList();
-        student.sort((a, b) => b.updatedAt!.compareTo(a.updatedAt!));
-
-        return student = student.reversed.toList();
-      } else {
-        throw Exception('Invalid data format');
-      }
-    } else {
-      throw Exception('Failed to load working student');
-    }
-  }
-
-  DateTime _getStartOfWeek() {
-    var startOfWeek = currentWeek.subtract(Duration(days: currentWeek.weekday - 1));
-    startOfWeek = DateTime(startOfWeek.year, startOfWeek.month, startOfWeek.day, 0, 0, 0);
-    return startOfWeek;
-  }
-
-  DateTime _getEndOfWeek() {
-    var endOfWeek = currentWeek.add(Duration(days: 7 - currentWeek.weekday));
-    endOfWeek = DateTime(endOfWeek.year, endOfWeek.month, endOfWeek.day, 23, 59, 59);
-    return endOfWeek;
-  }
+  List<List<Map<String, dynamic>>> studentsList = [];
 
   Future<void> getCountNewStudents() async {
-    var startOfWeek = _getStartOfWeek();
-    startOfWeek = DateTime(startOfWeek.year, startOfWeek.month, startOfWeek.day);
-    var endOfWeek = _getEndOfWeek();
-    endOfWeek = DateTime(endOfWeek.year, endOfWeek.month, endOfWeek.day, 23, 59, 59);
+    final timeData = await const FlutterSecureStorage().read(key: 'timeData');
 
-    final response = await http.get(
+    var response = await http.get(
       Uri.parse(
-        'https://backend-shool-project.onrender.com/chart/countNewStudents?startDate=${startOfWeek.millisecondsSinceEpoch}&endDate=${endOfWeek.millisecondsSinceEpoch}',
+        'https://backend-shool-project.onrender.com/chart/countNewStudentInWeek?startDate=${timeData ?? selectedStartTimeDate.millisecondsSinceEpoch}',
       ),
     );
 
     if (response.statusCode == 201) {
-      final data = json.decode(response.body);
-      final decodedData = json.decode(data);
-      final parsedData = decodedData['data'] as int?;
-      print(parsedData);
+      var jsonData = json.decode(response.body);
+      List<dynamic> data = jsonData['data'];
+
+      List<double> toYValues = data.map((item) => (item['nunber'] as num).toDouble()).toList();
+
+      updateBarGroups(toYValues);
+      studentsList.clear();
+
+      for (var timetableData in data) {
+        if (timetableData['student'] != null) {
+          var studentDataList = (timetableData['student'] as List<dynamic>).cast<Map<String, dynamic>>().toList();
+          studentsList.add(studentDataList);
+        }
+      }
+      setState(() {});
     } else {
       print(response.reasonPhrase);
     }
   }
 
-  initializeTimetable() async {
-    await getCountNewStudents();
+  Future<void> getTimeData() async {
+    var timeData = await const FlutterSecureStorage().read(key: 'timeData');
+    setState(() {
+      timeData = timeData;
+    });
   }
 
   @override
@@ -175,41 +141,30 @@ class _ExpandedFlex1ViewState extends State<ExpandedFlex1View> {
                       ],
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.only(right: 16),
-                    width: Responsive.isMobile(context)
-                        ? Responsive.isTablet(context)
-                            ? 100
-                            : 100
-                        : 300,
-                    height: 35,
-                    alignment: Alignment.bottomCenter,
-                    child: TextFormField(
-                      controller: searchController,
-                      onChanged: fetchData,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        hintText: "Tìm kiếm",
-                        suffixIcon: _isClearIconVisible
-                            ? IconButton(
-                                onPressed: () {
-                                  searchController.clear();
-                                  student = null;
-                                },
-                                icon: const Icon(Icons.clear, size: 16, color: Colors.pink))
-                            : null,
-                        contentPadding: const EdgeInsets.only(top: 1, left: 8),
-                        errorBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red),
-                        ),
-                        focusedErrorBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red),
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFD2D5DA)),
-                        ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFD2D5DA)),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      width: 200,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: InkWell(
+                        onTap: () async {
+                          await _selectStartTimeDate(context);
+                          getCountNewStudents();
+                        },
+                        child: Container(
+                          width: double.maxFinite,
+                          height: 40,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.black),
+                          ),
+                          child: Text(
+                            timeData != null
+                                ? DateFormat('dd/MM/yyyy')
+                                    .format(DateTime.fromMillisecondsSinceEpoch(int.parse(timeData ?? '')))
+                                : DateFormat('dd/MM/yyyy').format(selectedStartTimeDate),
+                          ),
                         ),
                       ),
                     ),
@@ -217,120 +172,25 @@ class _ExpandedFlex1ViewState extends State<ExpandedFlex1View> {
                 ],
               ),
               const SizedBox(height: 20),
-              SizedBox(
-                width: double.maxFinite,
-                height: 500,
-                child: FutureBuilder<List<StudentData>>(
-                  future: _getActiveStudent(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(child: Text('Không có học sinh nào.'));
-                    } else {
-                      return (_isClearIconVisible)
-                          ? Container(
-                              width: double.maxFinite,
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: (student != null) ? Colors.grey[200] : Colors.white,
-                              ),
-                              alignment: Alignment.center,
-                              child: Column(
-                                children: [
-                                  if (errorMessage.isNotEmpty)
-                                    Text(
-                                      errorMessage,
-                                      style: const TextStyle(
-                                        color: Colors.red,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  if (student != null)
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Card(
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                            elevation: 1,
-                                            color: Colors.white,
-                                            child: ListTile(
-                                              leading: GestureDetector(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) => FullScreenImageScreen(
-                                                        imageUrl: student?.avatarUrl ??
-                                                            'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                                child: CircleAvatar(
-                                                  backgroundImage: NetworkImage(
-                                                    student?.avatarUrl ??
-                                                        'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
-                                                  ),
-                                                  radius: 30,
-                                                ),
-                                              ),
-                                              title: Text(
-                                                student?.fullName ?? '',
-                                                style: const TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              subtitle: Text(student?.mssv ?? ''),
-                                              trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
-                                              onTap: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) => StudentDetailScreen(student: student!),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                ],
-                              ),
-                            )
-                          : Column(
-                              children: [
-                                const SizedBox(height: 16),
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Danh sách học sinh : ${snapshot.data?.length}',
-                                    style:
-                                        const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.green),
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                Expanded(
-                                  child: ListView.builder(
-                                    itemCount: snapshot.data!.length,
-                                    itemBuilder: (context, index) {
-                                      final student = snapshot.data![index];
-                                      return _buildStudentCard(student, context);
-                                    },
-                                  ),
-                                ),
-                              ],
-                            );
-                    }
-                  },
-                ),
+              Column(
+                children: [
+                  if (studentsList.isNotEmpty)
+                    Column(
+                      children: [
+                        const SizedBox(height: 16),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: const Text(
+                            'Danh sách học sinh',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        for (var sublist in studentsList)
+                          for (var studentMap in sublist) _buildStudentCard(StudentData.fromJson(studentMap), context),
+                      ],
+                    ),
+                ],
               ),
             ],
           ),
@@ -346,8 +206,7 @@ class _ExpandedFlex1ViewState extends State<ExpandedFlex1View> {
       color: Colors.white,
       child: ListTile(
         leading: CircleAvatar(
-          backgroundImage: NetworkImage(studentData.avatarUrl ??
-              'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512'),
+          backgroundImage: NetworkImage(studentData.avatarUrl ?? 'https://i.stack.imgur.com/l60Hf.png'),
           radius: 30,
         ),
         title: Text(
@@ -460,75 +319,20 @@ LinearGradient get _barsGradient => const LinearGradient(
       end: Alignment.topCenter,
     );
 
-List<BarChartGroupData> get barGroups => [
-      BarChartGroupData(
-        x: 0,
-        barRods: [
-          BarChartRodData(
-            toY: 100,
-            gradient: _barsGradient,
-          ),
-        ],
-        showingTooltipIndicators: [0],
-      ),
-      BarChartGroupData(
-        x: 1,
-        barRods: [
-          BarChartRodData(
-            toY: 100,
-            gradient: _barsGradient,
-          ),
-        ],
-        showingTooltipIndicators: [0],
-      ),
-      BarChartGroupData(
-        x: 2,
-        barRods: [
-          BarChartRodData(
-            toY: 200,
-            gradient: _barsGradient,
-          ),
-        ],
-        showingTooltipIndicators: [0],
-      ),
-      BarChartGroupData(
-        x: 3,
-        barRods: [
-          BarChartRodData(
-            toY: 300,
-            gradient: _barsGradient,
-          ),
-        ],
-        showingTooltipIndicators: [0],
-      ),
-      BarChartGroupData(
-        x: 4,
-        barRods: [
-          BarChartRodData(
-            toY: 400,
-            gradient: _barsGradient,
-          ),
-        ],
-        showingTooltipIndicators: [0],
-      ),
-      BarChartGroupData(
-        x: 5,
-        barRods: [
-          BarChartRodData(
-            toY: 500,
-            gradient: _barsGradient,
-          ),
-        ],
-        showingTooltipIndicators: [0],
-      ),
-      BarChartGroupData(
-        x: 6,
-        barRods: [
-          BarChartRodData(
-            toY: 600,
-            gradient: _barsGradient,
-          ),
-        ],
-        showingTooltipIndicators: [0],
-      ),
-    ];
+List<BarChartGroupData> barGroups = [];
+
+void updateBarGroups(List<double> toYValues) {
+  barGroups = List.generate(
+    toYValues.length,
+    (index) => BarChartGroupData(
+      x: index,
+      barRods: [
+        BarChartRodData(
+          toY: toYValues[index],
+          gradient: _barsGradient,
+        ),
+      ],
+      showingTooltipIndicators: [0],
+    ),
+  );
+}
