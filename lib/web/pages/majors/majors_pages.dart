@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:school_web/web/models/majors_models.dart';
@@ -249,6 +250,9 @@ class _MajorsPagesState extends State<MajorsPages> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: nameController,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(50),
+                  ],
                   decoration: const InputDecoration(
                     hintText: 'Tên ngành học',
                     hintStyle: TextStyle(color: Color(0xFFB6BBC3), fontSize: 14, fontWeight: FontWeight.w400),
@@ -281,6 +285,9 @@ class _MajorsPagesState extends State<MajorsPages> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: descriptionController,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(300),
+                  ],
                   decoration: const InputDecoration(
                     hintText: 'Mô tả ngành học',
                     hintStyle: TextStyle(color: Color(0xFFB6BBC3), fontSize: 14, fontWeight: FontWeight.w400),
@@ -388,6 +395,9 @@ class _MajorsPagesState extends State<MajorsPages> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: editNameController,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(50),
+                  ],
                   decoration: InputDecoration(
                     hintText: majorsData.name,
                     hintStyle: const TextStyle(color: Color(0xFFB6BBC3), fontSize: 14, fontWeight: FontWeight.w400),
@@ -420,6 +430,9 @@ class _MajorsPagesState extends State<MajorsPages> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: editDescriptionController,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(300),
+                  ],
                   decoration: InputDecoration(
                     hintText: majorsData.description,
                     hintStyle: const TextStyle(color: Color(0xFFB6BBC3), fontSize: 14, fontWeight: FontWeight.w400),

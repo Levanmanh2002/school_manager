@@ -9,7 +9,7 @@ const secondary = Color(0xffa6a6a6);
 const iconGray = Color(0xff767676);
 const black = Colors.black;
 const primary = Color(0xff262626);
-const primaryBg = Color(0xfff5f5fd);
+const primaryBg = Color(0xFFF7F7FC);
 const secondaryBg = Color(0xffececf6);
 const barBg = Color(0xffe3e3ee);
 

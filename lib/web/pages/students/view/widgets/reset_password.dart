@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -182,6 +183,10 @@ class _ResetPasswordStudentsViewState extends State<ResetPasswordStudentsView> {
                     autovalidateMode: AutovalidateMode.always,
                     child: TextFormField(
                       controller: emailController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.deny(' '),
+                        LengthLimitingTextInputFormatter(50),
+                      ],
                       decoration: const InputDecoration(
                         contentPadding: EdgeInsets.all(8),
                         border: OutlineInputBorder(),
@@ -257,6 +262,11 @@ class _ResetPasswordStudentsViewState extends State<ResetPasswordStudentsView> {
                       SizedBox(
                         child: TextFormField(
                           controller: codeOtpController,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+                            FilteringTextInputFormatter.deny(' '),
+                            LengthLimitingTextInputFormatter(10),
+                          ],
                           decoration: const InputDecoration(
                             contentPadding: EdgeInsets.all(8),
                             border: OutlineInputBorder(),
@@ -276,6 +286,10 @@ class _ResetPasswordStudentsViewState extends State<ResetPasswordStudentsView> {
                         () => TextFormField(
                           controller: newPasswordController,
                           obscureText: !isPasswordVisible.value,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(' '),
+                            LengthLimitingTextInputFormatter(25),
+                          ],
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.all(8),
                             border: const OutlineInputBorder(),

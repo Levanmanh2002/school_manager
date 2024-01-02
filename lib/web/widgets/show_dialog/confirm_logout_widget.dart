@@ -12,7 +12,7 @@ void confirmLogout(BuildContext context, dynamic logout) {
           'Bạn có chắc chắn muốn đăng xuất?',
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         ),
-        actions: <Widget>[
+        actions: [
           TextButton(
             child: const Text('Hủy', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey)),
             onPressed: () {

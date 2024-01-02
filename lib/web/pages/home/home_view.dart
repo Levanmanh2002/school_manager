@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/home/controller/chart_controller.dart';
-import 'package:school_web/web/pages/home/view/expanded_flex1_view.dart';
-import 'package:school_web/web/pages/home/view/expanded_flex2_view.dart';
+import 'package:school_web/web/pages/home/view/mobile/chart_mobile_view.dart';
+import 'package:school_web/web/pages/home/view/overview_view.dart';
+import 'package:school_web/web/pages/home/view/mobile/list_data_mobile_widget.dart';
+import 'package:school_web/web/pages/home/view/tablet/chart_tablet_widget.dart';
+import 'package:school_web/web/pages/home/view/tablet/list_data_tablet_widget.dart';
+import 'package:school_web/web/pages/home/view/widget/app_bar_widget.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -29,34 +33,34 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Responsive.isMobile(context)
-          ? Column(
-              children: [
-                const SizedBox(width: 16),
-                ExpandedFlex2View(controller: controller),
-                const SizedBox(width: 16),
-                const ExpandedFlex1View(),
-                const SizedBox(width: 16),
-              ],
+          ? SingleChildScrollView(
+              child: Column(
+                children: [
+                  OverviewView(controller: controller),
+                  const SizedBox(height: 24),
+                  const ChartMobileView(),
+                  const SizedBox(height: 24),
+                  const ListDataMobileWidget(),
+                  const SizedBox(height: 24),
+                ],
+              ),
             )
-          : Responsive.isTablet(context)
-              ? Column(
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Column(
                   children: [
-                    const SizedBox(width: 16),
-                    ExpandedFlex2View(controller: controller),
-                    const SizedBox(width: 16),
-                    const ExpandedFlex1View(),
-                    const SizedBox(width: 16),
-                  ],
-                )
-              : Row(
-                  children: [
-                    const SizedBox(width: 16),
-                    const ExpandedFlex1View(),
-                    const SizedBox(width: 16),
-                    ExpandedFlex2View(controller: controller),
-                    const SizedBox(width: 16),
+                    const AppBarWidget(),
+                    OverviewView(controller: controller),
+                    const SizedBox(width: 24),
+                    const ChartTabletView(),
+                    const SizedBox(height: 24),
+                    const ListDataTabletWidget(),
+                    const SizedBox(height: 24),
                   ],
                 ),
+              ),
+            ),
     );
   }
 }

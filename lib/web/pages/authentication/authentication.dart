@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -135,6 +136,11 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                           const SizedBox(height: 15),
                           TextFormField(
                             controller: _teacherCodeController,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.deny(RegExp(r'[.,-/]')),
+                              FilteringTextInputFormatter.deny(' '),
+                              LengthLimitingTextInputFormatter(25),
+                            ],
                             decoration: InputDecoration(
                               labelText: "Mã số giáo viên",
                               hintText: "0123456789",
@@ -153,6 +159,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                           TextFormField(
                             controller: _passTeacherController,
                             obscureText: true,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.deny(' '),
+                              LengthLimitingTextInputFormatter(25),
+                            ],
                             decoration: InputDecoration(
                               labelText: "Password",
                               hintText: "123456",

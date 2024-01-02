@@ -54,11 +54,20 @@ class _ProfilePagesState extends State<ProfilePages> with SingleTickerProviderSt
           backgroundColor: Colors.transparent,
           automaticallyImplyLeading: false,
           titleSpacing: 0.0,
-          title: const Padding(
-            padding: EdgeInsets.all(16),
-            child: Text(
-              'Thông tin cá nhân',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
+          title: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: const Icon(Icons.arrow_back, color: Colors.black),
+                ),
+                const SizedBox(width: 4),
+                const Text(
+                  'Thông tin cá nhân',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
+                ),
+              ],
             ),
           ),
           bottom: TabBar(

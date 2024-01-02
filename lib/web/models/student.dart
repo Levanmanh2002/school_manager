@@ -23,6 +23,9 @@ class Student {
 }
 
 class StudentData {
+  SelfSuspension? selfSuspension;
+  Suspension? suspension;
+  Expulsion? expulsion;
   String? sId;
   String? studentId;
   String? gmail;
@@ -66,6 +69,9 @@ class StudentData {
   int? iV;
 
   StudentData({
+    this.selfSuspension,
+    this.suspension,
+    this.expulsion,
     this.sId,
     this.studentId,
     this.gmail,
@@ -110,6 +116,9 @@ class StudentData {
   });
 
   StudentData.fromJson(Map<String, dynamic> json) {
+    selfSuspension = json['selfSuspension'] != null ? SelfSuspension.fromJson(json['selfSuspension']) : null;
+    suspension = json['suspension'] != null ? Suspension.fromJson(json['suspension']) : null;
+    expulsion = json['expulsion'] != null ? Expulsion.fromJson(json['expulsion']) : null;
     sId = json['_id'];
     studentId = json['studentId'];
     gmail = json['gmail'];
@@ -159,6 +168,15 @@ class StudentData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    if (selfSuspension != null) {
+      data['selfSuspension'] = selfSuspension!.toJson();
+    }
+    if (suspension != null) {
+      data['suspension'] = suspension!.toJson();
+    }
+    if (expulsion != null) {
+      data['expulsion'] = expulsion!.toJson();
+    }
     data['_id'] = sId;
     data['studentId'] = studentId;
     data['gmail'] = gmail;
@@ -202,6 +220,72 @@ class StudentData {
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     data['__v'] = iV;
+    return data;
+  }
+}
+
+class SelfSuspension {
+  bool? isSelfSuspended;
+  String? suspensionEndDate;
+  String? suspensionReason;
+
+  SelfSuspension({this.isSelfSuspended, this.suspensionEndDate, this.suspensionReason});
+
+  SelfSuspension.fromJson(Map<String, dynamic> json) {
+    isSelfSuspended = json['isSelfSuspended'];
+    suspensionEndDate = json['suspensionEndDate'];
+    suspensionReason = json['suspensionReason'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['isSelfSuspended'] = isSelfSuspended;
+    data['suspensionEndDate'] = suspensionEndDate;
+    data['suspensionReason'] = suspensionReason;
+    return data;
+  }
+}
+
+class Suspension {
+  bool? isSuspended;
+  Null suspensionEndDate;
+  String? suspensionReason;
+
+  Suspension({this.isSuspended, this.suspensionEndDate, this.suspensionReason});
+
+  Suspension.fromJson(Map<String, dynamic> json) {
+    isSuspended = json['isSuspended'];
+    suspensionEndDate = json['suspensionEndDate'];
+    suspensionReason = json['suspensionReason'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['isSuspended'] = isSuspended;
+    data['suspensionEndDate'] = suspensionEndDate;
+    data['suspensionReason'] = suspensionReason;
+    return data;
+  }
+}
+
+class Expulsion {
+  bool? isExpelled;
+  String? expulsionDate;
+  String? expulsionReason;
+
+  Expulsion({this.isExpelled, this.expulsionDate, this.expulsionReason});
+
+  Expulsion.fromJson(Map<String, dynamic> json) {
+    isExpelled = json['isExpelled'];
+    expulsionDate = json['expulsionDate'];
+    expulsionReason = json['expulsionReason'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['isExpelled'] = isExpelled;
+    data['expulsionDate'] = expulsionDate;
+    data['expulsionReason'] = expulsionReason;
     return data;
   }
 }

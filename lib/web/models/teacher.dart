@@ -1,14 +1,16 @@
 class Teacher {
   String? status;
   String? message;
+  int? total;
   TeacherData? data;
   String? token;
 
-  Teacher({this.status, this.message, this.data, this.token});
+  Teacher({this.status, this.message, this.total, this.data, this.token});
 
   Teacher.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
+    total = json['total'];
     data = json['data'] != null ? TeacherData.fromJson(json['data']) : null;
     token = json['token'];
   }
@@ -17,6 +19,7 @@ class Teacher {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
     data['message'] = message;
+    data['total'] = total;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -54,6 +57,7 @@ class TeacherData {
   String? standardDegree;
   String? politicalTheory;
   String? avatarUrl;
+  int? system;
   int? iV;
   String? createdAt;
   String? updatedAt;
@@ -87,6 +91,7 @@ class TeacherData {
     this.standardDegree,
     this.politicalTheory,
     this.avatarUrl,
+    this.system,
     this.iV,
     this.createdAt,
     this.updatedAt,
@@ -121,6 +126,7 @@ class TeacherData {
     standardDegree = json['standardDegree'];
     politicalTheory = json['politicalTheory'];
     avatarUrl = json['avatarUrl'];
+    system = json['system'];
     iV = json['__v'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
@@ -156,6 +162,7 @@ class TeacherData {
     data['standardDegree'] = standardDegree = standardDegree;
     data['politicalTheory'] = politicalTheory;
     data['avatarUrl'] = avatarUrl;
+    data['system'] = system;
     data['__v'] = iV;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;

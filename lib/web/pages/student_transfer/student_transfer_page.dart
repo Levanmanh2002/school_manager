@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
@@ -191,6 +192,10 @@ class _StudentTransferPageState extends State<StudentTransferPage> {
                       controller: searchController,
                       onChanged: fetchData,
                       keyboardType: TextInputType.text,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.deny(RegExp(r'[.,-/]')),
+                        LengthLimitingTextInputFormatter(25),
+                      ],
                       decoration: InputDecoration(
                         hintText: "Tìm kiếm",
                         suffixIcon: _isClearIconVisible

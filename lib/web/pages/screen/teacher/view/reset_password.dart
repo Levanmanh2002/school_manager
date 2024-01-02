@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
@@ -101,6 +102,10 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                   autovalidateMode: AutovalidateMode.always,
                   child: TextFormField(
                     controller: emailController,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.deny(' '),
+                      LengthLimitingTextInputFormatter(50),
+                    ],
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(8),
                       border: const OutlineInputBorder(),

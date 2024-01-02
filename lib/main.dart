@@ -15,7 +15,7 @@ Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
   runApp(
     GetMaterialApp(
-      title: 'SCHOOL MANAGER',
+      title: 'EDU',
       initialRoute: Routes.SIGNIN,
       getPages: AppPages.pages,
       theme: ThemeData(
