@@ -26,4 +26,5 @@ class AppColors {
   static const Color trokeColor = Color(0xFFD2D5DA);
   static const Color redColor = Color(0xFFFC423F);
   static const Color red100Color = Color(0xFFFEE6D8);
+  static const Color blue500Color = Color(0xFF3ACBFC);
 }
