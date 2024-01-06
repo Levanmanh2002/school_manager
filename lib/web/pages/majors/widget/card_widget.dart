@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:school_web/web/constants/style.dart';
+import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/utils/assets/images.dart';
 
 class CardWidget extends StatelessWidget {
@@ -48,7 +49,7 @@ class CardWidget extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           Container(
-            width: 252,
+            width: Responsive.isMobile(context) ? 160 : 252,
             height: 204,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24),

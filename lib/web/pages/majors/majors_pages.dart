@@ -143,79 +143,81 @@ class _MajorsPagesState extends State<MajorsPages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Text(
-                  'Ngành học',
-                  style: TextStyle(
-                    fontSize: Responsive.isMobile(context) ? 18 : 24,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.blackColor,
-                  ),
-                ),
-                const Spacer(),
-                InkWell(
-                  onTap: () {
-                    _showAddMajorsConfirmationDialog(context, addMajors);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: Responsive.isMobile(context) ? 4 : 8, horizontal: 16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: AppColors.primaryColor,
-                    ),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(IconAssets.booksIcon),
-                        const SizedBox(width: 8),
-                        const Text(
-                          'Tạo ngành học',
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.whiteColor),
-                        ),
-                      ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: Responsive.isMobile(context) ? 16 : 32, vertical: 24),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Ngành học',
+                    style: TextStyle(
+                      fontSize: Responsive.isMobile(context) ? 18 : 24,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.blackColor,
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            FutureBuilder<List<MajorsData>>(
-              future: fetchMajors(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else {
-                  return Wrap(
-                    spacing: 12,
-                    runSpacing: Responsive.isMobile(context) ? 12 : 32,
-                    children: List.generate(
-                      snapshot.data!.length,
-                      (index) {
-                        final majors = snapshot.data![index];
+                  const Spacer(),
+                  InkWell(
+                    onTap: () {
+                      _showAddMajorsConfirmationDialog(context, addMajors);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: Responsive.isMobile(context) ? 4 : 8, horizontal: 16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: AppColors.primaryColor,
+                      ),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(IconAssets.booksIcon),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'Tạo ngành học',
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.whiteColor),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              FutureBuilder<List<MajorsData>>(
+                future: fetchMajors(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else {
+                    return Wrap(
+                      spacing: 12,
+                      runSpacing: Responsive.isMobile(context) ? 12 : 32,
+                      children: List.generate(
+                        snapshot.data!.length,
+                        (index) {
+                          final majors = snapshot.data![index];
 
-                        return CardWidget(
-                          onTap: () {
-                            _showEditMajorsConfirmationDialog(context, majors, onEditMajors);
-                          },
-                          text: majors.name ?? '',
-                          des: majors.description ?? '',
-                          clearOntap: () {
-                            _showDeleteMajorsConfirmationDialog(context, majors, onDeleteMajors);
-                          },
-                        );
-                      },
-                    ),
-                  );
-                }
-              },
-            ),
-          ],
+                          return CardWidget(
+                            onTap: () {
+                              _showEditMajorsConfirmationDialog(context, majors, onEditMajors);
+                            },
+                            text: majors.name ?? '',
+                            des: majors.description ?? '',
+                            clearOntap: () {
+                              _showDeleteMajorsConfirmationDialog(context, majors, onDeleteMajors);
+                            },
+                          );
+                        },
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
