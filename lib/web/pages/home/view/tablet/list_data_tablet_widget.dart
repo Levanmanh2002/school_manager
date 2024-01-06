@@ -330,8 +330,6 @@ class _ListDataTabletWidgetState extends State<ListDataTabletWidget> with Ticker
                               ),
                               Expanded(
                                 child: ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
                                   itemCount: allStudents.length,
                                   itemBuilder: (context, index) {
                                     final student = allStudents[index];
