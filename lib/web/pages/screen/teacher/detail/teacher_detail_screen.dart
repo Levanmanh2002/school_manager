@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:school_web/web/constants/style.dart';
 import 'package:school_web/web/models/teacher.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/widgets/custom_text_widgets.dart';
@@ -29,103 +30,148 @@ class TeacherDetailScreen extends StatelessWidget {
     final formattedBirthDate = birthDate != null ? dateFormatter.format(birthDate) : 'N/A';
     final formattedJoinDate = joinDate != null ? dateFormatter.format(joinDate) : 'N/A';
 
-    late bool isCivilServant = teacher.civilServant ?? true;
     late bool isSeletedIsWorking = teacher.isWorking ?? false;
 
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: AppColors.blackColor),
         title: Text(
           teacher.fullName ?? '',
-          style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+          style: const TextStyle(color: AppColors.blackColor, fontSize: 16, fontWeight: FontWeight.w500),
         ),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FullScreenImageScreen(
-                        imageUrl: teacher.avatarUrl ??
-                            'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
-                      ),
-                    ),
-                  );
-                },
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(teacher.avatarUrl ??
-                      'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512'),
-                  radius: 80,
+        child: Padding(
+          padding: Responsive.isMobile(context)
+              ? const EdgeInsets.only(left: 24, right: 24, bottom: 36)
+              : const EdgeInsets.only(left: 24 + 24, right: 24 + 24, bottom: 48),
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.white,
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x143A73C2),
+                  blurRadius: 8.0,
+                  offset: Offset(0, 0),
                 ),
-              ),
-              const SizedBox(height: 32),
-              Wrap(
-                spacing: 12,
-                runSpacing: Responsive.isMobile(context) ? 12 : 32,
-                runAlignment: WrapAlignment.center,
-                alignment: WrapAlignment.center,
-                children: [
-                  Container(
-                    alignment: Alignment.topLeft,
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: const Text(
-                      '1. Thông tin chung',
-                      style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
+                BoxShadow(
+                  color: Color(0x143A73C2),
+                  blurRadius: 8.0,
+                  offset: Offset(0, 0),
+                ),
+              ],
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Responsive.isMobile(context)
+                    ? const SizedBox.shrink()
+                    : GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FullScreenImageScreen(
+                                imageUrl: teacher.avatarUrl ??
+                                    'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                              ),
+                            ),
+                          );
+                        },
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(teacher.avatarUrl ??
+                              'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512'),
+                          radius: 80,
+                        ),
+                      ),
+                Responsive.isMobile(context) ? const SizedBox.shrink() : const SizedBox(width: 24),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Responsive.isMobile(context)
+                          ? GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FullScreenImageScreen(
+                                      imageUrl: teacher.avatarUrl ??
+                                          'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: CircleAvatar(
+                                backgroundImage: NetworkImage(teacher.avatarUrl ??
+                                    'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512'),
+                                radius: 80,
+                              ),
+                            )
+                          : const SizedBox.shrink(),
+                      Responsive.isMobile(context) ? const SizedBox(height: 16) : const SizedBox.shrink(),
+                      Wrap(
+                        spacing: 12,
+                        runSpacing: Responsive.isMobile(context) ? 12 : 32,
+                        runAlignment: WrapAlignment.center,
+                        alignment: WrapAlignment.start,
+                        children: [
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: const EdgeInsets.symmetric(horizontal: 32),
+                            child: const Text(
+                              '1. Thông tin chung',
+                              style: TextStyle(color: AppColors.blackColor, fontSize: 16, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          _buildInfoItem(context, 'Mã giáo viên', teacher.teacherCode ?? ''),
+                          _buildInfoItem(context, 'Họ và Tên', teacher.fullName ?? ''),
+                          _buildInfoItem(context, 'Ngày sinh', formattedBirthDate),
+                          _buildInfoItem(context, 'Email', teacher.email ?? ''),
+                          _buildInfoItem(context, 'Số điện thoại', teacher.phoneNumber ?? ''),
+                          _buildInfoItem(context, 'CCCD', teacher.cccd ?? ''),
+                          _buildInfoItem(context, 'Giới tính', teacher.gender ?? ''),
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: const EdgeInsets.symmetric(horizontal: 32),
+                            child: const Text(
+                              '2. Địa chỉ',
+                              style: TextStyle(color: AppColors.blackColor, fontSize: 16, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          _buildInfoItem(context, 'Địa chỉ', teacher.address ?? ''),
+                          _buildInfoItem(context, 'Thành phố', teacher.city ?? ''),
+                          _buildInfoItem(context, 'Quận/Huyện', teacher.district ?? ''),
+                          _buildInfoItem(context, 'Phường/Xã', teacher.ward ?? ''),
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: const EdgeInsets.symmetric(horizontal: 32),
+                            child: const Text(
+                              '3. Trình độ chuyên môn',
+                              style: TextStyle(color: AppColors.blackColor, fontSize: 16, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          _buildInfoItem(context, 'Trình độ học vấn', teacher.academicDegree ?? ''),
+                          _buildInfoItem(context, 'Chức vụ', teacher.role ?? ''),
+                          _buildInfoItem(context, 'Kinh nghiệm', teacher.experience ?? ''),
+                          _buildInfoItem(context, 'Ngày tham gia', formattedJoinDate),
+                          _buildInfoItem(context, 'Loại hợp đồng', teacher.contractType ?? ''),
+                          _buildInfoItem(
+                              context, 'Đang làm việc', isSeletedIsWorking ? 'Đang làm việc' : 'Đã nghỉ làm'),
+                        ],
+                      ),
+                      const SizedBox(height: 32),
+                    ],
                   ),
-                  _buildInfoItem(context, 'Mã giáo viên', teacher.teacherCode ?? ''),
-                  _buildInfoItem(context, 'Họ và Tên', teacher.fullName ?? ''),
-                  _buildInfoItem(context, 'Ngày sinh', formattedBirthDate),
-                  _buildInfoItem(context, 'Email', teacher.email ?? ''),
-                  _buildInfoItem(context, 'Số điện thoại', teacher.phoneNumber ?? ''),
-                  _buildInfoItem(context, 'Giới tính', teacher.gender ?? ''),
-                  _buildInfoItem(context, 'CCCD', teacher.cccd ?? ''),
-                  _buildInfoItem(context, 'Nơi sinh', teacher.birthPlace ?? ''),
-                  _buildInfoItem(context, 'Dân tộc', teacher.ethnicity ?? ''),
-                  _buildInfoItem(context, 'Biệt danh', teacher.nickname ?? ''),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: const Text(
-                      '2. Thông tin công việc',
-                      style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  _buildInfoItem(context, 'Trình độ giảng dạy', teacher.teachingLevel ?? ''),
-                  _buildInfoItem(context, 'Vị trí', teacher.position ?? ''),
-                  _buildInfoItem(context, 'Kinh nghiệm', teacher.experience ?? ''),
-                  _buildInfoItem(context, 'Bộ môn', teacher.department ?? ''),
-                  _buildInfoItem(context, 'Chức vụ', teacher.role ?? ''),
-                  _buildInfoItem(context, 'Ngày tham gia', formattedJoinDate),
-                  _buildInfoItem(context, 'Là cán bộ công chức', isCivilServant ? 'Có' : 'Không'),
-                  _buildInfoItem(context, 'Loại hợp đồng', teacher.contractType ?? ''),
-                  _buildInfoItem(context, 'Môn học chính', teacher.primarySubject ?? ''),
-                  _buildInfoItem(context, 'Môn học phụ', teacher.secondarySubject ?? ''),
-                  _buildInfoItem(context, 'Đang làm việc', isSeletedIsWorking ? 'Đang làm việc' : 'Đã nghỉ làm'),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: const Text(
-                      '3. Trình độ chuyên môn',
-                      style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  _buildInfoItem(context, 'Trình độ học vấn', teacher.academicDegree ?? ''),
-                  _buildInfoItem(context, 'Trình độ chuẩn', teacher.standardDegree ?? ''),
-                  _buildInfoItem(context, 'Lý thuyết chính trị', teacher.politicalTheory ?? ''),
-                ],
-              ),
-              const SizedBox(height: 32),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -142,7 +188,7 @@ class TeacherDetailScreen extends StatelessWidget {
             title: label,
             initialData: value,
             enabled: false,
-            colorHint: Colors.black,
+            colorHint: AppColors.blackColor,
           ),
           const SizedBox(height: 16),
         ],

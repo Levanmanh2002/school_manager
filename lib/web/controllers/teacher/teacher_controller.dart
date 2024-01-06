@@ -73,6 +73,10 @@ class AuthenticationController extends GetxController {
     String academicDegreeController,
     String standardDegreeController,
     String politicalTheoryController,
+    String addressController,
+    String cityController,
+    String districtController,
+    String wardController,
   ) async {
     try {
       var headers = {'Content-Type': 'application/json'};
@@ -101,7 +105,11 @@ class AuthenticationController extends GetxController {
         "isWorking": isWorkingController,
         "academicDegree": academicDegreeController,
         "standardDegree": standardDegreeController,
-        "politicalTheory": politicalTheoryController
+        "politicalTheory": politicalTheoryController,
+        "address": addressController,
+        "city": cityController,
+        "district": districtController,
+        "ward": wardController,
       });
       print(request.body);
       request.headers.addAll(headers);

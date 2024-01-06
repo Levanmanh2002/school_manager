@@ -14,9 +14,9 @@ import 'package:school_web/web/pages/screen/teacher/view/get_teachers_view.dart'
 import 'package:school_web/web/pages/screen/teacher/view/recover_account_view.dart';
 import 'package:school_web/web/pages/setting/setting_pages.dart';
 import 'package:school_web/web/pages/student_transfer/student_transfer_page.dart';
-import 'package:school_web/web/pages/students/students_pages.dart';
+// import 'package:school_web/web/pages/students/students_pages.dart';
 import 'package:school_web/web/pages/students/view/profile_student_view.dart';
-import 'package:school_web/web/pages/students/view/settings_student_view.dart';
+// import 'package:school_web/web/pages/students/view/settings_student_view.dart';
 import 'package:school_web/web/pages/timetable/timetable.dart';
 import 'package:school_web/web/pages/timetable/view/create_view.dart';
 
@@ -93,18 +93,18 @@ abstract class AppPages {
     ),
 
     /// Students
-    GetPage(
-      name: Routes.HOMESTUDENT,
-      page: () => const StudentsPages(),
-    ),
+    // GetPage(
+    //   name: Routes.HOMESTUDENT,
+    //   page: () => const StudentsPages(),
+    // ),
     GetPage(
       name: Routes.PROFILESTUDENT,
       page: () => const ProfileStudentView(),
     ),
-    GetPage(
-      name: Routes.SETTINGSSTUDENT,
-      page: () => const SettingsStudentView(),
-    ),
+    // GetPage(
+    //   name: Routes.SETTINGSSTUDENT,
+    //   page: () => const SettingsStudentView(),
+    // ),
 
     /// Timetable
     GetPage(

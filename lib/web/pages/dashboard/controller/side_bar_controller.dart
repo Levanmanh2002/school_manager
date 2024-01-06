@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:school_web/web/pages/home/home_view.dart';
 import 'package:school_web/web/pages/majors/majors_pages.dart';
-import 'package:school_web/web/pages/profile/profile_pages.dart';
 import 'package:school_web/web/pages/screen/classes/view/class_info_view.dart';
 import 'package:school_web/web/pages/screen/student/view/get_student_view.dart';
 import 'package:school_web/web/pages/screen/teacher/view/get_teachers_view.dart';
 import 'package:school_web/web/pages/student_transfer/student_transfer_page.dart';
-import 'package:school_web/web/pages/timetable/timetable.dart';
 
 class SideBarController extends GetxController {
   RxInt index = 0.obs;
@@ -18,7 +16,7 @@ class SideBarController extends GetxController {
     // const AddStudentView(),
     const GetTeachersView(),
     const GetStudentView(),
-    const TimetablePage(),
+    // const TimetablePage(),
     const ClassesInfoView(),
     const MajorsPages(),
     const StudentTransferPage(),
@@ -26,6 +24,6 @@ class SideBarController extends GetxController {
     Container(),
     // const AddStudentClassesView(),
     // const AddTeacherClassesView(),
-    const ProfilePages(),
+    // const ProfilePages(),
   ];
 }

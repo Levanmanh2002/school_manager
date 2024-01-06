@@ -300,6 +300,7 @@ class _AddStudentViewState extends State<AddStudentView> {
                         child: Form(
                           key: _formKey,
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
                                 alignment: Alignment.topLeft,

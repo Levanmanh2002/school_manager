@@ -292,6 +292,7 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                         child: Form(
                           key: _formKey,
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
                                 alignment: Alignment.topLeft,

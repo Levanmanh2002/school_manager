@@ -5,6 +5,7 @@ import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/language/language_value.dart';
 import 'package:school_web/web/pages/notifications/notifications.dart';
 import 'package:school_web/web/pages/search/search_view.dart';
+import 'package:school_web/web/routes/pages.dart';
 
 class InforAccount extends StatefulWidget {
   const InforAccount({
@@ -175,59 +176,62 @@ class _InforAccountState extends State<InforAccount> {
             const SizedBox(width: 150),
             const NotificationsView(),
             const SizedBox(width: 16),
-            Container(
-              height: 48,
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(40),
-                color: const Color(0xFFF7F7FC),
-              ),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      widget.authController.teacherData.value?.avatarUrl ?? 'https://i.stack.imgur.com/l60Hf.png',
+            InkWell(
+              onTap: () => Get.toNamed(Routes.PROFILE),
+              child: Container(
+                height: 48,
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                  color: const Color(0xFFF7F7FC),
+                ),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        widget.authController.teacherData.value?.avatarUrl ?? 'https://i.stack.imgur.com/l60Hf.png',
+                      ),
+                      radius: 25,
                     ),
-                    radius: 25,
-                  ),
-                  const SizedBox(width: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        widget.authController.teacherData.value?.fullName ?? 'EDU Management',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF373743),
-                          overflow: TextOverflow.ellipsis,
+                    const SizedBox(width: 8),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          widget.authController.teacherData.value?.fullName ?? 'EDU Management',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF373743),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          maxLines: 1,
                         ),
-                        maxLines: 1,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        widget.authController.teacherData.value?.system == 1
-                            ? 'Admin'
-                            : widget.authController.teacherData.value?.system == 2
-                                ? 'Manager'
-                                : widget.authController.teacherData.value?.system == 3
-                                    ? 'Teacher'
-                                    : widget.authController.teacherData.value?.system == 4
-                                        ? 'System'
-                                        : 'EDU Management',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF7E8695),
+                        const SizedBox(height: 4),
+                        Text(
+                          widget.authController.teacherData.value?.system == 1
+                              ? 'Admin'
+                              : widget.authController.teacherData.value?.system == 2
+                                  ? 'Manager'
+                                  : widget.authController.teacherData.value?.system == 3
+                                      ? 'Teacher'
+                                      : widget.authController.teacherData.value?.system == 4
+                                          ? 'System'
+                                          : 'EDU Management',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF7E8695),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 12),
-                  const Icon(Icons.arrow_drop_down_outlined, size: 30, color: Color(0xFF7E8695)),
-                  const SizedBox(width: 12),
-                ],
+                      ],
+                    ),
+                    const SizedBox(width: 12),
+                    const Icon(Icons.arrow_drop_down_outlined, size: 30, color: Color(0xFF7E8695)),
+                    const SizedBox(width: 12),
+                  ],
+                ),
               ),
             ),
             // const SizedBox(width: 24),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:school_web/web/constants/style.dart';
 import 'package:school_web/web/models/student.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/widgets/custom_text_widgets.dart';
@@ -15,7 +16,6 @@ class StudentDetailScreen extends StatelessWidget {
     late bool isStudying = student.isStudying ?? true;
 
     final birthDateJson = student.birthDate.toString();
-    final idCardIssuedDateJson = student.idCardIssuedDate.toString();
 
     final dateFormatter = DateFormat('dd/MM/yyyy');
 
@@ -24,118 +24,150 @@ class StudentDetailScreen extends StatelessWidget {
       birthDate = DateTime.tryParse(birthDateJson);
     }
 
-    DateTime? idCardIssuedDate;
-    if (idCardIssuedDateJson.isNotEmpty) {
-      idCardIssuedDate = DateTime.tryParse(idCardIssuedDateJson);
-    }
-
     final formattedBirthDate = birthDate != null ? dateFormatter.format(birthDate) : 'N/A';
-    final formCardIssuedDate = idCardIssuedDate != null ? dateFormatter.format(idCardIssuedDate) : 'N/A';
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: AppColors.blackColor),
         title: Text(
           student.fullName ?? '',
-          style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+          style: const TextStyle(color: AppColors.blackColor, fontSize: 16, fontWeight: FontWeight.w500),
         ),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FullScreenImageScreen(
-                        imageUrl: student.avatarUrl ??
-                            'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
-                      ),
-                    ),
-                  );
-                },
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(student.avatarUrl ??
-                      'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512'),
-                  radius: 80,
+        child: Padding(
+          padding: Responsive.isMobile(context)
+              ? const EdgeInsets.only(left: 24, right: 24, bottom: 36)
+              : const EdgeInsets.only(left: 24 + 24, right: 24 + 24, bottom: 48),
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.white,
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x143A73C2),
+                  blurRadius: 8.0,
+                  offset: Offset(0, 0),
                 ),
-              ),
-              const SizedBox(height: 32),
-              Wrap(
-                spacing: 12,
-                runSpacing: Responsive.isMobile(context) ? 12 : 32,
-                runAlignment: WrapAlignment.center,
-                alignment: WrapAlignment.center,
-                children: [
-                  Container(
-                    alignment: Alignment.topLeft,
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: const Text(
-                      '1. Thông tin chung',
-                      style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
+                BoxShadow(
+                  color: Color(0x143A73C2),
+                  blurRadius: 8.0,
+                  offset: Offset(0, 0),
+                ),
+              ],
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Responsive.isMobile(context)
+                    ? const SizedBox.shrink()
+                    : GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FullScreenImageScreen(
+                                imageUrl: student.avatarUrl ??
+                                    'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                              ),
+                            ),
+                          );
+                        },
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(student.avatarUrl ??
+                              'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512'),
+                          radius: 80,
+                        ),
+                      ),
+                Responsive.isMobile(context) ? const SizedBox.shrink() : const SizedBox(width: 24),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Responsive.isMobile(context)
+                          ? GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FullScreenImageScreen(
+                                      imageUrl: student.avatarUrl ??
+                                          'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: CircleAvatar(
+                                backgroundImage: NetworkImage(student.avatarUrl ??
+                                    'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512'),
+                                radius: 80,
+                              ),
+                            )
+                          : const SizedBox.shrink(),
+                      Responsive.isMobile(context) ? const SizedBox(height: 16) : const SizedBox.shrink(),
+                      Wrap(
+                        spacing: 12,
+                        runSpacing: Responsive.isMobile(context) ? 12 : 32,
+                        runAlignment: WrapAlignment.center,
+                        alignment: WrapAlignment.start,
+                        children: [
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: const EdgeInsets.symmetric(horizontal: 32),
+                            child: const Text(
+                              '1. Thông tin chung',
+                              style: TextStyle(color: AppColors.blackColor, fontSize: 16, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          _buildInfoItem('Mã số sinh viên', student.mssv ?? '', context),
+                          _buildInfoItem('Tên sinh viên', student.fullName ?? '', context),
+                          _buildInfoItem('Gmail', student.gmail ?? '', context),
+                          _buildInfoItem('Số điện thoại', student.phone ?? '', context),
+                          _buildInfoItem('Căn cước công dân', student.cccd ?? '', context),
+                          _buildInfoItem('Giới tính', student.gender ?? '', context),
+                          _buildInfoItem('Ngày sinh', formattedBirthDate, context),
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: const EdgeInsets.symmetric(horizontal: 32),
+                            child: const Text(
+                              '2. Địa chỉ',
+                              style: TextStyle(color: AppColors.blackColor, fontSize: 16, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          _buildInfoItem('Địa chỉ', student.address ?? '', context),
+                          _buildInfoItem('Thành phố', student.city ?? '', context),
+                          _buildInfoItem('Quận/Huyện', student.district ?? '', context),
+                          _buildInfoItem('Phường/Xã', student.ward ?? '', context),
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: const EdgeInsets.symmetric(horizontal: 32),
+                            child: const Text(
+                              '3. Quá trình học',
+                              style: TextStyle(color: AppColors.blackColor, fontSize: 16, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          _buildInfoItem('Trình độ học vấn', student.educationLevel ?? '', context),
+                          _buildInfoItem('Học lực học sinh', student.academicPerformance ?? '', context),
+                          _buildInfoItem('Hạnh kiểm học sinh', student.conduct ?? '', context),
+                          _buildInfoItem('học lực lớp 10', student.classRanking10 ?? '', context),
+                          _buildInfoItem('học lực lớp 11', student.classRanking11 ?? '', context),
+                          _buildInfoItem('học lực lớp 12', student.classRanking12 ?? '', context),
+                          _buildInfoItem('Năm tốt nghiệp', student.graduationYear ?? '', context),
+                          _buildInfoItem(
+                            'Tình trạng học sinh',
+                            isStudying ? 'Học sinh đang học' : 'Học sinh đã nghỉ học',
+                            context,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 32),
+                    ],
                   ),
-                  _buildInfoItem('Mã số sinh viên', student.mssv ?? '', context),
-                  _buildInfoItem('Tên sinh viên', student.fullName ?? '', context),
-                  _buildInfoItem('Gmail', student.gmail ?? '', context),
-                  _buildInfoItem('Số điện thoại', student.phone ?? '', context),
-                  _buildInfoItem('Năm sinh học sinh', formattedBirthDate, context),
-                  _buildInfoItem('Căn cước công dân', student.cccd ?? '', context),
-                  _buildInfoItem('Ngày cấp cmnd', formCardIssuedDate, context),
-                  _buildInfoItem('Nơi cấp cmnd', student.idCardIssuedPlace ?? '', context),
-                  _buildInfoItem('Nơi sinh học sinh', student.birthPlace ?? '', context),
-                  _buildInfoItem('Năm vào học', student.customYear ?? '', context),
-                  _buildInfoItem('Giới tính học sinh', student.gender ?? '', context),
-                  _buildInfoItem('Quê quán học sinh', student.hometown ?? '', context),
-                  _buildInfoItem('Địa chỉ thường trú học sinh', student.permanentAddress ?? '', context),
-                  _buildInfoItem('Dân tộc học sinh', student.ethnicity ?? '', context),
-                  _buildInfoItem('Tôn giáo học sinh', student.religion ?? '', context),
-                  _buildInfoItem('Ghi chú', student.notes ?? '', context),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: const Text(
-                      '2. Trình độ học vấn',
-                      style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  _buildInfoItem('Nghề nghiệp học sinh', student.occupation ?? '', context),
-                  _buildInfoItem('Trình độ học vấn', student.educationLevel ?? '', context),
-                  _buildInfoItem('Học lực học sinh', student.academicPerformance ?? '', context),
-                  _buildInfoItem('Hạnh kiểm học sinh', student.conduct ?? '', context),
-                  _buildInfoItem('học lực lớp 10', student.classRanking10 ?? '', context),
-                  _buildInfoItem('học lực lớp 11', student.classRanking11 ?? '', context),
-                  _buildInfoItem('học lực lớp 12', student.classRanking12 ?? '', context),
-                  _buildInfoItem('Năm tốt nghiệp', student.graduationYear ?? '', context),
-                  _buildInfoItem('Đối tượng học sinh (khu vực nào)', student.beneficiary ?? '', context),
-                  _buildInfoItem('Khu vực', student.area ?? '', context),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: const Text(
-                      '3. Thông tin liên hệ',
-                      style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  _buildInfoItem('Số điện thoại liên lạc', student.contactPhone ?? '', context),
-                  _buildInfoItem('Địa chỉ liên lạc', student.contactAddress ?? '', context),
-                  _buildInfoItem('Họ tên Cha', student.fatherFullName ?? '', context),
-                  _buildInfoItem('Họ tên Mẹ', student.motherFullName ?? '', context),
-                  _buildInfoItem(
-                    'Tình trạng học sinh',
-                    isStudying ? 'Học sinh đang học' : 'Học sinh đã nghỉ học',
-                    context,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 32),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -152,7 +184,7 @@ class StudentDetailScreen extends StatelessWidget {
             title: label,
             initialData: value,
             enabled: false,
-            colorHint: Colors.black,
+            colorHint: AppColors.blackColor,
           ),
           const SizedBox(height: 16),
         ],

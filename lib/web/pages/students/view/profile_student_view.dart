@@ -269,7 +269,7 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                     }
                   },
                   icon: Icon(isEditing ? Icons.save : Icons.edit, size: 20, color: Colors.black),
-                )),
+                ),),
           )
         ],
       ),
