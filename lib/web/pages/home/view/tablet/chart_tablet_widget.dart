@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:school_web/web/pages/home/view/widget/pie_chart.dart';
 import 'package:school_web/web/pages/home/view/widget/chart_widget.dart';
 import 'package:school_web/web/pages/home/view/widget/item_note_widget.dart';
 
@@ -266,17 +267,10 @@ class _ChartTabletViewState extends State<ChartTabletView> with TickerProviderSt
                           ],
                         ),
                       ),
-                      Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text('Nội dung tab Học sinh'),
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: const Text('Hiển thị sơ đồ'),
-                            ),
-                          ],
-                        ),
+                       const Column(
+                        children: [
+                          Expanded(child: PieChartWidget()),
+                        ],
                       ),
                     ],
                   ),

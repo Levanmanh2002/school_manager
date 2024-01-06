@@ -159,75 +159,76 @@ class _ListDataTabletWidgetState extends State<ListDataTabletWidget> with Ticker
                     const Spacer(),
                     Expanded(
                       child: ValueListenableBuilder<bool>(
-                          valueListenable: isClearVisible,
-                          builder: (context, isVisible, child) {
-                            return TextFormField(
-                              controller: searchController,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny(RegExp(r'[.,-/]')),
-                                LengthLimitingTextInputFormatter(25),
-                              ],
-                              decoration: InputDecoration(
-                                isDense: true,
-                                fillColor: const Color(0xFFF7F7FC),
-                                filled: true,
-                                hintText: 'Tìm kiếm',
-                                hintStyle: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF7E8695),
-                                ),
-                                prefixIcon: Container(
-                                  width: 20,
-                                  height: 20,
-                                  alignment: Alignment.centerLeft,
-                                  child: Padding(
-                                    padding: const EdgeInsetsDirectional.only(start: 12),
-                                    child: SvgPicture.asset('assets/icons/search.svg', width: 20, height: 20),
-                                  ),
-                                ),
-                                suffix: isVisible
-                                    ? InkWell(
-                                        onTap: () {
-                                          searchController.clear();
-                                          isClearVisible.value = false;
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(right: 16),
-                                          child: Container(
-                                            padding: const EdgeInsets.all(3),
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Color(0xFF7E8695),
-                                            ),
-                                            child: const Icon(Icons.clear_rounded, color: Colors.white, size: 12),
-                                          ),
-                                        ),
-                                      )
-                                    : null,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(41),
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(vertical: 16),
-                                errorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(41),
-                                  borderSide: const BorderSide(color: Colors.red),
-                                ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(41),
-                                  borderSide: const BorderSide(color: Colors.red),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(41),
-                                  borderSide: const BorderSide(color: Color(0xFFF7F7FC)),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(41),
-                                  borderSide: const BorderSide(color: Color(0xFFF7F7FC)),
+                        valueListenable: isClearVisible,
+                        builder: (context, isVisible, child) {
+                          return TextFormField(
+                            controller: searchController,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.deny(RegExp(r'[.,-/]')),
+                              LengthLimitingTextInputFormatter(25),
+                            ],
+                            decoration: InputDecoration(
+                              isDense: true,
+                              fillColor: const Color(0xFFF7F7FC),
+                              filled: true,
+                              hintText: 'Tìm kiếm',
+                              hintStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF7E8695),
+                              ),
+                              prefixIcon: Container(
+                                width: 20,
+                                height: 20,
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsetsDirectional.only(start: 12),
+                                  child: SvgPicture.asset('assets/icons/search.svg', width: 20, height: 20),
                                 ),
                               ),
-                            );
-                          }),
+                              suffix: isVisible
+                                  ? InkWell(
+                                      onTap: () {
+                                        searchController.clear();
+                                        isClearVisible.value = false;
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(right: 16),
+                                        child: Container(
+                                          padding: const EdgeInsets.all(3),
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(0xFF7E8695),
+                                          ),
+                                          child: const Icon(Icons.clear_rounded, color: Colors.white, size: 12),
+                                        ),
+                                      ),
+                                    )
+                                  : null,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(41),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(41),
+                                borderSide: const BorderSide(color: Colors.red),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(41),
+                                borderSide: const BorderSide(color: Colors.red),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(41),
+                                borderSide: const BorderSide(color: Color(0xFFF7F7FC)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(41),
+                                borderSide: const BorderSide(color: Color(0xFFF7F7FC)),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                     const SizedBox(width: 16),
                     PopupMenuButton(
@@ -316,119 +317,87 @@ class _ListDataTabletWidgetState extends State<ListDataTabletWidget> with Ticker
                               ? MediaQuery.of(context).size.width
                               : MediaQuery.of(context).size.width / 1.26,
                           height: MediaQuery.of(context).size.height,
-                          child: ValueListenableBuilder<bool>(
-                            valueListenable: noDataNotifier,
-                            builder: (context, noData, child) {
-                              return noData
-                                  ? Column(
-                                      children: [
-                                        titleTabWidget(
-                                          name: 'Họ và tên',
-                                          code: 'MSSV',
-                                          industry: 'Ngành học',
-                                          email: 'Email',
-                                          phone: 'Số điện thoại',
-                                          status: 'Trạng thái',
-                                          detail: 'Chi tiết',
-                                        ),
-                                        Expanded(
-                                          child: ListView.builder(
-                                            shrinkWrap: true,
-                                            physics: const NeverScrollableScrollPhysics(),
-                                            itemCount: allStudents.length,
-                                            itemBuilder: (context, index) {
-                                              final student = allStudents[index];
-                                              return tableInfoStudentWidget(student, context);
-                                            },
-                                          ),
-                                        ),
-                                        itemPaginationWidget(),
-                                        InkWell(
-                                          onTap: () async {
-                                            isLoadingNotifier.value = true;
+                          child: Column(
+                            children: [
+                              titleTabWidget(
+                                name: 'Họ và tên',
+                                code: 'MSSV',
+                                industry: 'Ngành học',
+                                email: 'Email',
+                                phone: 'Số điện thoại',
+                                status: 'Trạng thái',
+                                detail: 'Chi tiết',
+                              ),
+                              Expanded(
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: allStudents.length,
+                                  itemBuilder: (context, index) {
+                                    final student = allStudents[index];
+                                    return tableInfoStudentWidget(student, context);
+                                  },
+                                ),
+                              ),
+                              itemPaginationWidget(),
+                              InkWell(
+                                onTap: () async {
+                                  isLoadingNotifier.value = true;
 
-                                            List<StudentData> updatedList = await controller.getNextBatchOfStudents();
+                                  List<StudentData> updatedList = await controller.getNextBatchOfStudents();
 
-                                            isLoadingNotifier.value = false;
+                                  isLoadingNotifier.value = false;
 
-                                            if (updatedList.isNotEmpty) {
-                                              setState(() {
-                                                List<StudentData> updatedLists = updatedList
-                                                    .where((newStudent) => !allStudents.any(
-                                                        (existingStudent) => existingStudent.sId == newStudent.sId))
-                                                    .toList();
+                                  if (updatedList.isNotEmpty) {
+                                    setState(() {
+                                      List<StudentData> updatedLists = updatedList
+                                          .where((newStudent) => !allStudents
+                                              .any((existingStudent) => existingStudent.sId == newStudent.sId))
+                                          .toList();
 
-                                                allStudents.addAll(updatedLists);
-                                              });
-                                            } else {
-                                              print('Danh sách Student Table rỗng hoặc có lỗi khi cập nhật');
-                                              bool noData = true;
-                                              if (mounted) {
-                                                noDataNotifier.value = noData;
-                                              }
-                                            }
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(vertical: 12),
-                                            alignment: Alignment.center,
-                                            child: ValueListenableBuilder<bool>(
-                                              valueListenable: isLoadingNotifier,
-                                              builder: (context, isLoading, child) {
-                                                return Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    if (isLoading)
-                                                      const SizedBox(
-                                                        width: 12,
-                                                        height: 12,
-                                                        child: CircularProgressIndicator(),
-                                                      ),
-                                                    if (isLoading) const SizedBox(width: 8),
-                                                    const Text(
-                                                      'Xem thêm',
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight: FontWeight.w700,
-                                                        color: Color(0xFF3A73C2),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 8),
-                                                    if (!isLoading)
-                                                      const Icon(
-                                                        Icons.keyboard_arrow_down_outlined,
-                                                        color: Color(0xFF3A73C2),
-                                                      ),
-                                                  ],
-                                                );
-                                              },
+                                      allStudents.addAll(updatedLists);
+                                    });
+                                  } else {
+                                    print('Danh sách Student Table rỗng hoặc có lỗi khi cập nhật');
+                                  }
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  alignment: Alignment.center,
+                                  child: ValueListenableBuilder<bool>(
+                                    valueListenable: isLoadingNotifier,
+                                    builder: (context, isLoading, child) {
+                                      return Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          if (isLoading)
+                                            const SizedBox(
+                                              width: 12,
+                                              height: 12,
+                                              child: CircularProgressIndicator(),
+                                            ),
+                                          if (isLoading) const SizedBox(width: 8),
+                                          const Text(
+                                            'Xem thêm',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                              color: Color(0xFF3A73C2),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                  : Column(
-                                      children: [
-                                        titleTabWidget(
-                                          name: 'Họ và tên',
-                                          code: 'MSSV',
-                                          industry: 'Ngành học',
-                                          email: 'Email',
-                                          phone: 'Số điện thoại',
-                                          status: 'Trạng thái',
-                                          detail: 'Chi tiết',
-                                        ),
-                                        const SizedBox(height: 48),
-                                        const Text(
-                                          'Hiện chưa có học sinh mới nhập học nào trong thời gian gần đây...',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                            },
+                                          const SizedBox(width: 8),
+                                          if (!isLoading)
+                                            const Icon(
+                                              Icons.keyboard_arrow_down_outlined,
+                                              color: Color(0xFF3A73C2),
+                                            ),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

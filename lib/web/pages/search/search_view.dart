@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:school_web/web/l10n/l10n.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
 
 class SearchView extends StatelessWidget {
@@ -30,7 +31,7 @@ class SearchView extends StatelessWidget {
             isDense: true,
             fillColor: const Color(0xFFF7F7FC),
             filled: true,
-            hintText: 'Tìm kiếm',
+            hintText: context.l10n.search_text,
             hintStyle: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w400,

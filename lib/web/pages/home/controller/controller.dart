@@ -126,4 +126,18 @@ class Controller extends GetxController {
     allStudents.addAll(nextBatch);
     return List.of(allStudents);
   }
+
+  Future<List<TeacherData>> getRetiredTeachers() async {
+    var response = await http.get(Uri.parse('https://backend-shool-project.onrender.com/admin/retired-teachers'));
+
+    if (response.statusCode == 201) {
+      final List<dynamic> data = json.decode(response.body)['data'];
+
+      List<TeacherData> total = data.map((e) => TeacherData.fromJson(e)).toList();
+
+      return total;
+    } else {
+      throw Exception('Failed to total teacher');
+    }
+  }
 }

@@ -26,7 +26,7 @@ class NotificationsView extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       onSelected: (value) {},
       constraints: BoxConstraints(
-        minWidth: 2.0 * 56.0,
+        minWidth: 2.0 * 48.0,
         maxWidth: MediaQuery.of(context).size.width,
       ),
       itemBuilder: (BuildContext context) {
@@ -136,7 +136,7 @@ class NotificationsView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(12),
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   color: Color(0xFFF7F7FC),

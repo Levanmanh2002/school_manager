@@ -25,13 +25,15 @@ class AppBarWidget extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, height: 1.5, color: Colors.black),
               ),
               const SizedBox(height: 4),
-              Text(
-                'Chào buổi sáng, ${authController.teacherData.value?.fullName ?? 'EDU Management'}! ',
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  height: 1.5,
-                  color: Color(0xFF7E8695),
+              Obx(
+                () => Text(
+                  'Chào buổi sáng, ${authController.teacherData.value?.fullName ?? 'EDU Management'}! ',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    height: 1.5,
+                    color: Color(0xFF7E8695),
+                  ),
                 ),
               ),
             ],

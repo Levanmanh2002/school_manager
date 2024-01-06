@@ -5,6 +5,7 @@ import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/dashboard/controller/side_bar_controller.dart';
 import 'package:school_web/web/pages/dashboard/widget/infor_account.dart';
+import 'package:school_web/web/pages/notifications/notifications.dart';
 import 'package:school_web/web/routes/pages.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
 import 'package:school_web/web/utils/assets/images.dart';
@@ -61,19 +62,23 @@ class _DashboardState extends State<Dashboard> {
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, height: 1.5, color: Colors.black),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      'Chào buổi sáng, ${authController.teacherData.value?.fullName ?? 'EDU Management'}! ',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        height: 1.5,
-                        color: Color(0xFF7E8695),
+                    Obx(
+                      () => Text(
+                        'Chào buổi sáng, ${authController.teacherData.value?.fullName ?? 'EDU Management'}! ',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          height: 1.5,
+                          color: Color(0xFF7E8695),
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
               actions: [
+                const NotificationsView(),
+                const SizedBox(width: 16),
                 IconButton(
                   onPressed: () {
                     _scaffoldKey.currentState?.openDrawer();

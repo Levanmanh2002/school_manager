@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:school_web/web/pages/authentication/authentication.dart';
 import 'package:school_web/web/pages/dashboard/dashboard.dart';
-import 'package:school_web/web/pages/home/home_pages.dart';
 import 'package:school_web/web/pages/majors/majors_pages.dart';
 import 'package:school_web/web/pages/profile/edit_profile_pages.dart';
 import 'package:school_web/web/pages/profile/profile_pages.dart';
@@ -36,10 +35,10 @@ abstract class AppPages {
       name: Routes.SIGNIN,
       page: () => const AuthenticationPage(),
     ),
-    GetPage(
-      name: Routes.HOME,
-      page: () => const HomePages(),
-    ),
+    // GetPage(
+    //   name: Routes.HOME,
+    //   page: () => const HomePages(),
+    // ),
     GetPage(
       name: Routes.PROFILE,
       page: () => const ProfilePages(),

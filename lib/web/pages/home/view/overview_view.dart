@@ -32,7 +32,7 @@ class _OverviewViewState extends State<OverviewView> {
     newStudentData = await ctl.getTotalNewListStudent();
     teacherData = await ctl.getTotalTeacher();
     classData = await ctl.getClassInfo();
-    // setState(() {});
+    setState(() {});
   }
 
   @override

@@ -43,30 +43,32 @@ Widget buildStudentCard(StudentData studentData, BuildContext context) {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          const TextSpan(
-                            text: 'MSSV: ',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFF373743),
-                              height: 1.5,
-                            ),
+                    Row(
+                      children: [
+                        const Text(
+                          'MSSV: ',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF373743),
+                            height: 1.5,
                           ),
-                          TextSpan(
-                            text:
-                                '${(studentData.mssv ?? '')} ${studentData.occupation!.isNotEmpty ? '-' : ''} ${studentData.occupation ?? ''}',
+                        ),
+                        Container(
+                          constraints: const BoxConstraints(maxWidth: 300),
+                          child: Text(
+                            '${(studentData.mssv ?? '')} ${studentData.occupation!.isNotEmpty ? '-' : ''} ${studentData.occupation ?? ''}',
                             style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
                               color: Color(0xFF3A73C2),
                               height: 1.5,
+                              overflow: TextOverflow.ellipsis,
                             ),
+                            maxLines: 1,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 4),
                     RichText(
