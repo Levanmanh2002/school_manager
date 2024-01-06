@@ -98,6 +98,18 @@ void updateBarGroups(List<double> toYValues) {
           toY: toYValues[index],
           gradient: _barsGradient,
         ),
+        // BarChartRodData(
+        //   toY: toYValues[index],
+        //   gradient: _barsGradient,
+        // ),
+        // BarChartRodData(
+        //   toY: toYValues[index],
+        //   gradient: _barsGradient,
+        // ),
+        // BarChartRodData(
+        //   toY: toYValues[index],
+        //   gradient: _barsGradient,
+        // ),
       ],
       showingTooltipIndicators: [0],
     ),

@@ -137,7 +137,7 @@ class _ChartMobileViewState extends State<ChartMobileView> with TickerProviderSt
                         getCountNewStudents();
                       },
                       child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),

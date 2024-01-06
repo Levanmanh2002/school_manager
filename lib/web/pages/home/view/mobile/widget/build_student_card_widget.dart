@@ -2,9 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:school_web/web/models/student.dart';
+import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/screen/student/detail/student_detail_screen.dart';
 
 Widget buildStudentCard(StudentData studentData, BuildContext context) {
+  String phone = studentData.phone ?? '';
+  String displayedPhone = phone.length > 12 ? '${phone.substring(0, 12)}...' : phone;
+
   return Column(
     children: [
       InkWell(
@@ -57,7 +61,9 @@ Widget buildStudentCard(StudentData studentData, BuildContext context) {
                         Container(
                           constraints: const BoxConstraints(maxWidth: 300),
                           child: Text(
-                            '${(studentData.mssv ?? '')} ${studentData.occupation!.isNotEmpty ? '-' : ''} ${studentData.occupation ?? ''}',
+                            Responsive.isMobile(context)
+                                ? (studentData.mssv ?? '')
+                                : '${(studentData.mssv ?? '')} ${studentData.occupation!.isNotEmpty ? '-' : ''} ${studentData.occupation ?? ''}',
                             style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -125,7 +131,7 @@ Widget buildStudentCard(StudentData studentData, BuildContext context) {
                             ),
                           ),
                           TextSpan(
-                            text: studentData.phone ?? '',
+                            text: displayedPhone,
                             style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,

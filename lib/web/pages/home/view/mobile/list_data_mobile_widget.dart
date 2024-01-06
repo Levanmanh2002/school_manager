@@ -222,59 +222,59 @@ class _ListDataMobileWidgetState extends State<ListDataMobileWidget> with Ticker
                                 ),
                               ),
                             );
-                          }),
+                          },),
                     ),
-                    const SizedBox(width: 16),
-                    PopupMenuButton(
-                      position: PopupMenuPosition.under,
-                      padding: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      onSelected: (value) {
-                        selectedValueNotifier.value = value.toString();
+                    // const SizedBox(width: 16),
+                    // PopupMenuButton(
+                    //   position: PopupMenuPosition.under,
+                    //   padding: EdgeInsets.zero,
+                    //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    //   onSelected: (value) {
+                    //     selectedValueNotifier.value = value.toString();
 
-                        // setState(() {
-                        //   selectedValue = value.toString();
-                        // });
-                      },
-                      itemBuilder: (context) => [
-                        _buildPopupMenuItemView(text: 'Tất cả', color: const Color(0xFF7E8695)),
-                        _buildPopupMenuItemView(text: 'Học sinh mới', color: const Color(0xFF2D9CDB)),
-                        _buildPopupMenuItemView(text: 'Đang học', color: const Color(0xFF3BB53B)),
-                        _buildPopupMenuItemView(text: 'Nghỉ học', color: const Color(0xFFFC8805)),
-                        _buildPopupMenuItemView(text: 'Đình chỉ', color: const Color(0xFF9AA0AC)),
-                        _buildPopupMenuItemView(text: 'Bị đuổi học', color: const Color(0xFFFC423F)),
-                      ],
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(48),
-                          color: const Color(0xFFF7F7FC),
-                        ),
-                        child: ValueListenableBuilder(
-                          valueListenable: selectedValueNotifier,
-                          builder: (context, selectedValue, _) {
-                            return Row(
-                              children: [
-                                Text(
-                                  selectedValue,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: getColorForValue(getValueForText(selectedValue)),
-                                    height: 1.2,
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                Icon(
-                                  Icons.keyboard_arrow_down_outlined,
-                                  color: getColorForValue(getValueForText(selectedValue)),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                    ),
+                    //     // setState(() {
+                    //     //   selectedValue = value.toString();
+                    //     // });
+                    //   },
+                    //   itemBuilder: (context) => [
+                    //     _buildPopupMenuItemView(text: 'Tất cả', color: const Color(0xFF7E8695)),
+                    //     _buildPopupMenuItemView(text: 'Học sinh mới', color: const Color(0xFF2D9CDB)),
+                    //     _buildPopupMenuItemView(text: 'Đang học', color: const Color(0xFF3BB53B)),
+                    //     _buildPopupMenuItemView(text: 'Nghỉ học', color: const Color(0xFFFC8805)),
+                    //     _buildPopupMenuItemView(text: 'Đình chỉ', color: const Color(0xFF9AA0AC)),
+                    //     _buildPopupMenuItemView(text: 'Bị đuổi học', color: const Color(0xFFFC423F)),
+                    //   ],
+                    //   child: Container(
+                    //     padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                    //     decoration: BoxDecoration(
+                    //       borderRadius: BorderRadius.circular(48),
+                    //       color: const Color(0xFFF7F7FC),
+                    //     ),
+                    //     child: ValueListenableBuilder(
+                    //       valueListenable: selectedValueNotifier,
+                    //       builder: (context, selectedValue, _) {
+                    //         return Row(
+                    //           children: [
+                    //             Text(
+                    //               selectedValue,
+                    //               style: TextStyle(
+                    //                 fontSize: 14,
+                    //                 fontWeight: FontWeight.w400,
+                    //                 color: getColorForValue(getValueForText(selectedValue)),
+                    //                 height: 1.2,
+                    //               ),
+                    //             ),
+                    //             const SizedBox(width: 8),
+                    //             Icon(
+                    //               Icons.keyboard_arrow_down_outlined,
+                    //               color: getColorForValue(getValueForText(selectedValue)),
+                    //             ),
+                    //           ],
+                    //         );
+                    //       },
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
                 Container(),

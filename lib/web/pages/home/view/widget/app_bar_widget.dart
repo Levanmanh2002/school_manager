@@ -46,6 +46,7 @@ class AppBarWidget extends StatelessWidget {
               : showNoSystemWidget(
                   context,
                   title: 'Bạn không có quyền thêm lịch học',
+                  des: 'Rất tiếc, bạn không có quyền thêm lịch học. Vui lòng liên hệ với người quản trị để được hỗ trợ',
                   cancel: 'Hủy',
                   confirm: 'Xác nhận',
                   ontap: () => Navigator.pop(context),

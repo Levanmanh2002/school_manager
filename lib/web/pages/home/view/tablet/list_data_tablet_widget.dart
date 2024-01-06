@@ -209,14 +209,6 @@ class _ListDataTabletWidgetState extends State<ListDataTabletWidget> with Ticker
                                 borderRadius: BorderRadius.circular(41),
                               ),
                               contentPadding: const EdgeInsets.symmetric(vertical: 16),
-                              errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(41),
-                                borderSide: const BorderSide(color: Colors.red),
-                              ),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(41),
-                                borderSide: const BorderSide(color: Colors.red),
-                              ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(41),
                                 borderSide: const BorderSide(color: Color(0xFFF7F7FC)),
@@ -284,11 +276,9 @@ class _ListDataTabletWidgetState extends State<ListDataTabletWidget> with Ticker
                   ],
                 ),
                 const SizedBox(height: 12),
-                Container(),
-                const SizedBox(height: 12),
                 Container(
                   padding: const EdgeInsets.only(top: 12),
-                  constraints: const BoxConstraints.expand(height: 37),
+                  constraints: const BoxConstraints.expand(height: 48),
                   child: TabBar(
                     controller: _tabListController,
                     isScrollable: true,

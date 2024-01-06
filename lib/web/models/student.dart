@@ -61,6 +61,10 @@ class StudentData {
   String? idCardIssuedPlace;
   String? fatherFullName;
   String? motherFullName;
+  String? address;
+	String? city;
+	String? district;
+	String? ward;
   String? notes;
   bool? isStudying;
   String? avatarUrl;
@@ -158,6 +162,10 @@ class StudentData {
     idCardIssuedPlace = json['idCardIssuedPlace'];
     fatherFullName = json['fatherFullName'];
     motherFullName = json['motherFullName'];
+    address = json['address'];
+		city = json['city'];
+		district = json['district'];
+		ward = json['ward'];
     notes = json['notes'];
     isStudying = json['isStudying'];
     avatarUrl = json['avatarUrl'];
@@ -215,6 +223,10 @@ class StudentData {
     data['fatherFullName'] = fatherFullName;
     data['motherFullName'] = motherFullName;
     data['notes'] = notes;
+    data['address'] = address;
+		data['city'] = city;
+		data['district'] = district;
+		data['ward'] = ward;
     data['isStudying'] = isStudying;
     data['avatarUrl'] = avatarUrl;
     data['createdAt'] = createdAt;
@@ -238,7 +250,7 @@ class SelfSuspension {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['isSelfSuspended'] = isSelfSuspended;
     data['suspensionEndDate'] = suspensionEndDate;
     data['suspensionReason'] = suspensionReason;

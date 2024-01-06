@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:school_web/web/constants/style.dart';
 
 class CustomTextWidgets extends StatelessWidget {
   const CustomTextWidgets({
@@ -7,15 +8,16 @@ class CustomTextWidgets extends StatelessWidget {
     this.controller,
     required this.title,
     this.initialData,
-    this.color = Colors.black,
+    this.color = AppColors.blackColor,
     this.keyboardType = TextInputType.text,
     this.validator = false,
-    this.style = const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF373A43)),
+    this.style = const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textDesColor),
     this.enabled = true,
     this.prefixIcon,
     this.boolTitle = false,
-    this.colorHint = const Color(0xFFB6BBC3),
+    this.colorHint = AppColors.trokeColor,
     this.inputFormatters,
+    this.hintText = '',
   });
 
   final String title;
@@ -30,6 +32,7 @@ class CustomTextWidgets extends StatelessWidget {
   final bool boolTitle;
   final Color colorHint;
   final List<TextInputFormatter>? inputFormatters;
+  final String hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +40,18 @@ class CustomTextWidgets extends StatelessWidget {
       children: [
         boolTitle == true
             ? const SizedBox.shrink()
-            : Container(alignment: Alignment.topLeft, child: Text(title, style: style)),
+            : Row(
+                children: [
+                  Container(alignment: Alignment.topLeft, child: Text(title, style: style)),
+                  validator ? const SizedBox(width: 4) : const SizedBox.shrink(),
+                  validator
+                      ? const Text(
+                          '*',
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.redColor),
+                        )
+                      : const SizedBox.shrink(),
+                ],
+              ),
         const SizedBox(height: 8),
         TextFormField(
           controller: controller,
@@ -45,7 +59,7 @@ class CustomTextWidgets extends StatelessWidget {
           inputFormatters: inputFormatters,
           decoration: InputDecoration(
             isDense: true,
-            hintText: enabled == false ? initialData : title,
+            hintText: enabled == false ? initialData : hintText,
             hintStyle: TextStyle(color: colorHint, fontSize: 14, fontWeight: FontWeight.w400),
             errorStyle: const TextStyle(color: Colors.red),
             labelStyle: TextStyle(color: color, fontSize: 14, fontWeight: FontWeight.w400),

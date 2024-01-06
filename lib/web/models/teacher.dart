@@ -57,6 +57,10 @@ class TeacherData {
   String? standardDegree;
   String? politicalTheory;
   String? avatarUrl;
+  String? address;
+  String? city;
+  String? district;
+  String? ward;
   int? system;
   int? iV;
   String? createdAt;
@@ -91,6 +95,10 @@ class TeacherData {
     this.standardDegree,
     this.politicalTheory,
     this.avatarUrl,
+    this.address,
+    this.city,
+    this.district,
+    this.ward,
     this.system,
     this.iV,
     this.createdAt,
@@ -126,6 +134,10 @@ class TeacherData {
     standardDegree = json['standardDegree'];
     politicalTheory = json['politicalTheory'];
     avatarUrl = json['avatarUrl'];
+    address = json['address'];
+    city = json['city'];
+    district = json['district'];
+    ward = json['ward'];
     system = json['system'];
     iV = json['__v'];
     createdAt = json['createdAt'];
@@ -162,6 +174,10 @@ class TeacherData {
     data['standardDegree'] = standardDegree = standardDegree;
     data['politicalTheory'] = politicalTheory;
     data['avatarUrl'] = avatarUrl;
+    data['address'] = address;
+    data['city'] = city;
+    data['district'] = district;
+    data['ward'] = ward;
     data['system'] = system;
     data['__v'] = iV;
     data['createdAt'] = createdAt;

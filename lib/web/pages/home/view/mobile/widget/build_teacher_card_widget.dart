@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:school_web/web/models/teacher.dart';
+import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/screen/teacher/detail/teacher_detail_screen.dart';
 
 Widget buildTeacherCard(TeacherData teacherData, BuildContext context) {
+  String phone = teacherData.phoneNumber ?? '';
+  String displayedPhone = phone.length > 12 ? '${phone.substring(0, 12)}...' : phone;
+
   return Column(
     children: [
       InkWell(
@@ -54,8 +58,9 @@ Widget buildTeacherCard(TeacherData teacherData, BuildContext context) {
                             ),
                           ),
                           TextSpan(
-                            text:
-                                '${(teacherData.teacherCode ?? '')} ${teacherData.academicDegree!.isNotEmpty ? '-' : ''} ${teacherData.academicDegree ?? ''}',
+                            text: Responsive.isMobile(context)
+                                ? (teacherData.teacherCode ?? '')
+                                : '${(teacherData.teacherCode ?? '')} ${teacherData.academicDegree!.isNotEmpty ? '-' : ''} ${teacherData.academicDegree ?? ''}',
                             style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -105,7 +110,7 @@ Widget buildTeacherCard(TeacherData teacherData, BuildContext context) {
                             ),
                           ),
                           TextSpan(
-                            text: teacherData.phoneNumber ?? '',
+                            text: displayedPhone,
                             style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
