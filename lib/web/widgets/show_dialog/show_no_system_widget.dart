@@ -49,7 +49,6 @@ void showNoSystemWidget(
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
                   InkWell(
                     onTap: ontap,
                     child: Container(

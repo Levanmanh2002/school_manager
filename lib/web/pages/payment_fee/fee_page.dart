@@ -432,7 +432,7 @@ class _FeePagesState extends State<FeePages> {
                   InkWell(
                     onTap: deleteOnTap,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+                      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         color: AppColors.redColor,
@@ -462,9 +462,9 @@ class _FeePagesState extends State<FeePages> {
                         borderRadius: BorderRadius.circular(8),
                         color: AppColors.primaryColor,
                       ),
-                      child: const Row(
+                      child: Row(
                         children: [
-                          Text(
+                          const Text(
                             'Sửa',
                             style: TextStyle(
                               fontSize: 12,
@@ -472,8 +472,8 @@ class _FeePagesState extends State<FeePages> {
                               color: AppColors.whiteColor,
                             ),
                           ),
-                          SizedBox(width: 8),
-                          Icon(Icons.clear, size: 12, color: AppColors.whiteColor),
+                          const SizedBox(width: 8),
+                          SvgPicture.asset(IconAssets.editIcon),
                         ],
                       ),
                     ),

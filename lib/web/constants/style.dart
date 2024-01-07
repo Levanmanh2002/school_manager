@@ -16,6 +16,7 @@ const barBg = Color(0xffe3e3ee);
 class AppColors {
   static const Color whiteColor = Color(0xFFFFFFFF);
   static const Color primaryColor = Color(0xFF3A73C2);
+  static const Color primary300 = Color(0xFF73C8E8);
   static const Color primary50Color = Color(0xFFECFBFD);
   static const Color green500Color = Color(0xFF3BB53B);
   static const Color green100Color = Color(0xFFE5FBD9);

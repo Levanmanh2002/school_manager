@@ -16,4 +16,6 @@ class IconAssets {
   static String searchIcon = '${_basePath}search.svg';
   static String bellSimpleIcon = '${_basePath}bell_simple.svg';
   static String coinsIcon = '${_basePath}coins.svg';
+  static String editIcon = '${_basePath}edit.svg';
+  static String shareIcon = '${_basePath}share.svg';
 }

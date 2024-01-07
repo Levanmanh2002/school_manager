@@ -3,6 +3,8 @@ import 'package:school_web/web/models/teacher.dart';
 
 class ClassInfoData {
   String? className;
+  String? id;
+	String? idClass;
   int? numberOfStudents;
   List<TeacherData>? teacher;
   List<StudentData>? students;
@@ -11,6 +13,8 @@ class ClassInfoData {
 
   ClassInfoData.fromJson(Map<String, dynamic> json) {
     className = json['className'];
+    id = json['id'];
+		idClass = json['idClass'];
     numberOfStudents = json['numberOfStudents'];
 
     if (json['teacher'] != null) {
@@ -39,6 +43,8 @@ class ClassInfoData {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['className'] = className;
+    data['id'] = id;
+		data['idClass'] = idClass;
     data['numberOfStudents'] = numberOfStudents;
     if (teacher != null) {
       data['teacher'] = teacher!.map((v) => v.toJson()).toList();
