@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:school_web/web/constants/style.dart';
+import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
 import 'package:school_web/web/models/other_payment.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:http/http.dart' as http;
+import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
 
 class OtherPaymentPages extends StatefulWidget {
   const OtherPaymentPages({super.key});
@@ -17,6 +19,7 @@ class OtherPaymentPages extends StatefulWidget {
 
 class _OtherPaymentPagesState extends State<OtherPaymentPages> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final AuthenticationController authController = Get.put(AuthenticationController());
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
@@ -166,7 +169,19 @@ class _OtherPaymentPagesState extends State<OtherPaymentPages> {
                   ),
                   InkWell(
                     onTap: () {
-                      _showAddOtherPaymentDialog(context, addConfirm);
+                      if (authController.teacherData.value?.system == 1 ||
+                          authController.teacherData.value?.system == 2) {
+                        _showAddOtherPaymentDialog(context, addConfirm);
+                      } else {
+                        showNoSystemWidget(
+                          context,
+                          title: 'Bạn không có quyền giáo viên',
+                          des: 'Xin lỗi, bạn không có quyền truy cập chức năng của giáo viên.',
+                          cancel: 'Hủy',
+                          confirm: 'Xác nhận',
+                          ontap: () => Navigator.pop(context),
+                        );
+                      }
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -196,10 +211,35 @@ class _OtherPaymentPagesState extends State<OtherPaymentPages> {
 
                         return CardOtherPayment(
                           onTap: () {
-                            _showAddEditOtherPaymentDialog(context, onUpdateOtherPayment, expense);
+                            if (authController.teacherData.value?.system == 1 ||
+                                authController.teacherData.value?.system == 2 ||
+                                authController.teacherData.value?.system == 3) {
+                              _showAddEditOtherPaymentDialog(context, onUpdateOtherPayment, expense);
+                            } else {
+                              showNoSystemWidget(
+                                context,
+                                title: 'Bạn không có quyền giáo viên',
+                                des: 'Xin lỗi, bạn không có quyền truy cập chức năng của giáo viên.',
+                                cancel: 'Hủy',
+                                confirm: 'Xác nhận',
+                                ontap: () => Navigator.pop(context),
+                              );
+                            }
                           },
                           clearOntap: () {
-                            _showDeleteOtherPaymentDialog(context, expense, onDeleteOtherPayment);
+                            if (authController.teacherData.value?.system == 1 ||
+                                authController.teacherData.value?.system == 2) {
+                              _showDeleteOtherPaymentDialog(context, expense, onDeleteOtherPayment);
+                            } else {
+                              showNoSystemWidget(
+                                context,
+                                title: 'Bạn không có quyền giáo viên',
+                                des: 'Xin lỗi, bạn không có quyền truy cập chức năng của giáo viên.',
+                                cancel: 'Hủy',
+                                confirm: 'Xác nhận',
+                                ontap: () => Navigator.pop(context),
+                              );
+                            }
                           },
                           title: expense.name ?? '',
                           des: expense.description ?? '',

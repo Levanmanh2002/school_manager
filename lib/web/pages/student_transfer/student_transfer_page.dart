@@ -12,6 +12,7 @@ import 'package:school_web/web/models/student.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/screen/student/detail/student_detail_screen.dart';
 import 'package:school_web/web/widgets/full_screen_image_screen.dart';
+import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
 
 class StudentTransferPage extends StatefulWidget {
   const StudentTransferPage({super.key});
@@ -391,7 +392,20 @@ class _StudentTransferPageState extends State<StudentTransferPage> {
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
                           if (student != null) {
-                            moveStudentToNewClass();
+                            if (authController.teacherData.value?.system == 1 ||
+                                authController.teacherData.value?.system == 2 ||
+                                authController.teacherData.value?.system == 3) {
+                              moveStudentToNewClass();
+                            } else {
+                              showNoSystemWidget(
+                                context,
+                                title: 'Bạn không có quyền giáo viên',
+                                des: 'Xin lỗi, bạn không có quyền truy cập chức năng của giáo viên.',
+                                cancel: 'Hủy',
+                                confirm: 'Xác nhận',
+                                ontap: () => Navigator.pop(context),
+                              );
+                            }
                           }
                         }
                       },

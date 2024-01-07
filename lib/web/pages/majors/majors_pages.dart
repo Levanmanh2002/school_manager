@@ -6,10 +6,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:school_web/web/constants/style.dart';
+import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
 import 'package:school_web/web/models/majors_models.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/majors/widget/card_widget.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
+import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
 
 class MajorsPages extends StatefulWidget {
   const MajorsPages({super.key});
@@ -20,6 +22,7 @@ class MajorsPages extends StatefulWidget {
 
 class _MajorsPagesState extends State<MajorsPages> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final AuthenticationController authController = Get.put(AuthenticationController());
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController editNameController = TextEditingController();
@@ -161,7 +164,19 @@ class _MajorsPagesState extends State<MajorsPages> {
                   const Spacer(),
                   InkWell(
                     onTap: () {
-                      _showAddMajorsConfirmationDialog(context, addMajors);
+                      if (authController.teacherData.value?.system == 1 ||
+                          authController.teacherData.value?.system == 2) {
+                        _showAddMajorsConfirmationDialog(context, addMajors);
+                      } else {
+                        showNoSystemWidget(
+                          context,
+                          title: 'Bạn không có quyền giáo viên',
+                          des: 'Xin lỗi, bạn không có quyền truy cập chức năng của giáo viên.',
+                          cancel: 'Hủy',
+                          confirm: 'Xác nhận',
+                          ontap: () => Navigator.pop(context),
+                        );
+                      }
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: Responsive.isMobile(context) ? 4 : 8, horizontal: 16),
@@ -202,12 +217,37 @@ class _MajorsPagesState extends State<MajorsPages> {
 
                           return CardWidget(
                             onTap: () {
-                              _showEditMajorsConfirmationDialog(context, majors, onEditMajors);
+                              if (authController.teacherData.value?.system == 1 ||
+                                  authController.teacherData.value?.system == 2 ||
+                                  authController.teacherData.value?.system == 3) {
+                                _showEditMajorsConfirmationDialog(context, majors, onEditMajors);
+                              } else {
+                                showNoSystemWidget(
+                                  context,
+                                  title: 'Bạn không có quyền giáo viên',
+                                  des: 'Xin lỗi, bạn không có quyền truy cập chức năng của giáo viên.',
+                                  cancel: 'Hủy',
+                                  confirm: 'Xác nhận',
+                                  ontap: () => Navigator.pop(context),
+                                );
+                              }
                             },
                             text: majors.name ?? '',
                             des: majors.description ?? '',
                             clearOntap: () {
-                              _showDeleteMajorsConfirmationDialog(context, majors, onDeleteMajors);
+                              if (authController.teacherData.value?.system == 1 ||
+                                  authController.teacherData.value?.system == 2) {
+                                _showDeleteMajorsConfirmationDialog(context, majors, onDeleteMajors);
+                              } else {
+                                showNoSystemWidget(
+                                  context,
+                                  title: 'Bạn không có quyền giáo viên',
+                                  des: 'Xin lỗi, bạn không có quyền truy cập chức năng của giáo viên.',
+                                  cancel: 'Hủy',
+                                  confirm: 'Xác nhận',
+                                  ontap: () => Navigator.pop(context),
+                                );
+                              }
                             },
                           );
                         },

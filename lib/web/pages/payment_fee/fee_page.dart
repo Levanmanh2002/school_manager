@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:school_web/web/constants/style.dart';
+import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
 import 'package:school_web/web/models/fee.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
@@ -24,6 +25,7 @@ class FeePages extends StatefulWidget {
 
 class _FeePagesState extends State<FeePages> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final AuthenticationController authController = Get.put(AuthenticationController());
   final TextEditingController searchCodeController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
   final TextEditingController issuedAmountController = TextEditingController();
@@ -268,7 +270,19 @@ class _FeePagesState extends State<FeePages> {
                         ),
                         InkWell(
                           onTap: () {
-                            _showAddCreateFeeDialog(context, () => onFeesAddSubfees(fees.first.sId.toString()));
+                            if (authController.teacherData.value?.system == 1 ||
+                                authController.teacherData.value?.system == 2) {
+                              _showAddCreateFeeDialog(context, () => onFeesAddSubfees(fees.first.sId.toString()));
+                            } else {
+                              showNoSystemWidget(
+                                context,
+                                title: 'Bạn không có quyền giáo viên',
+                                des: 'Xin lỗi, bạn không có quyền truy cập chức năng của giáo viên.',
+                                cancel: 'Hủy',
+                                confirm: 'Xác nhận',
+                                ontap: () => Navigator.pop(context),
+                              );
+                            }
                           },
                           child: Container(
                             padding:
@@ -322,24 +336,49 @@ class _FeePagesState extends State<FeePages> {
 
                                           return itemDataText(
                                             editOnTap: () {
-                                              _showEditSubFeesDialog(
-                                                context,
-                                                subFees,
-                                                () => onEditSubFees(fee.sId.toString(), subFees.sId.toString()),
-                                              );
+                                              if (authController.teacherData.value?.system == 1 ||
+                                                  authController.teacherData.value?.system == 2 ||
+                                                  authController.teacherData.value?.system == 3) {
+                                                _showEditSubFeesDialog(
+                                                  context,
+                                                  subFees,
+                                                  () => onEditSubFees(fee.sId.toString(), subFees.sId.toString()),
+                                                );
+                                              } else {
+                                                showNoSystemWidget(
+                                                  context,
+                                                  title: 'Bạn không có quyền giáo viên',
+                                                  des: 'Xin lỗi, bạn không có quyền truy cập chức năng của giáo viên.',
+                                                  cancel: 'Hủy',
+                                                  confirm: 'Xác nhận',
+                                                  ontap: () => Navigator.pop(context),
+                                                );
+                                              }
                                             },
                                             deleteOnTap: () {
-                                              showNoSystemWidget(
-                                                context,
-                                                title: 'Xác nhận xóa học phí?',
-                                                des: 'Bạn có chắc chắn muốn xóa, không thể khôi phục khi đã xóa? ',
-                                                cancel: 'Hủy',
-                                                confirm: 'Xác nhận',
-                                                ontap: () {
-                                                  Navigator.of(context).pop();
-                                                  onDeleteSubfees(fee.sId.toString(), subFees.sId.toString());
-                                                },
-                                              );
+                                              if (authController.teacherData.value?.system == 1 ||
+                                                  authController.teacherData.value?.system == 2) {
+                                                showNoSystemWidget(
+                                                  context,
+                                                  title: 'Xác nhận xóa học phí?',
+                                                  des: 'Bạn có chắc chắn muốn xóa, không thể khôi phục khi đã xóa? ',
+                                                  cancel: 'Hủy',
+                                                  confirm: 'Xác nhận',
+                                                  ontap: () {
+                                                    Navigator.of(context).pop();
+                                                    onDeleteSubfees(fee.sId.toString(), subFees.sId.toString());
+                                                  },
+                                                );
+                                              } else {
+                                                showNoSystemWidget(
+                                                  context,
+                                                  title: 'Bạn không có quyền giáo viên',
+                                                  des: 'Xin lỗi, bạn không có quyền truy cập chức năng của giáo viên.',
+                                                  cancel: 'Hủy',
+                                                  confirm: 'Xác nhận',
+                                                  ontap: () => Navigator.pop(context),
+                                                );
+                                              }
                                             },
                                             searchCode: subFees.searchCode ?? '',
                                             content: subFees.content ?? '',

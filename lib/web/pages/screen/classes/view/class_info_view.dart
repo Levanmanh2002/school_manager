@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:school_web/web/constants/style.dart';
+import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/screen/classes/detail/class_info_detail.dart';
 import 'package:school_web/web/pages/screen/classes/view/controller/class_controller.dart';
@@ -23,6 +24,7 @@ class ClassesInfoView extends StatefulWidget {
 
 class _ClassesInfoViewState extends State<ClassesInfoView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final AuthenticationController authController = Get.put(AuthenticationController());
   final ClassesController controller = Get.put(ClassesController());
   final _createClassController = TextEditingController();
   final _updatedClassController = TextEditingController();
@@ -148,7 +150,19 @@ class _ClassesInfoViewState extends State<ClassesInfoView> {
                   ),
                   InkWell(
                     onTap: () {
-                      addClasses(context);
+                      if (authController.teacherData.value?.system == 1 ||
+                          authController.teacherData.value?.system == 2) {
+                        addClasses(context);
+                      } else {
+                        showNoSystemWidget(
+                          context,
+                          title: 'Bạn không có quyền giáo viên',
+                          des: 'Xin lỗi, bạn không có quyền truy cập chức năng của giáo viên.',
+                          cancel: 'Hủy',
+                          confirm: 'Xác nhận',
+                          ontap: () => Navigator.pop(context),
+                        );
+                      }
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -250,23 +264,50 @@ class _ClassesInfoViewState extends State<ClassesInfoView> {
                                           }
                                         },
                                         deleteOnTap: () {
-                                          showNoSystemWidget(
-                                            context,
-                                            title: 'Xác nhận xóa lớp?',
-                                            des: 'Bạn có chắc chắn muốn xóa, không thể khôi phục khi đã xóa?',
-                                            cancel: 'Hủy',
-                                            confirm: 'Xác nhận',
-                                            ontap: () {
-                                              Navigator.of(context).pop();
-                                              _deleteClass(classInfo.id.toString());
-                                            },
-                                          );
+                                          if (authController.teacherData.value?.system == 1 ||
+                                              authController.teacherData.value?.system == 2) {
+                                            showNoSystemWidget(
+                                              context,
+                                              title: 'Xác nhận xóa lớp?',
+                                              des: 'Bạn có chắc chắn muốn xóa, không thể khôi phục khi đã xóa?',
+                                              cancel: 'Hủy',
+                                              confirm: 'Xác nhận',
+                                              ontap: () {
+                                                Navigator.of(context).pop();
+                                                _deleteClass(classInfo.id.toString());
+                                              },
+                                            );
+                                          } else {
+                                            showNoSystemWidget(
+                                              context,
+                                              title: 'Bạn không có quyền giáo viên',
+                                              des: 'Xin lỗi, bạn không có quyền truy cập chức năng của giáo viên.',
+                                              cancel: 'Hủy',
+                                              confirm: 'Xác nhận',
+                                              ontap: () => Navigator.pop(context),
+                                            );
+                                          }
                                         },
-                                        editOnTap: () => editClasses(
-                                          context,
-                                          classInfo.className.toString(),
-                                          () => _editClass(classInfo.id.toString()),
-                                        ),
+                                        editOnTap: () {
+                                          if (authController.teacherData.value?.system == 1 ||
+                                              authController.teacherData.value?.system == 2 ||
+                                              authController.teacherData.value?.system == 3) {
+                                            editClasses(
+                                              context,
+                                              classInfo.className.toString(),
+                                              () => _editClass(classInfo.id.toString()),
+                                            );
+                                          } else {
+                                            showNoSystemWidget(
+                                              context,
+                                              title: 'Bạn không có quyền giáo viên',
+                                              des: 'Xin lỗi, bạn không có quyền truy cập chức năng của giáo viên.',
+                                              cancel: 'Hủy',
+                                              confirm: 'Xác nhận',
+                                              ontap: () => Navigator.pop(context),
+                                            );
+                                          }
+                                        },
                                       );
                                     }).toList(),
                                   );
