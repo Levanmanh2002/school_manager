@@ -361,334 +361,383 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
   }
 
   Widget tabBarView1() {
-    return Column(
-      children: [
-        const SizedBox(height: 16),
-        Responsive.isMobile(context)
-            ? const SizedBox.shrink()
-            : titleTabWidget(
-                name: 'Họ và tên',
-                code: 'MSSV',
-                industry: 'Ngành học',
-                email: 'Email',
-                phone: 'Số điện thoại',
-                status: 'Trạng thái',
-                detail: 'Chi tiết',
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: SizedBox(
+        width:
+            Responsive.isTablet(context) ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width / 1.26,
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          children: [
+            const SizedBox(height: 16),
+            Responsive.isMobile(context)
+                ? const SizedBox.shrink()
+                : titleTabWidget(
+                    name: 'Họ và tên',
+                    code: 'MSSV',
+                    industry: 'Ngành học',
+                    email: 'Email',
+                    phone: 'Số điện thoại',
+                    status: 'Trạng thái',
+                    detail: 'Chi tiết',
+                  ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: allStudents.length,
+                itemBuilder: (context, index) {
+                  final student = allStudents[index];
+                  return Responsive.isMobile(context)
+                      ? buildStudentCard(student, context)
+                      : tableInfoStudentWidget(student, context);
+                },
               ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: allStudents.length,
-            itemBuilder: (context, index) {
-              final student = allStudents[index];
-              return Responsive.isMobile(context)
-                  ? buildStudentCard(student, context)
-                  : tableInfoStudentWidget(student, context);
-            },
-          ),
-        ),
-        InkWell(
-          onTap: () async {
-            isLoadingNotifier.value = true;
-
-            List<StudentData> updatedList = await ctlNew.getNextBatchOfStudents();
-
-            isLoadingNotifier.value = false;
-
-            if (updatedList.isNotEmpty) {
-              setState(() {
-                List<StudentData> updatedLists = updatedList
-                    .where((newStudent) => !allStudents.any((existingStudent) => existingStudent.sId == newStudent.sId))
-                    .toList();
-
-                allStudents.addAll(updatedLists);
-              });
-            } else {
-              print('Danh sách Student mobile rỗng hoặc có lỗi khi cập nhật');
-            }
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            alignment: Alignment.center,
-            child: ValueListenableBuilder<bool>(
-              valueListenable: isLoadingNotifier,
-              builder: (context, isLoading, child) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (isLoading)
-                      const SizedBox(
-                        width: 12,
-                        height: 12,
-                        child: CircularProgressIndicator(),
-                      ),
-                    if (isLoading) const SizedBox(width: 8),
-                    const Text(
-                      'Xem thêm',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primaryColor,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    if (!isLoading)
-                      const Icon(
-                        Icons.keyboard_arrow_down_outlined,
-                        color: AppColors.primaryColor,
-                      ),
-                  ],
-                );
-              },
             ),
-          ),
+            InkWell(
+              onTap: () async {
+                isLoadingNotifier.value = true;
+
+                List<StudentData> updatedList = await ctlNew.getNextBatchOfStudents();
+
+                isLoadingNotifier.value = false;
+
+                if (updatedList.isNotEmpty) {
+                  setState(() {
+                    List<StudentData> updatedLists = updatedList
+                        .where((newStudent) =>
+                            !allStudents.any((existingStudent) => existingStudent.sId == newStudent.sId))
+                        .toList();
+
+                    allStudents.addAll(updatedLists);
+                  });
+                } else {
+                  print('Danh sách Student mobile rỗng hoặc có lỗi khi cập nhật');
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                alignment: Alignment.center,
+                child: ValueListenableBuilder<bool>(
+                  valueListenable: isLoadingNotifier,
+                  builder: (context, isLoading, child) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (isLoading)
+                          const SizedBox(
+                            width: 12,
+                            height: 12,
+                            child: CircularProgressIndicator(),
+                          ),
+                        if (isLoading) const SizedBox(width: 8),
+                        const Text(
+                          'Xem thêm',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        if (!isLoading)
+                          const Icon(
+                            Icons.keyboard_arrow_down_outlined,
+                            color: AppColors.primaryColor,
+                          ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
   Widget tabBarView2() {
-    return FutureBuilder<List<StudentData>>(
-      future: controller.getActiveStudent(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('Không có học sinh nào đang học.'));
-        } else {
-          return Column(
-            children: [
-              const SizedBox(height: 16),
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Danh sách học sinh đang học: ${snapshot.data?.length}',
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.green),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    final student = snapshot.data![index];
-                    return Responsive.isMobile(context)
-                        ? buildStudentCard(student, context)
-                        : tableInfoStudentWidget(student, context);
-                  },
-                ),
-              ),
-            ],
-          );
-        }
-      },
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: SizedBox(
+        width:
+            Responsive.isTablet(context) ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width / 1.26,
+        height: MediaQuery.of(context).size.height,
+        child: FutureBuilder<List<StudentData>>(
+          future: controller.getActiveStudent(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(child: Text('Không có học sinh nào đang học.'));
+            } else {
+              return Column(
+                children: [
+                  const SizedBox(height: 16),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Danh sách học sinh đang học: ${snapshot.data?.length}',
+                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.green),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        final student = snapshot.data![index];
+                        return Responsive.isMobile(context)
+                            ? buildStudentCard(student, context)
+                            : tableInfoStudentWidget(student, context);
+                      },
+                    ),
+                  ),
+                ],
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 
   Widget tabBarView3() {
-    return Column(
-      children: [
-        const SizedBox(height: 16),
-        Responsive.isMobile(context)
-            ? const SizedBox.shrink()
-            : titleTabWidget(
-                name: 'Họ và tên',
-                code: 'MSSV',
-                industry: 'Ngành học',
-                email: 'Email',
-                phone: 'Số điện thoại',
-                status: 'Trạng thái',
-                detail: 'Chi tiết',
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: SizedBox(
+        width:
+            Responsive.isTablet(context) ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width / 1.26,
+        child: Column(
+          children: [
+            const SizedBox(height: 16),
+            Responsive.isMobile(context)
+                ? const SizedBox.shrink()
+                : titleTabWidget(
+                    name: 'Họ và tên',
+                    code: 'MSSV',
+                    industry: 'Ngành học',
+                    email: 'Email',
+                    phone: 'Số điện thoại',
+                    status: 'Trạng thái',
+                    detail: 'Chi tiết',
+                  ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: allStudents.length,
+                itemBuilder: (context, index) {
+                  final student = allStudents[index];
+                  return Responsive.isMobile(context)
+                      ? buildStudentCard(student, context)
+                      : tableInfoStudentWidget(student, context);
+                },
               ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: allStudents.length,
-            itemBuilder: (context, index) {
-              final student = allStudents[index];
-              return Responsive.isMobile(context)
-                  ? buildStudentCard(student, context)
-                  : tableInfoStudentWidget(student, context);
-            },
-          ),
-        ),
-        InkWell(
-          onTap: () async {
-            isLoadingNotifier.value = true;
-
-            List<StudentData> updatedList = await ctlNew.getNextBatchOfStudents();
-
-            isLoadingNotifier.value = false;
-
-            if (updatedList.isNotEmpty) {
-              setState(() {
-                List<StudentData> updatedLists = updatedList
-                    .where((newStudent) => !allStudents.any((existingStudent) => existingStudent.sId == newStudent.sId))
-                    .toList();
-
-                allStudents.addAll(updatedLists);
-              });
-            } else {
-              print('Danh sách Student mobile rỗng hoặc có lỗi khi cập nhật');
-            }
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            alignment: Alignment.center,
-            child: ValueListenableBuilder<bool>(
-              valueListenable: isLoadingNotifier,
-              builder: (context, isLoading, child) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (isLoading)
-                      const SizedBox(
-                        width: 12,
-                        height: 12,
-                        child: CircularProgressIndicator(),
-                      ),
-                    if (isLoading) const SizedBox(width: 8),
-                    const Text(
-                      'Xem thêm',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primaryColor,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    if (!isLoading)
-                      const Icon(
-                        Icons.keyboard_arrow_down_outlined,
-                        color: AppColors.primaryColor,
-                      ),
-                  ],
-                );
-              },
             ),
-          ),
+            InkWell(
+              onTap: () async {
+                isLoadingNotifier.value = true;
+
+                List<StudentData> updatedList = await ctlNew.getNextBatchOfStudents();
+
+                isLoadingNotifier.value = false;
+
+                if (updatedList.isNotEmpty) {
+                  setState(() {
+                    List<StudentData> updatedLists = updatedList
+                        .where((newStudent) =>
+                            !allStudents.any((existingStudent) => existingStudent.sId == newStudent.sId))
+                        .toList();
+
+                    allStudents.addAll(updatedLists);
+                  });
+                } else {
+                  print('Danh sách Student mobile rỗng hoặc có lỗi khi cập nhật');
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                alignment: Alignment.center,
+                child: ValueListenableBuilder<bool>(
+                  valueListenable: isLoadingNotifier,
+                  builder: (context, isLoading, child) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (isLoading)
+                          const SizedBox(
+                            width: 12,
+                            height: 12,
+                            child: CircularProgressIndicator(),
+                          ),
+                        if (isLoading) const SizedBox(width: 8),
+                        const Text(
+                          'Xem thêm',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        if (!isLoading)
+                          const Icon(
+                            Icons.keyboard_arrow_down_outlined,
+                            color: AppColors.primaryColor,
+                          ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
   Widget tabBarView4() {
-    return FutureBuilder<List<StudentData>>(
-      future: controller.getInactiveStudent(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('Không có học sinh nào nghỉ học.'));
-        } else {
-          return Column(
-            children: [
-              const SizedBox(height: 16),
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Danh sách học sinh đã nghỉ học: ${snapshot.data?.length}',
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.green),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    final student = snapshot.data![index];
-                    return Responsive.isMobile(context)
-                        ? buildStudentCard(student, context)
-                        : tableInfoStudentWidget(student, context);
-                  },
-                ),
-              ),
-            ],
-          );
-        }
-      },
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: SizedBox(
+        width:
+            Responsive.isTablet(context) ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width / 1.26,
+        height: MediaQuery.of(context).size.height,
+        child: FutureBuilder<List<StudentData>>(
+          future: controller.getInactiveStudent(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(child: Text('Không có học sinh nào nghỉ học.'));
+            } else {
+              return Column(
+                children: [
+                  const SizedBox(height: 16),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Danh sách học sinh đã nghỉ học: ${snapshot.data?.length}',
+                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.green),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        final student = snapshot.data![index];
+                        return Responsive.isMobile(context)
+                            ? buildStudentCard(student, context)
+                            : tableInfoStudentWidget(student, context);
+                      },
+                    ),
+                  ),
+                ],
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 
   Widget tabBarView5() {
-    return FutureBuilder<List<StudentData>>(
-      future: controller.getSuspendedStudent(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('Không có học sinh nào bị đình chỉ.'));
-        } else {
-          return Column(
-            children: [
-              const SizedBox(height: 16),
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Danh sách học sinh đang bị đình chỉ: ${snapshot.data?.length}',
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.green),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    final student = snapshot.data![index];
-                    return Responsive.isMobile(context)
-                        ? buildStudentCard(student, context)
-                        : tableInfoStudentWidget(student, context);
-                  },
-                ),
-              ),
-            ],
-          );
-        }
-      },
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: SizedBox(
+        width:
+            Responsive.isTablet(context) ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width / 1.26,
+        height: MediaQuery.of(context).size.height,
+        child: FutureBuilder<List<StudentData>>(
+          future: controller.getSuspendedStudent(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(child: Text('Không có học sinh nào bị đình chỉ.'));
+            } else {
+              return Column(
+                children: [
+                  const SizedBox(height: 16),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Danh sách học sinh đang bị đình chỉ: ${snapshot.data?.length}',
+                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.green),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        final student = snapshot.data![index];
+                        return Responsive.isMobile(context)
+                            ? buildStudentCard(student, context)
+                            : tableInfoStudentWidget(student, context);
+                      },
+                    ),
+                  ),
+                ],
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 
   Widget tabBarView6() {
-    return FutureBuilder<List<StudentData>>(
-      future: controller.getExpelledStudent(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('Không có học sinh nào bị đuổi học.'));
-        } else {
-          return Column(
-            children: [
-              const SizedBox(height: 16),
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Danh sách học sinh bị đuổi học: ${snapshot.data?.length}',
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.green),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    final student = snapshot.data![index];
-                    return Responsive.isMobile(context)
-                        ? buildStudentCard(student, context)
-                        : tableInfoStudentWidget(student, context);
-                  },
-                ),
-              ),
-            ],
-          );
-        }
-      },
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: SizedBox(
+        width:
+            Responsive.isTablet(context) ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width / 1.26,
+        height: MediaQuery.of(context).size.height,
+        child: FutureBuilder<List<StudentData>>(
+          future: controller.getExpelledStudent(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(child: Text('Không có học sinh nào bị đuổi học.'));
+            } else {
+              return Column(
+                children: [
+                  const SizedBox(height: 16),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Danh sách học sinh bị đuổi học: ${snapshot.data?.length}',
+                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.green),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        final student = snapshot.data![index];
+                        return Responsive.isMobile(context)
+                            ? buildStudentCard(student, context)
+                            : tableInfoStudentWidget(student, context);
+                      },
+                    ),
+                  ),
+                ],
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:school_web/web/constants/style.dart';
 import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
 import 'package:school_web/web/models/classes.dart';
 import 'package:school_web/web/models/student.dart';
@@ -399,7 +400,7 @@ class _StudentTransferPageState extends State<StudentTransferPage> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          color: Colors.pink,
+                          color: AppColors.primaryColor,
                         ),
                         child: isLoadingBtn.value
                             ? const Center(

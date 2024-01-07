@@ -255,57 +255,75 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
                     child: TabBarView(
                       controller: _tabListController,
                       children: [
-                        Column(
-                          children: [
-                            Responsive.isMobile(context)
-                                ? const SizedBox.shrink()
-                                : titleTabWidget(
-                                    name: 'Họ và tên',
-                                    code: 'MSGV',
-                                    industry: 'Ngành dạy',
-                                    email: 'Email',
-                                    phone: 'Số điện thoại',
-                                    status: 'Trạng thái',
-                                    detail: 'Chi tiết',
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: SizedBox(
+                            width: Responsive.isTablet(context)
+                                ? MediaQuery.of(context).size.width
+                                : MediaQuery.of(context).size.width / 1.26,
+                            height: MediaQuery.of(context).size.height,
+                            child: Column(
+                              children: [
+                                Responsive.isMobile(context)
+                                    ? const SizedBox.shrink()
+                                    : titleTabWidget(
+                                        name: 'Họ và tên',
+                                        code: 'MSGV',
+                                        industry: 'Ngành dạy',
+                                        email: 'Email',
+                                        phone: 'Số điện thoại',
+                                        status: 'Trạng thái',
+                                        detail: 'Chi tiết',
+                                      ),
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: workingTeachers.length,
+                                    itemBuilder: (context, index) {
+                                      final teacher = workingTeachers[index];
+                                      return Responsive.isMobile(context)
+                                          ? buildTeacherCard(teacher, context)
+                                          : tableInfoTeacherWidget(teacher, context);
+                                    },
                                   ),
-                            Expanded(
-                              child: ListView.builder(
-                                itemCount: workingTeachers.length,
-                                itemBuilder: (context, index) {
-                                  final teacher = workingTeachers[index];
-                                  return Responsive.isMobile(context)
-                                      ? buildTeacherCard(teacher, context)
-                                      : tableInfoTeacherWidget(teacher, context);
-                                },
-                              ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                        Column(
-                          children: [
-                            Responsive.isMobile(context)
-                                ? const SizedBox.shrink()
-                                : titleTabWidget(
-                                    name: 'Họ và tên',
-                                    code: 'MSGV',
-                                    industry: 'Ngành dạy',
-                                    email: 'Email',
-                                    phone: 'Số điện thoại',
-                                    status: 'Trạng thái',
-                                    detail: 'Chi tiết',
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: SizedBox(
+                            width: Responsive.isTablet(context)
+                                ? MediaQuery.of(context).size.width
+                                : MediaQuery.of(context).size.width / 1.26,
+                            height: MediaQuery.of(context).size.height,
+                            child: Column(
+                              children: [
+                                Responsive.isMobile(context)
+                                    ? const SizedBox.shrink()
+                                    : titleTabWidget(
+                                        name: 'Họ và tên',
+                                        code: 'MSGV',
+                                        industry: 'Ngành dạy',
+                                        email: 'Email',
+                                        phone: 'Số điện thoại',
+                                        status: 'Trạng thái',
+                                        detail: 'Chi tiết',
+                                      ),
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: retiredTeachers.length,
+                                    itemBuilder: (context, index) {
+                                      final teacher = retiredTeachers[index];
+                                      return Responsive.isMobile(context)
+                                          ? buildTeacherCard(teacher, context)
+                                          : tableInfoTeacherWidget(teacher, context);
+                                    },
                                   ),
-                            Expanded(
-                              child: ListView.builder(
-                                itemCount: retiredTeachers.length,
-                                itemBuilder: (context, index) {
-                                  final teacher = retiredTeachers[index];
-                                  return Responsive.isMobile(context)
-                                      ? buildTeacherCard(teacher, context)
-                                      : tableInfoTeacherWidget(teacher, context);
-                                },
-                              ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                       ],
                     ),

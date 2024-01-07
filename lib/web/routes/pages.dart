@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:school_web/web/pages/authentication/authentication.dart';
 import 'package:school_web/web/pages/dashboard/dashboard.dart';
 import 'package:school_web/web/pages/majors/majors_pages.dart';
+import 'package:school_web/web/pages/other_payment/other_payment_pages.dart';
+import 'package:school_web/web/pages/payment_fee/payment_fee_pages.dart';
 import 'package:school_web/web/pages/profile/edit_profile_pages.dart';
 import 'package:school_web/web/pages/profile/profile_pages.dart';
 import 'package:school_web/web/pages/screen/classes/view/add_teacher_classes_view.dart';
@@ -114,6 +116,16 @@ abstract class AppPages {
     GetPage(
       name: Routes.CREATE,
       page: () => const CreateView(),
+    ),
+
+    /// Payment
+    GetPage(
+      name: Routes.OTHERPAYMENT,
+      page: () => const OtherPaymentPages(),
+    ),
+    GetPage(
+      name: Routes.PAYMENTFEE,
+      page: () => const PaymentFeePages(),
     ),
   ];
 }

@@ -31,4 +31,8 @@ abstract class Routes {
   /// Timetable
   static const TIMETABLE = '/timetable';
   static const CREATE = '/create';
+
+  /// Payment
+  static const OTHERPAYMENT = '/other_payment';
+  static const PAYMENTFEE = '/payment_fee_pages';
 }
