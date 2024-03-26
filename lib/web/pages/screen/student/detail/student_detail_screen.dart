@@ -9,7 +9,7 @@ import 'package:school_web/web/widgets/full_screen_image_screen.dart';
 class StudentDetailScreen extends StatelessWidget {
   const StudentDetailScreen({required this.student, super.key});
 
-  final StudentData student;
+  final Students student;
 
   @override
   Widget build(BuildContext context) {
@@ -148,13 +148,13 @@ class StudentDetailScreen extends StatelessWidget {
                               style: TextStyle(color: AppColors.blackColor, fontSize: 16, fontWeight: FontWeight.w600),
                             ),
                           ),
-                          _buildInfoItem('Trình độ học vấn', student.educationLevel ?? '', context),
-                          _buildInfoItem('Học lực học sinh', student.academicPerformance ?? '', context),
-                          _buildInfoItem('Hạnh kiểm học sinh', student.conduct ?? '', context),
-                          _buildInfoItem('học lực lớp 10', student.classRanking10 ?? '', context),
-                          _buildInfoItem('học lực lớp 11', student.classRanking11 ?? '', context),
-                          _buildInfoItem('học lực lớp 12', student.classRanking12 ?? '', context),
-                          _buildInfoItem('Năm tốt nghiệp', student.graduationYear ?? '', context),
+                          // _buildInfoItem('Trình độ học vấn', student.educationLevel ?? '', context),
+                          // _buildInfoItem('Học lực học sinh', student.academicPerformance ?? '', context),
+                          // _buildInfoItem('Hạnh kiểm học sinh', student.conduct ?? '', context),
+                          // _buildInfoItem('học lực lớp 10', student.classRanking10 ?? '', context),
+                          // _buildInfoItem('học lực lớp 11', student.classRanking11 ?? '', context),
+                          // _buildInfoItem('học lực lớp 12', student.classRanking12 ?? '', context),
+                          // _buildInfoItem('Năm tốt nghiệp', student.graduationYear ?? '', context),
                           _buildInfoItem(
                             'Tình trạng học sinh',
                             isStudying ? 'Học sinh đang học' : 'Học sinh đã nghỉ học',

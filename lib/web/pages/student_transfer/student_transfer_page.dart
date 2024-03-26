@@ -29,7 +29,7 @@ class _StudentTransferPageState extends State<StudentTransferPage> {
   final isLoading = false.obs;
   final isLoadingBtn = false.obs;
   String errorMessage = '';
-  StudentData? student;
+  Students? student;
   bool _isClearIconVisible = false;
   String? selectedClassValue;
 
@@ -49,7 +49,7 @@ class _StudentTransferPageState extends State<StudentTransferPage> {
         final studentData = jsonData['student'];
 
         setState(() {
-          student = StudentData.fromJson(studentData);
+          student = Students.fromJson(studentData);
           errorMessage = '';
         });
       } else {

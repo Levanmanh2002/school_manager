@@ -1,11 +1,14 @@
 // ignore_for_file: unrelated_type_equality_checks
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:school_web/main.dart';
 import 'package:school_web/web/models/student.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/screen/student/detail/student_detail_screen.dart';
+import 'package:school_web/web/utils/assets/images.dart';
 
-Widget buildStudentCard(StudentData studentData, BuildContext context) {
+Widget buildStudentCard(Students studentData, BuildContext context) {
   String phone = studentData.phone ?? '';
   String displayedPhone = phone.length > 12 ? '${phone.substring(0, 12)}...' : phone;
 
@@ -26,12 +29,24 @@ Widget buildStudentCard(StudentData studentData, BuildContext context) {
           children: [
             Row(
               children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    studentData.avatarUrl ??
-                        'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                // CircleAvatar(
+                //   backgroundImage: NetworkImage(
+                //     studentData.avatarUrl ??
+                //         'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                //   ),
+                //   radius: 30,
+                // ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(1000),
+                  child: CachedNetworkImage(
+                    imageUrl: studentData.avatarUrl.toString(),
+                    width: 46,
+                    height: 46,
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) {
+                      return Image.asset(ImagesAssets.noUrlImage, fit: BoxFit.cover);
+                    },
                   ),
-                  radius: 30,
                 ),
                 const SizedBox(width: 12),
                 Column(
@@ -61,9 +76,7 @@ Widget buildStudentCard(StudentData studentData, BuildContext context) {
                         Container(
                           constraints: const BoxConstraints(maxWidth: 300),
                           child: Text(
-                            Responsive.isMobile(context)
-                                ? (studentData.mssv ?? '')
-                                : '${(studentData.mssv ?? '')} ${studentData.occupation!.isNotEmpty ? '-' : ''} ${studentData.occupation ?? ''}',
+                            Responsive.isMobile(context) ? (studentData.mssv ?? '') : studentData.major?.name ?? '',
                             style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -90,27 +103,27 @@ Widget buildStudentCard(StudentData studentData, BuildContext context) {
                             ),
                           ),
                           TextSpan(
-                            text: studentData.isStudying == true
+                            text: studentData.status == 1
                                 ? 'Đang học'
-                                : studentData.selfSuspension == true
+                                : studentData.status == 2
                                     ? 'Nghỉ học'
-                                    : studentData.suspension == true
+                                    : studentData.status == 3
                                         ? 'Đình chỉ'
-                                        : studentData.expulsion == true
+                                        : studentData.status == 4
                                             ? 'Bị đuổi học'
-                                            : 'Đang học',
+                                            : '',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
-                              color: studentData.isStudying == true
-                                  ? const Color(0xFF3BB53B)
-                                  : studentData.selfSuspension == true
-                                      ? const Color(0xFFFC8805)
-                                      : studentData.suspension == true
-                                          ? const Color(0xFF9AA0AC)
-                                          : studentData.expulsion == true
-                                              ? const Color(0xFFFC423F)
-                                              : const Color(0xFF3BB53B),
+                              color: studentData.status == 1
+                                  ? appTheme.successColor
+                                  : studentData.status == 2
+                                      ? appTheme.yellow500Color
+                                      : studentData.status == 3
+                                          ? appTheme.neutral40Color
+                                          : studentData.status == 4
+                                              ? appTheme.errorColor
+                                              : appTheme.successColor,
                               height: 1.5,
                             ),
                           ),

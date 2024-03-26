@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:school_web/web/models/student.dart';
-import 'package:school_web/web/models/teacher.dart';
-import 'package:school_web/web/pages/home/controller/controller.dart';
+import 'package:school_web/web/controllers/list_data/list_data_controller.dart';
 import 'package:school_web/web/pages/home/view/mobile/widget/build_student_card_widget.dart';
 import 'package:school_web/web/pages/home/view/mobile/widget/build_teacher_card_widget.dart';
 
@@ -20,18 +18,11 @@ class _ListDataMobileWidgetState extends State<ListDataMobileWidget> with Ticker
 
   final searchController = TextEditingController();
   final ValueNotifier<bool> isClearVisible = ValueNotifier<bool>(false);
-  final ValueNotifier<bool> isLoadingNotifier = ValueNotifier<bool>(false);
-  final ValueNotifier<bool> isTeacherLoadingNotifier = ValueNotifier<bool>(false);
 
   ValueNotifier<String> selectedValueNotifier = ValueNotifier<String>('Tất cả');
   // String selectedValue = 'Tất cả';
 
-  final controller = Get.put(Controller());
-
-  List<StudentData> allStudents = [];
-  List<TeacherData> teacherDataList = [];
-  int currentPage = 1;
-  int teacherPage = 1;
+  final ListDataController listDataController = Get.put(ListDataController());
 
   @override
   void initState() {
@@ -40,65 +31,6 @@ class _ListDataMobileWidgetState extends State<ListDataMobileWidget> with Ticker
     searchController.addListener(() {
       isClearVisible.value = searchController.text.isNotEmpty;
     });
-
-    if (allStudents.isEmpty || teacherDataList.isEmpty) {
-      _loadData();
-      _loadTeacherData();
-    }
-  }
-
-  Future<void> _loadData() async {
-    List<StudentData> nextBatch = await getNextBatchOfStudents();
-
-    List<StudentData> uniqueNewStudents = nextBatch
-        .where((newStudent) => !allStudents.any((existingStudent) => existingStudent.sId == newStudent.sId))
-        .toList();
-
-    setState(() {
-      allStudents.addAll(uniqueNewStudents);
-    });
-  }
-
-  Future<List<StudentData>> getNextBatchOfStudents() async {
-    currentPage++;
-    List<StudentData> nextBatch = await controller.getNewListStudent();
-
-    List<StudentData> uniqueNewStudents = nextBatch
-        .where((newStudent) => !allStudents.any((existingStudent) => existingStudent.sId == newStudent.sId))
-        .toList();
-
-    allStudents.addAll(uniqueNewStudents);
-
-    return uniqueNewStudents;
-  }
-
-  Future<void> _loadTeacherData() async {
-    try {
-      List<TeacherData> nextBatch = await getTotalPageTeacher();
-
-      List<TeacherData> uniqueNewTeacher = nextBatch
-          .where((newTeacher) => !teacherDataList.any((existingTeacher) => existingTeacher.sId == newTeacher.sId))
-          .toList();
-
-      setState(() {
-        teacherDataList.addAll(uniqueNewTeacher);
-      });
-    } catch (error) {
-      print('Error loading teacher data: $error');
-    }
-  }
-
-  Future<List<TeacherData>> getTotalPageTeacher() async {
-    teacherPage++;
-    List<TeacherData> nextBatch = await controller.getTotalPageTeacher();
-
-    List<TeacherData> uniqueNewTeacher = nextBatch
-        .where((newTeacher) => !teacherDataList.any((existingTeacher) => existingTeacher.sId == newTeacher.sId))
-        .toList();
-
-    teacherDataList.addAll(uniqueNewTeacher);
-
-    return uniqueNewTeacher;
   }
 
   @override
@@ -107,8 +39,6 @@ class _ListDataMobileWidgetState extends State<ListDataMobileWidget> with Ticker
     _tabListController.dispose();
     searchController.dispose();
     isClearVisible.dispose();
-    isLoadingNotifier.dispose();
-    isTeacherLoadingNotifier.dispose();
   }
 
   @override
@@ -154,75 +84,76 @@ class _ListDataMobileWidgetState extends State<ListDataMobileWidget> with Ticker
                   children: [
                     Expanded(
                       child: ValueListenableBuilder<bool>(
-                          valueListenable: isClearVisible,
-                          builder: (context, isVisible, child) {
-                            return TextFormField(
-                              controller: searchController,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny(RegExp(r'[.,-/]')),
-                                LengthLimitingTextInputFormatter(25),
-                              ],
-                              decoration: InputDecoration(
-                                isDense: true,
-                                fillColor: const Color(0xFFF7F7FC),
-                                filled: true,
-                                hintText: 'Tìm kiếm',
-                                hintStyle: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF7E8695),
-                                ),
-                                prefixIcon: Container(
-                                  width: 18,
-                                  height: 18,
-                                  alignment: Alignment.centerLeft,
-                                  child: Padding(
-                                    padding: const EdgeInsetsDirectional.only(start: 12),
-                                    child: SvgPicture.asset('assets/icons/search.svg', width: 18, height: 18),
-                                  ),
-                                ),
-                                suffix: isVisible
-                                    ? InkWell(
-                                        onTap: () {
-                                          searchController.clear();
-                                          isClearVisible.value = false;
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(right: 16),
-                                          child: Container(
-                                            padding: const EdgeInsets.all(2),
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Color(0xFF7E8695),
-                                            ),
-                                            child: const Icon(Icons.clear_rounded, color: Colors.white, size: 12),
-                                          ),
-                                        ),
-                                      )
-                                    : null,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(41),
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(vertical: 16),
-                                errorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(41),
-                                  borderSide: const BorderSide(color: Colors.red),
-                                ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(41),
-                                  borderSide: const BorderSide(color: Colors.red),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(41),
-                                  borderSide: const BorderSide(color: Color(0xFFF7F7FC)),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(41),
-                                  borderSide: const BorderSide(color: Color(0xFFF7F7FC)),
+                        valueListenable: isClearVisible,
+                        builder: (context, isVisible, child) {
+                          return TextFormField(
+                            controller: searchController,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.deny(RegExp(r'[.,-/]')),
+                              LengthLimitingTextInputFormatter(25),
+                            ],
+                            decoration: InputDecoration(
+                              isDense: true,
+                              fillColor: const Color(0xFFF7F7FC),
+                              filled: true,
+                              hintText: 'Tìm kiếm',
+                              hintStyle: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF7E8695),
+                              ),
+                              prefixIcon: Container(
+                                width: 18,
+                                height: 18,
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsetsDirectional.only(start: 12),
+                                  child: SvgPicture.asset('assets/icons/search.svg', width: 18, height: 18),
                                 ),
                               ),
-                            );
-                          },),
+                              suffix: isVisible
+                                  ? InkWell(
+                                      onTap: () {
+                                        searchController.clear();
+                                        isClearVisible.value = false;
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(right: 16),
+                                        child: Container(
+                                          padding: const EdgeInsets.all(2),
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(0xFF7E8695),
+                                          ),
+                                          child: const Icon(Icons.clear_rounded, color: Colors.white, size: 12),
+                                        ),
+                                      ),
+                                    )
+                                  : null,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(41),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(41),
+                                borderSide: const BorderSide(color: Colors.red),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(41),
+                                borderSide: const BorderSide(color: Colors.red),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(41),
+                                borderSide: const BorderSide(color: Color(0xFFF7F7FC)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(41),
+                                borderSide: const BorderSide(color: Color(0xFFF7F7FC)),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                     // const SizedBox(width: 16),
                     // PopupMenuButton(
@@ -277,7 +208,6 @@ class _ListDataMobileWidgetState extends State<ListDataMobileWidget> with Ticker
                     // ),
                   ],
                 ),
-                Container(),
                 const SizedBox(height: 12),
                 Container(
                   padding: const EdgeInsets.only(top: 12),
@@ -302,144 +232,110 @@ class _ListDataMobileWidgetState extends State<ListDataMobileWidget> with Ticker
                   child: TabBarView(
                     controller: _tabListController,
                     children: [
-                      Column(
-                        children: [
-                          const SizedBox(height: 16),
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: allStudents.length,
-                              itemBuilder: (context, index) {
-                                final student = allStudents[index];
-                                return buildStudentCard(student, context);
-                              },
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              isLoadingNotifier.value = true;
-
-                              List<StudentData> updatedList = await controller.getNextBatchOfStudents();
-
-                              isLoadingNotifier.value = false;
-
-                              if (updatedList.isNotEmpty) {
-                                setState(() {
-                                  List<StudentData> updatedLists = updatedList
-                                      .where((newStudent) =>
-                                          !allStudents.any((existingStudent) => existingStudent.sId == newStudent.sId))
-                                      .toList();
-
-                                  allStudents.addAll(updatedLists);
-                                });
-                              } else {
-                                print('Danh sách Student mobile rỗng hoặc có lỗi khi cập nhật');
-                              }
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              alignment: Alignment.center,
-                              child: ValueListenableBuilder<bool>(
-                                valueListenable: isLoadingNotifier,
-                                builder: (context, isLoading, child) {
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      if (isLoading)
-                                        const SizedBox(
-                                          width: 12,
-                                          height: 12,
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                      if (isLoading) const SizedBox(width: 8),
-                                      const Text(
-                                        'Xem thêm',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700,
-                                          color: Color(0xFF3A73C2),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      if (!isLoading)
-                                        const Icon(
-                                          Icons.keyboard_arrow_down_outlined,
-                                          color: Color(0xFF3A73C2),
-                                        ),
-                                    ],
-                                  );
+                      Obx(
+                        () => Column(
+                          children: [
+                            const SizedBox(height: 16),
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: listDataController.allStudents.length,
+                                itemBuilder: (context, index) {
+                                  final student = listDataController.allStudents[index];
+                                  return buildStudentCard(student, context);
                                 },
                               ),
                             ),
-                          ),
-                        ],
+                            InkWell(
+                              onTap: () {
+                                if (listDataController.isLoadingStudent.isFalse) {
+                                  listDataController.loadMoreStudentData();
+                                }
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                alignment: Alignment.center,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (listDataController.isLoadingStudent.isTrue)
+                                      const SizedBox(
+                                        width: 12,
+                                        height: 12,
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    if (listDataController.isLoadingStudent.isTrue) const SizedBox(width: 8),
+                                    const Text(
+                                      'Xem thêm',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                        color: Color(0xFF3A73C2),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    if (listDataController.isLoadingStudent.isFalse)
+                                      const Icon(
+                                        Icons.keyboard_arrow_down_outlined,
+                                        color: Color(0xFF3A73C2),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      Column(
-                        children: [
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: teacherDataList.length,
-                              itemBuilder: (context, index) {
-                                final teacher = teacherDataList[index];
-                                return buildTeacherCard(teacher, context);
-                              },
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              isTeacherLoadingNotifier.value = true;
-                              List<TeacherData> updatedList = await controller.getNextBatchOfTeacher();
-                              isTeacherLoadingNotifier.value = false;
-
-                              if (updatedList.isNotEmpty) {
-                                setState(() {
-                                  List<TeacherData> updatedLists = updatedList
-                                      .where((newStudent) => !teacherDataList
-                                          .any((existingStudent) => existingStudent.sId == newStudent.sId))
-                                      .toList();
-
-                                  teacherDataList.addAll(updatedLists);
-                                });
-                              } else {
-                                print('Danh sách Teacher mobile rỗng hoặc có lỗi khi cập nhật');
-                              }
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              alignment: Alignment.center,
-                              child: ValueListenableBuilder<bool>(
-                                valueListenable: isTeacherLoadingNotifier,
-                                builder: (context, isLoading, child) {
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      if (isLoading)
-                                        const SizedBox(
-                                          width: 12,
-                                          height: 12,
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                      if (isLoading) const SizedBox(width: 8),
-                                      const Text(
-                                        'Xem thêm',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700,
-                                          color: Color(0xFF3A73C2),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      if (!isLoading)
-                                        const Icon(
-                                          Icons.keyboard_arrow_down_outlined,
-                                          color: Color(0xFF3A73C2),
-                                        ),
-                                    ],
-                                  );
+                      Obx(
+                        () => Column(
+                          children: [
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: listDataController.allTeacher.length,
+                                itemBuilder: (context, index) {
+                                  final teacher = listDataController.allTeacher[index];
+                                  return buildTeacherCard(teacher, context);
                                 },
                               ),
                             ),
-                          ),
-                        ],
+                            InkWell(
+                              onTap: () {
+                                if (listDataController.isLoadingTeacher.isFalse) {
+                                  listDataController.loadMoreTeacherData();
+                                }
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                alignment: Alignment.center,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (listDataController.isLoadingTeacher.isTrue)
+                                      const SizedBox(
+                                        width: 12,
+                                        height: 12,
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    if (listDataController.isLoadingTeacher.isTrue) const SizedBox(width: 8),
+                                    const Text(
+                                      'Xem thêm',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                        color: Color(0xFF3A73C2),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    if (listDataController.isLoadingTeacher.isFalse)
+                                      const Icon(
+                                        Icons.keyboard_arrow_down_outlined,
+                                        color: Color(0xFF3A73C2),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

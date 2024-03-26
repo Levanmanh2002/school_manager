@@ -7,7 +7,7 @@ class ClassInfoData {
 	String? idClass;
   int? numberOfStudents;
   List<TeacherData>? teacher;
-  List<StudentData>? students;
+  List<Students>? students;
 
   ClassInfoData({this.className, this.numberOfStudents, this.teacher, this.students});
 
@@ -29,11 +29,11 @@ class ClassInfoData {
     }
 
     if (json['students'] != null) {
-      students = <StudentData>[];
+      students = <Students>[];
       if (json['students'] is List) {
         for (var v in (json['students'] as List)) {
           if (v is Map<String, dynamic>) {
-            students!.add(StudentData.fromJson(v));
+            students!.add(Students.fromJson(v));
           }
         }
       }

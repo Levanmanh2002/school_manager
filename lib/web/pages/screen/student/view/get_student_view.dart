@@ -39,9 +39,9 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
 
   final ValueNotifier<bool> isLoadingNotifier = ValueNotifier<bool>(false);
 
-  List<StudentData> allStudents = [];
+  List<Students> allStudents = [];
   int currentPage = 1;
-  List<StudentData>? newStudentData;
+  List<Students>? newStudentData;
 
   @override
   void initState() {
@@ -70,9 +70,9 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
   }
 
   Future<void> _loadData() async {
-    List<StudentData> nextBatch = await getNextBatchOfStudents();
+    List<Students> nextBatch = await getNextBatchOfStudents();
 
-    List<StudentData> uniqueNewStudents = nextBatch
+    List<Students> uniqueNewStudents = nextBatch
         .where((newStudent) => !allStudents.any((existingStudent) => existingStudent.sId == newStudent.sId))
         .toList();
 
@@ -81,11 +81,11 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
     });
   }
 
-  Future<List<StudentData>> getNextBatchOfStudents() async {
+  Future<List<Students>> getNextBatchOfStudents() async {
     currentPage++;
-    List<StudentData> nextBatch = await ctlNew.getNewListStudent();
+    List<Students> nextBatch = await ctlNew.getNewListStudent();
 
-    List<StudentData> uniqueNewStudents = nextBatch
+    List<Students> uniqueNewStudents = nextBatch
         .where((newStudent) => !allStudents.any((existingStudent) => existingStudent.sId == newStudent.sId))
         .toList();
 
@@ -396,13 +396,13 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
               onTap: () async {
                 isLoadingNotifier.value = true;
 
-                List<StudentData> updatedList = await ctlNew.getNextBatchOfStudents();
+                List<Students> updatedList = await ctlNew.getNextBatchOfStudents();
 
                 isLoadingNotifier.value = false;
 
                 if (updatedList.isNotEmpty) {
                   setState(() {
-                    List<StudentData> updatedLists = updatedList
+                    List<Students> updatedLists = updatedList
                         .where((newStudent) =>
                             !allStudents.any((existingStudent) => existingStudent.sId == newStudent.sId))
                         .toList();
@@ -462,7 +462,7 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
         width:
             Responsive.isTablet(context) ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width / 1.26,
         height: MediaQuery.of(context).size.height,
-        child: FutureBuilder<List<StudentData>>(
+        child: FutureBuilder<List<Students>>(
           future: controller.getActiveStudent(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -538,13 +538,13 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
               onTap: () async {
                 isLoadingNotifier.value = true;
 
-                List<StudentData> updatedList = await ctlNew.getNextBatchOfStudents();
+                List<Students> updatedList = await ctlNew.getNextBatchOfStudents();
 
                 isLoadingNotifier.value = false;
 
                 if (updatedList.isNotEmpty) {
                   setState(() {
-                    List<StudentData> updatedLists = updatedList
+                    List<Students> updatedLists = updatedList
                         .where((newStudent) =>
                             !allStudents.any((existingStudent) => existingStudent.sId == newStudent.sId))
                         .toList();
@@ -604,7 +604,7 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
         width:
             Responsive.isTablet(context) ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width / 1.26,
         height: MediaQuery.of(context).size.height,
-        child: FutureBuilder<List<StudentData>>(
+        child: FutureBuilder<List<Students>>(
           future: controller.getInactiveStudent(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -652,7 +652,7 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
         width:
             Responsive.isTablet(context) ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width / 1.26,
         height: MediaQuery.of(context).size.height,
-        child: FutureBuilder<List<StudentData>>(
+        child: FutureBuilder<List<Students>>(
           future: controller.getSuspendedStudent(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -700,7 +700,7 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
         width:
             Responsive.isTablet(context) ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width / 1.26,
         height: MediaQuery.of(context).size.height,
-        child: FutureBuilder<List<StudentData>>(
+        child: FutureBuilder<List<Students>>(
           future: controller.getExpelledStudent(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {

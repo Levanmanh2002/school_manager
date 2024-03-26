@@ -36,7 +36,7 @@ class _AddStudentClassesViewState extends State<AddStudentClassesView> {
     }
   }
 
-  Future<List<StudentData>> _getWithoutClassInfo() async {
+  Future<List<Students>> _getWithoutClassInfo() async {
     var response = await http.get(
       Uri.parse('https://backend-shool-project.onrender.com/admin/students-without-class'),
     );
@@ -44,7 +44,7 @@ class _AddStudentClassesViewState extends State<AddStudentClassesView> {
     if (response.statusCode == 201) {
       final List<dynamic> data = json.decode(response.body)['studentsWithoutClass'];
 
-      List<StudentData> student = data.map((e) => StudentData.fromJson(e)).toList();
+      List<Students> student = data.map((e) => Students.fromJson(e)).toList();
 
       return student;
     } else {
@@ -232,7 +232,7 @@ class _AddStudentClassesViewState extends State<AddStudentClassesView> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                FutureBuilder<List<StudentData>>(
+                FutureBuilder<List<Students>>(
                   future: _getWithoutClassInfo(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {

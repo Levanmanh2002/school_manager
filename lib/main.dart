@@ -6,6 +6,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:school_web/web/constants/style.dart';
+import 'package:school_web/web/controllers/home/home_controller.dart';
+import 'package:school_web/web/controllers/list_data/list_data_controller.dart';
 import 'package:school_web/web/l10n/app_localizations.dart';
 import 'package:school_web/web/l10n/language_constants.dart';
 import 'package:school_web/web/pages/language/constant.dart';
@@ -25,8 +27,8 @@ Future<void> main() async {
     () async {
       await GetStorage.init('MyStorage');
       // Get.put(AuthController());
-      // Get.put(HomeController());
-      // Get.put(ListDataController());
+      Get.put(HomeController());
+      Get.put(ListDataController());
       // Get.put(StudentController());
       // Get.put(TeacherController());
       // Get.put(ClassesController());
@@ -112,7 +114,6 @@ class AppSchoolWebState extends State<AppSchoolWeb> {
         ],
         supportedLocales: supportedLocales,
         initialRoute: widget.token != null ? Routes.DASHBOARD : Routes.SIGNIN,
-
         // initialRoute: Routes.SIGNIN,
         getPages: AppPages.pages,
         theme: ThemeData(

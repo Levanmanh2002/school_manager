@@ -5,7 +5,7 @@ import 'package:school_web/web/pages/screen/student/detail/student_detail_screen
 class ClassesInfoDetail extends StatelessWidget {
   const ClassesInfoDetail({required this.students, required this.classes, super.key});
 
-  final List<StudentData>? students;
+  final List<Students>? students;
   final String classes;
 
   @override

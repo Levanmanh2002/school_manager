@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:school_web/web/models/teacher.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/screen/teacher/detail/teacher_detail_screen.dart';
+import 'package:school_web/web/utils/assets/images.dart';
 
 Widget buildTeacherCard(TeacherData teacherData, BuildContext context) {
   String phone = teacherData.phoneNumber ?? '';
@@ -24,12 +26,24 @@ Widget buildTeacherCard(TeacherData teacherData, BuildContext context) {
           children: [
             Row(
               children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    teacherData.avatarUrl ??
-                        'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                // CircleAvatar(
+                //   backgroundImage: NetworkImage(
+                //     teacherData.avatarUrl ??
+                //         'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                //   ),
+                //   radius: 30,
+                // ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(1000),
+                  child: CachedNetworkImage(
+                    imageUrl: teacherData.avatarUrl.toString(),
+                    width: 46,
+                    height: 46,
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) {
+                      return Image.asset(ImagesAssets.noUrlImage, fit: BoxFit.cover);
+                    },
                   ),
-                  radius: 30,
                 ),
                 const SizedBox(width: 12),
                 Column(

@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:school_web/web/models/student.dart';
-import 'package:school_web/web/models/teacher.dart';
+import 'package:school_web/web/controllers/list_data/list_data_controller.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
-import 'package:school_web/web/pages/home/controller/controller.dart';
-import 'package:school_web/web/pages/home/view/mobile/widget/item_pagination_widget.dart';
 import 'package:school_web/web/pages/home/view/mobile/widget/table_info_student_widget.dart';
 import 'package:school_web/web/pages/home/view/mobile/widget/table_info_teacher_widget.dart';
 import 'package:school_web/web/pages/home/view/mobile/widget/title_tab_widget.dart';
@@ -20,22 +17,12 @@ class ListDataTabletWidget extends StatefulWidget {
 
 class _ListDataTabletWidgetState extends State<ListDataTabletWidget> with TickerProviderStateMixin {
   late TabController _tabListController;
-
   final searchController = TextEditingController();
   final ValueNotifier<bool> isClearVisible = ValueNotifier<bool>(false);
-  final ValueNotifier<bool> isLoadingNotifier = ValueNotifier<bool>(false);
-  final ValueNotifier<bool> isTeacherLoadingNotifier = ValueNotifier<bool>(false);
-  final ValueNotifier<bool> noDataNotifier = ValueNotifier<bool>(false);
 
   ValueNotifier<String> selectedValueNotifier = ValueNotifier<String>('Tất cả');
-  // String selectedValue = 'Tất cả';
 
-  final controller = Get.put(Controller());
-
-  List<StudentData> allStudents = [];
-  List<TeacherData> teacherDataList = [];
-  int currentPage = 1;
-  int teacherPage = 1;
+  final ListDataController listDataController = Get.put(ListDataController());
 
   @override
   void initState() {
@@ -44,65 +31,6 @@ class _ListDataTabletWidgetState extends State<ListDataTabletWidget> with Ticker
     searchController.addListener(() {
       isClearVisible.value = searchController.text.isNotEmpty;
     });
-
-    if (allStudents.isEmpty || teacherDataList.isEmpty) {
-      _loadData();
-      _loadTeacherData();
-    }
-  }
-
-  Future<void> _loadData() async {
-    List<StudentData> nextBatch = await getNextBatchOfStudents();
-
-    List<StudentData> uniqueNewStudents = nextBatch
-        .where((newStudent) => !allStudents.any((existingStudent) => existingStudent.sId == newStudent.sId))
-        .toList();
-
-    setState(() {
-      allStudents.addAll(uniqueNewStudents);
-    });
-  }
-
-  Future<List<StudentData>> getNextBatchOfStudents() async {
-    currentPage++;
-    List<StudentData> nextBatch = await controller.getNewListStudent();
-
-    List<StudentData> uniqueNewStudents = nextBatch
-        .where((newStudent) => !allStudents.any((existingStudent) => existingStudent.sId == newStudent.sId))
-        .toList();
-
-    allStudents.addAll(uniqueNewStudents);
-
-    return uniqueNewStudents;
-  }
-
-  Future<void> _loadTeacherData() async {
-    try {
-      List<TeacherData> nextBatch = await getTotalPageTeacher();
-
-      List<TeacherData> uniqueNewTeacher = nextBatch
-          .where((newTeacher) => !teacherDataList.any((existingTeacher) => existingTeacher.sId == newTeacher.sId))
-          .toList();
-
-      setState(() {
-        teacherDataList.addAll(uniqueNewTeacher);
-      });
-    } catch (error) {
-      print('Error loading teacher data: $error');
-    }
-  }
-
-  Future<List<TeacherData>> getTotalPageTeacher() async {
-    teacherPage++;
-    List<TeacherData> nextBatch = await controller.getTotalPageTeacher();
-
-    List<TeacherData> uniqueNewTeacher = nextBatch
-        .where((newTeacher) => !teacherDataList.any((existingTeacher) => existingTeacher.sId == newTeacher.sId))
-        .toList();
-
-    teacherDataList.addAll(uniqueNewTeacher);
-
-    return uniqueNewTeacher;
   }
 
   @override
@@ -111,9 +39,6 @@ class _ListDataTabletWidgetState extends State<ListDataTabletWidget> with Ticker
     _tabListController.dispose();
     searchController.dispose();
     isClearVisible.dispose();
-    isLoadingNotifier.dispose();
-    isTeacherLoadingNotifier.dispose();
-    noDataNotifier.dispose();
   }
 
   @override
@@ -300,179 +225,145 @@ class _ListDataTabletWidgetState extends State<ListDataTabletWidget> with Ticker
                   child: TabBarView(
                     controller: _tabListController,
                     children: [
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: SizedBox(
-                          width: Responsive.isTablet(context)
-                              ? MediaQuery.of(context).size.width
-                              : MediaQuery.of(context).size.width / 1.26,
-                          height: MediaQuery.of(context).size.height,
-                          child: Column(
-                            children: [
-                              titleTabWidget(
-                                name: 'Họ và tên',
-                                code: 'MSSV',
-                                industry: 'Ngành học',
-                                email: 'Email',
-                                phone: 'Số điện thoại',
-                                status: 'Trạng thái',
-                                detail: 'Chi tiết',
-                              ),
-                              Expanded(
-                                child: ListView.builder(
-                                  itemCount: allStudents.length,
-                                  itemBuilder: (context, index) {
-                                    final student = allStudents[index];
-                                    return tableInfoStudentWidget(student, context);
-                                  },
+                      Obx(
+                        () => SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: SizedBox(
+                            width: Responsive.isTablet(context)
+                                ? MediaQuery.of(context).size.width
+                                : MediaQuery.of(context).size.width / 1.26,
+                            height: MediaQuery.of(context).size.height,
+                            child: Column(
+                              children: [
+                                titleTabWidget(
+                                  name: 'Họ và tên',
+                                  code: 'MSSV',
+                                  industry: 'Ngành học',
+                                  email: 'Email',
+                                  phone: 'Số điện thoại',
+                                  status: 'Trạng thái',
+                                  detail: 'Chi tiết',
                                 ),
-                              ),
-                              itemPaginationWidget(),
-                              InkWell(
-                                onTap: () async {
-                                  isLoadingNotifier.value = true;
-
-                                  List<StudentData> updatedList = await controller.getNextBatchOfStudents();
-
-                                  isLoadingNotifier.value = false;
-
-                                  if (updatedList.isNotEmpty) {
-                                    setState(() {
-                                      List<StudentData> updatedLists = updatedList
-                                          .where((newStudent) => !allStudents
-                                              .any((existingStudent) => existingStudent.sId == newStudent.sId))
-                                          .toList();
-
-                                      allStudents.addAll(updatedLists);
-                                    });
-                                  } else {
-                                    print('Danh sách Student Table rỗng hoặc có lỗi khi cập nhật');
-                                  }
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
-                                  alignment: Alignment.center,
-                                  child: ValueListenableBuilder<bool>(
-                                    valueListenable: isLoadingNotifier,
-                                    builder: (context, isLoading, child) {
-                                      return Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          if (isLoading)
-                                            const SizedBox(
-                                              width: 12,
-                                              height: 12,
-                                              child: CircularProgressIndicator(),
-                                            ),
-                                          if (isLoading) const SizedBox(width: 8),
-                                          const Text(
-                                            'Xem thêm',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w700,
-                                              color: Color(0xFF3A73C2),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 8),
-                                          if (!isLoading)
-                                            const Icon(
-                                              Icons.keyboard_arrow_down_outlined,
-                                              color: Color(0xFF3A73C2),
-                                            ),
-                                        ],
-                                      );
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: listDataController.allStudents.length,
+                                    itemBuilder: (context, index) {
+                                      final student = listDataController.allStudents[index];
+                                      return tableInfoStudentWidget(student, context);
                                     },
                                   ),
                                 ),
-                              ),
-                            ],
+                                // itemPaginationWidget(),
+                                InkWell(
+                                  onTap: () {
+                                    if (listDataController.isLoadingStudent.isFalse) {
+                                      listDataController.loadMoreStudentData();
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(vertical: 12),
+                                    alignment: Alignment.center,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        if (listDataController.isLoadingStudent.isTrue)
+                                          const SizedBox(
+                                            width: 12,
+                                            height: 12,
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        if (listDataController.isLoadingStudent.isTrue) const SizedBox(width: 8),
+                                        const Text(
+                                          'Xem thêm',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                            color: Color(0xFF3A73C2),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        if (listDataController.isLoadingStudent.isFalse)
+                                          const Icon(
+                                            Icons.keyboard_arrow_down_outlined,
+                                            color: Color(0xFF3A73C2),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: SizedBox(
-                          width: Responsive.isTablet(context)
-                              ? MediaQuery.of(context).size.width
-                              : MediaQuery.of(context).size.width / 1.26,
-                          height: MediaQuery.of(context).size.height,
-                          child: Column(
-                            children: [
-                              titleTabWidget(
-                                name: 'Họ và tên',
-                                code: 'MSGV',
-                                industry: 'Ngành dạy',
-                                email: 'Email',
-                                phone: 'Số điện thoại',
-                                status: 'Trạng thái',
-                                detail: 'Chi tiết',
-                              ),
-                              Expanded(
-                                child: ListView.builder(
-                                  itemCount: teacherDataList.length,
-                                  itemBuilder: (context, index) {
-                                    final teacher = teacherDataList[index];
-                                    return tableInfoTeacherWidget(teacher, context);
-                                  },
+                      Obx(
+                        () => SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: SizedBox(
+                            width: Responsive.isTablet(context)
+                                ? MediaQuery.of(context).size.width
+                                : MediaQuery.of(context).size.width / 1.26,
+                            height: MediaQuery.of(context).size.height,
+                            child: Column(
+                              children: [
+                                titleTabWidget(
+                                  name: 'Họ và tên',
+                                  code: 'MSGV',
+                                  industry: 'Học vấn',
+                                  email: 'Email',
+                                  phone: 'Số điện thoại',
+                                  status: 'Trạng thái',
+                                  detail: 'Chi tiết',
                                 ),
-                              ),
-                              itemPaginationWidget(),
-                              InkWell(
-                                onTap: () async {
-                                  isTeacherLoadingNotifier.value = true;
-                                  List<TeacherData> updatedList = await controller.getNextBatchOfTeacher();
-                                  isTeacherLoadingNotifier.value = false;
-
-                                  if (updatedList.isNotEmpty) {
-                                    setState(() {
-                                      List<TeacherData> updatedLists = updatedList
-                                          .where((newStudent) => !teacherDataList
-                                              .any((existingStudent) => existingStudent.sId == newStudent.sId))
-                                          .toList();
-
-                                      teacherDataList.addAll(updatedLists);
-                                    });
-                                  } else {
-                                    print('Danh sách Teacher table rỗng hoặc có lỗi khi cập nhật');
-                                  }
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
-                                  alignment: Alignment.center,
-                                  child: ValueListenableBuilder<bool>(
-                                    valueListenable: isTeacherLoadingNotifier,
-                                    builder: (context, isLoading, child) {
-                                      return Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          if (isLoading)
-                                            const SizedBox(
-                                              width: 12,
-                                              height: 12,
-                                              child: CircularProgressIndicator(),
-                                            ),
-                                          if (isLoading) const SizedBox(width: 8),
-                                          const Text(
-                                            'Xem thêm',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w700,
-                                              color: Color(0xFF3A73C2),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 8),
-                                          if (!isLoading)
-                                            const Icon(
-                                              Icons.keyboard_arrow_down_outlined,
-                                              color: Color(0xFF3A73C2),
-                                            ),
-                                        ],
-                                      );
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: listDataController.allTeacher.length,
+                                    itemBuilder: (context, index) {
+                                      final teacher = listDataController.allTeacher[index];
+                                      return tableInfoTeacherWidget(teacher, context);
                                     },
                                   ),
                                 ),
-                              ),
-                            ],
+                                // itemPaginationWidget(),
+                                InkWell(
+                                  onTap: () {
+                                    if (listDataController.isLoadingTeacher.isFalse) {
+                                      listDataController.loadMoreTeacherData();
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(vertical: 12),
+                                    alignment: Alignment.center,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        if (listDataController.isLoadingTeacher.isTrue)
+                                          const SizedBox(
+                                            width: 12,
+                                            height: 12,
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        if (listDataController.isLoadingTeacher.isTrue) const SizedBox(width: 8),
+                                        const Text(
+                                          'Xem thêm',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                            color: Color(0xFF3A73C2),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        if (listDataController.isLoadingTeacher.isFalse)
+                                          const Icon(
+                                            Icons.keyboard_arrow_down_outlined,
+                                            color: Color(0xFF3A73C2),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

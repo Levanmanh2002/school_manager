@@ -2,10 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:school_web/main.dart';
 import 'package:school_web/web/models/student.dart';
 import 'package:school_web/web/pages/screen/student/detail/student_detail_screen.dart';
 
-Widget tableInfoStudentWidget(StudentData studentData, BuildContext context) {
+Widget tableInfoStudentWidget(Students studentData, BuildContext context) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 16),
     child: Column(
@@ -48,7 +49,7 @@ Widget tableInfoStudentWidget(StudentData studentData, BuildContext context) {
               // constraints: const BoxConstraints(maxWidth: 110),
               width: 110,
               child: Text(
-                studentData.occupation ?? '',
+                studentData.major?.name ?? '',
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
@@ -93,27 +94,27 @@ Widget tableInfoStudentWidget(StudentData studentData, BuildContext context) {
               // constraints: const BoxConstraints(maxWidth: 110),
               width: 110,
               child: Text(
-                studentData.isStudying == true
+                studentData.status == 1
                     ? 'Đang học'
-                    : studentData.selfSuspension == true
+                    : studentData.status == 2
                         ? 'Nghỉ học'
-                        : studentData.suspension == true
+                        : studentData.status == 3
                             ? 'Đình chỉ'
-                            : studentData.expulsion == true
+                            : studentData.status == 4
                                 ? 'Bị đuổi học'
-                                : 'Đang học',
+                                : '',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
-                  color: studentData.isStudying == true
-                      ? const Color(0xFF3BB53B)
-                      : studentData.selfSuspension == true
-                          ? const Color(0xFFFC8805)
-                          : studentData.suspension == true
-                              ? const Color(0xFF9AA0AC)
-                              : studentData.expulsion == true
-                                  ? const Color(0xFFFC423F)
-                                  : const Color(0xFF3BB53B),
+                  color: studentData.status == 1
+                      ? appTheme.successColor
+                      : studentData.status == 2
+                          ? appTheme.yellow500Color
+                          : studentData.status == 3
+                              ? appTheme.neutral40Color
+                              : studentData.status == 4
+                                  ? appTheme.errorColor
+                                  : appTheme.successColor,
                   height: 1.5,
                   overflow: TextOverflow.ellipsis,
                 ),

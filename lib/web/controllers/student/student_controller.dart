@@ -8,7 +8,7 @@ import 'package:school_web/web/models/student.dart';
 
 class StudentController extends GetxController {
   final AuthController authController = Get.put(AuthController());
-  final Rx<StudentData?> studentData = Rx<StudentData?>(null);
+  final Rx<Students?> studentData = Rx<Students?>(null);
 
   Future<dynamic> getPutProfileStudent(
     String gmailController,

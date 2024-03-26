@@ -1,174 +1,131 @@
-class Student {
-  String? status;
-  String? message;
-  StudentData? data;
+import 'package:school_web/web/models/fee.dart';
+import 'package:school_web/web/models/majors_models.dart';
 
-  Student({this.status, this.message, this.data});
-
-  Student.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    message = json['message'];
-    data = json['data'] != null ? StudentData.fromJson(json['data']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = status;
-    data['message'] = message;
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
-    }
-    return data;
-  }
-}
-
-class StudentData {
-  SelfSuspension? selfSuspension;
-  Suspension? suspension;
-  Expulsion? expulsion;
+class Students {
   String? sId;
   String? studentId;
+  String? mssv;
+  String? fullName;
+  String? gender;
   String? gmail;
   String? phone;
-  String? fullName;
   String? birthDate;
   String? cccd;
-  String? birthPlace;
   String? customYear;
-  String? mssv;
   String? password;
-  String? gender;
-  String? hometown;
-  String? permanentAddress;
-  String? occupation;
-  String? classStudent;
-  List<StudentData>? students;
-  String? contactPhone;
-  String? contactAddress;
-  String? educationLevel;
-  List<String>? graduationCertificate;
-  String? academicPerformance;
-  String? conduct;
-  String? classRanking10;
-  String? classRanking11;
-  String? classRanking12;
-  String? graduationYear;
   String? ethnicity;
-  String? religion;
   String? beneficiary;
-  String? area;
-  String? idCardIssuedDate;
-  String? idCardIssuedPlace;
   String? fatherFullName;
   String? motherFullName;
-  String? address;
-	String? city;
-	String? district;
-	String? ward;
+  String? contactPhone;
+  String? contactAddress;
   String? notes;
-  bool? isStudying;
+  String? address;
+  String? city;
+  String? district;
+  String? ward;
+  int? status;
+  String? classStudent;
   String? avatarUrl;
+  bool? isStudying;
+  List<String>? graduationCertificate;
+  List<Students>? students;
+  MajorsData? major;
   String? createdAt;
   String? updatedAt;
   int? iV;
+  List<Fees>? feesToPay;
 
-  StudentData({
-    this.selfSuspension,
-    this.suspension,
-    this.expulsion,
+  Students({
     this.sId,
     this.studentId,
+    this.mssv,
+    this.fullName,
+    this.gender,
     this.gmail,
     this.phone,
-    this.fullName,
     this.birthDate,
     this.cccd,
-    this.birthPlace,
     this.customYear,
-    this.mssv,
     this.password,
-    this.gender,
-    this.hometown,
-    this.permanentAddress,
-    this.occupation,
-    this.classStudent,
-    this.students,
-    this.contactPhone,
-    this.contactAddress,
-    this.educationLevel,
-    this.graduationCertificate,
-    this.academicPerformance,
-    this.conduct,
-    this.classRanking10,
-    this.classRanking11,
-    this.classRanking12,
-    this.graduationYear,
     this.ethnicity,
-    this.religion,
     this.beneficiary,
-    this.area,
-    this.idCardIssuedDate,
-    this.idCardIssuedPlace,
+    this.students,
+    this.graduationCertificate,
     this.fatherFullName,
     this.motherFullName,
+    this.contactPhone,
+    this.contactAddress,
     this.notes,
+    this.address,
+    this.city,
+    this.district,
+    this.ward,
+    this.feesToPay,
+    this.major,
     this.isStudying,
+    this.status,
+    this.classStudent,
     this.avatarUrl,
     this.createdAt,
     this.updatedAt,
     this.iV,
   });
 
-  StudentData.fromJson(Map<String, dynamic> json) {
-    selfSuspension = json['selfSuspension'] != null ? SelfSuspension.fromJson(json['selfSuspension']) : null;
-    suspension = json['suspension'] != null ? Suspension.fromJson(json['suspension']) : null;
-    expulsion = json['expulsion'] != null ? Expulsion.fromJson(json['expulsion']) : null;
+  Students.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     studentId = json['studentId'];
+    mssv = json['mssv'];
+    fullName = json['fullName'];
+    gender = json['gender'];
     gmail = json['gmail'];
     phone = json['phone'];
-    fullName = json['fullName'];
     birthDate = json['birthDate'];
     cccd = json['cccd'];
-    birthPlace = json['birthPlace'];
     customYear = json['customYear'];
-    mssv = json['mssv'];
     password = json['password'];
-    gender = json['gender'];
-    hometown = json['hometown'];
-    permanentAddress = json['permanentAddress'];
-    occupation = json['occupation'];
-    classStudent = json['class'];
-    if (json['students'] != null) {
-      students = (json['students'] as List).map((studentJson) {
-        return StudentData.fromJson(studentJson);
-      }).toList();
-    }
-    contactPhone = json['contactPhone'];
-    contactAddress = json['contactAddress'];
-    educationLevel = json['educationLevel'];
-    graduationCertificate = json['graduationCertificate'].cast<String>();
-    academicPerformance = json['academicPerformance'];
-    conduct = json['conduct'];
-    classRanking10 = json['classRanking10'];
-    classRanking11 = json['classRanking11'];
-    classRanking12 = json['classRanking12'];
-    graduationYear = json['graduationYear'];
     ethnicity = json['ethnicity'];
-    religion = json['religion'];
     beneficiary = json['beneficiary'];
-    area = json['area'];
-    idCardIssuedDate = json['idCardIssuedDate'];
-    idCardIssuedPlace = json['idCardIssuedPlace'];
     fatherFullName = json['fatherFullName'];
     motherFullName = json['motherFullName'];
-    address = json['address'];
-		city = json['city'];
-		district = json['district'];
-		ward = json['ward'];
+    contactPhone = json['contactPhone'];
+    contactAddress = json['contactAddress'];
     notes = json['notes'];
-    isStudying = json['isStudying'];
+    address = json['address'];
+    city = json['city'];
+    district = json['district'];
+    ward = json['ward'];
+    status = json['status'];
+    classStudent = json['class'];
     avatarUrl = json['avatarUrl'];
+    isStudying = json['isStudying'];
+    major = json['major'] != null ? MajorsData.fromJson(json['major']) : null;
+    if (json['students'] != null) {
+      students = (json['students'] as List).map((studentJson) {
+        return Students.fromJson(studentJson);
+      }).toList();
+    }
+    graduationCertificate = json['graduationCertificate'].cast<String>();
+    if (json['feesToPay'] != null) {
+      feesToPay = (json['feesToPay'] as List).map((feesJson) {
+        return Fees.fromJson(feesJson);
+      }).toList();
+    }
+    // if (json['feesToPay'] != null) {
+    //   feesToPay = json['feesToPay'].map((feesItem) {
+    //     return Fees.fromJson(feesItem);
+    //   }).toList();
+    // }
+    // if (json['feesToPay'] != null) {
+    //   final feesJson = json['feesToPay'];
+    //   if (feesJson is List) {
+    //     feesToPay = feesJson.map((feesItem) {
+    //       return Fees.fromJson(feesItem);
+    //     }).toList();
+    //   } else if (feesJson is Map<String, dynamic>) {
+    //     feesToPay = [Fees.fromJson(feesJson)];
+    //   }
+    // }
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
@@ -176,128 +133,54 @@ class StudentData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if (selfSuspension != null) {
-      data['selfSuspension'] = selfSuspension!.toJson();
-    }
-    if (suspension != null) {
-      data['suspension'] = suspension!.toJson();
-    }
-    if (expulsion != null) {
-      data['expulsion'] = expulsion!.toJson();
-    }
+
     data['_id'] = sId;
     data['studentId'] = studentId;
+    data['mssv'] = mssv;
+    data['fullName'] = fullName;
+    data['gender'] = gender;
     data['gmail'] = gmail;
     data['phone'] = phone;
-    data['fullName'] = fullName;
     data['birthDate'] = birthDate;
     data['cccd'] = cccd;
-    data['birthPlace'] = birthPlace;
     data['customYear'] = customYear;
-    data['mssv'] = mssv;
     data['password'] = password;
-    data['gender'] = gender;
-    data['hometown'] = hometown;
-    data['permanentAddress'] = permanentAddress;
-    data['occupation'] = occupation;
+    data['ethnicity'] = ethnicity;
+    data['beneficiary'] = beneficiary;
+    data['fatherFullName'] = fatherFullName;
+    data['motherFullName'] = motherFullName;
+    data['contactPhone'] = contactPhone;
+    data['contactAddress'] = contactAddress;
+    data['notes'] = notes;
+    data['address'] = address;
+    data['city'] = city;
+    data['district'] = district;
+    data['ward'] = ward;
+    data['isStudying'] = isStudying;
+    data['status'] = status;
+    if (major != null) {
+      data['major'] = major!.toJson();
+    }
     data['class'] = classStudent;
     if (students != null) {
       data['students'] = students!.map((v) => v.toJson()).toList();
     }
-    data['contactPhone'] = contactPhone;
-    data['contactAddress'] = contactAddress;
-    data['educationLevel'] = educationLevel;
     data['graduationCertificate'] = graduationCertificate;
-    data['academicPerformance'] = academicPerformance;
-    data['conduct'] = conduct;
-    data['classRanking10'] = classRanking10;
-    data['classRanking11'] = classRanking11;
-    data['classRanking12'] = classRanking12;
-    data['graduationYear'] = graduationYear;
-    data['ethnicity'] = ethnicity;
-    data['religion'] = religion;
-    data['beneficiary'] = beneficiary;
-    data['area'] = area;
-    data['idCardIssuedDate'] = idCardIssuedDate;
-    data['idCardIssuedPlace'] = idCardIssuedPlace;
-    data['fatherFullName'] = fatherFullName;
-    data['motherFullName'] = motherFullName;
-    data['notes'] = notes;
-    data['address'] = address;
-		data['city'] = city;
-		data['district'] = district;
-		data['ward'] = ward;
-    data['isStudying'] = isStudying;
     data['avatarUrl'] = avatarUrl;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     data['__v'] = iV;
-    return data;
-  }
-}
+    if (feesToPay != null) {
+      data['feesToPay'] = feesToPay!.map((v) => v.toJson()).toList();
+    }
+    // if (feesToPay != null) {
+    //   if (feesToPay is List) {
+    //     data['feesToPay'] = feesToPay?.map((v) => v.toJson()).toList();
+    //   } else if (feesToPay is Map<String, dynamic>) {
+    //     data['feesToPay'] = feesToPay;
+    //   } else if (feesToPay is String) {}
+    // }
 
-class SelfSuspension {
-  bool? isSelfSuspended;
-  String? suspensionEndDate;
-  String? suspensionReason;
-
-  SelfSuspension({this.isSelfSuspended, this.suspensionEndDate, this.suspensionReason});
-
-  SelfSuspension.fromJson(Map<String, dynamic> json) {
-    isSelfSuspended = json['isSelfSuspended'];
-    suspensionEndDate = json['suspensionEndDate'];
-    suspensionReason = json['suspensionReason'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['isSelfSuspended'] = isSelfSuspended;
-    data['suspensionEndDate'] = suspensionEndDate;
-    data['suspensionReason'] = suspensionReason;
-    return data;
-  }
-}
-
-class Suspension {
-  bool? isSuspended;
-  Null suspensionEndDate;
-  String? suspensionReason;
-
-  Suspension({this.isSuspended, this.suspensionEndDate, this.suspensionReason});
-
-  Suspension.fromJson(Map<String, dynamic> json) {
-    isSuspended = json['isSuspended'];
-    suspensionEndDate = json['suspensionEndDate'];
-    suspensionReason = json['suspensionReason'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['isSuspended'] = isSuspended;
-    data['suspensionEndDate'] = suspensionEndDate;
-    data['suspensionReason'] = suspensionReason;
-    return data;
-  }
-}
-
-class Expulsion {
-  bool? isExpelled;
-  String? expulsionDate;
-  String? expulsionReason;
-
-  Expulsion({this.isExpelled, this.expulsionDate, this.expulsionReason});
-
-  Expulsion.fromJson(Map<String, dynamic> json) {
-    isExpelled = json['isExpelled'];
-    expulsionDate = json['expulsionDate'];
-    expulsionReason = json['expulsionReason'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['isExpelled'] = isExpelled;
-    data['expulsionDate'] = expulsionDate;
-    data['expulsionReason'] = expulsionReason;
     return data;
   }
 }

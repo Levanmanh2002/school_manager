@@ -1,49 +1,27 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:school_web/web/models/teacher.dart';
+import 'package:school_web/web/controllers/home/home_controller.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
-import 'package:school_web/web/pages/home/controller/controller.dart';
 
-class PieChartWidget extends StatefulWidget {
+class PieChartWidget extends StatelessWidget {
   const PieChartWidget({super.key});
 
   @override
-  State<PieChartWidget> createState() => _PieChartState();
-}
-
-class _PieChartState extends State<PieChartWidget> {
-  final ctl = Get.put(Controller());
-  List<TeacherData>? teacherData;
-  List<TeacherData>? workingTeachers;
-  List<TeacherData>? retiredTeachers;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadData();
-  }
-
-  Future<void> _loadData() async {
-    teacherData = await ctl.getTotalTeacher();
-    workingTeachers = await ctl.getWorkingTeachers();
-    retiredTeachers = await ctl.getRetiredTeachers();
-    setState(() {});
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final HomeController homeController = Get.put(HomeController());
+
     if (Responsive.isMobile(context)) {
       return ItemPieColumnChart(
-        teacherData: teacherData,
-        workingTeachers: workingTeachers,
-        retiredTeachers: retiredTeachers,
+        teacherData: homeController.totalTeacher.toDouble(),
+        workingTeachers: homeController.totalWorkingTeachers.toDouble(),
+        retiredTeachers: homeController.totalRetiredTeachers.toDouble(),
       );
     } else {
       return ItemPieRowChart(
-        teacherData: teacherData,
-        workingTeachers: workingTeachers,
-        retiredTeachers: retiredTeachers,
+        teacherData: homeController.totalTeacher.toDouble(),
+        workingTeachers: homeController.totalWorkingTeachers.toDouble(),
+        retiredTeachers: homeController.totalRetiredTeachers.toDouble(),
       );
     }
   }
@@ -57,9 +35,9 @@ class ItemPieRowChart extends StatelessWidget {
     required this.retiredTeachers,
   });
 
-  final List<TeacherData>? teacherData;
-  final List<TeacherData>? workingTeachers;
-  final List<TeacherData>? retiredTeachers;
+  final double? teacherData;
+  final double? workingTeachers;
+  final double? retiredTeachers;
 
   @override
   Widget build(BuildContext context) {
@@ -77,17 +55,17 @@ class ItemPieRowChart extends StatelessWidget {
               sectionsSpace: 2,
               sections: [
                 PieChartSectionData(
-                  value: teacherData?.length.toDouble(),
+                  value: teacherData,
                   color: const Color(0xFF2D9CDB),
                   radius: 100,
                 ),
                 PieChartSectionData(
-                  value: workingTeachers?.length.toDouble(),
+                  value: workingTeachers,
                   color: const Color(0xFF3BB53B),
                   radius: 100,
                 ),
                 PieChartSectionData(
-                  value: retiredTeachers?.length.toDouble(),
+                  value: retiredTeachers,
                   color: const Color(0xFFFC8805),
                   radius: 100,
                 ),
@@ -167,9 +145,9 @@ class ItemPieColumnChart extends StatelessWidget {
     required this.retiredTeachers,
   });
 
-  final List<TeacherData>? teacherData;
-  final List<TeacherData>? workingTeachers;
-  final List<TeacherData>? retiredTeachers;
+  final double? teacherData;
+  final double? workingTeachers;
+  final double? retiredTeachers;
 
   @override
   Widget build(BuildContext context) {
@@ -187,17 +165,17 @@ class ItemPieColumnChart extends StatelessWidget {
               sectionsSpace: 2,
               sections: [
                 PieChartSectionData(
-                  value: teacherData?.length.toDouble(),
+                  value: teacherData,
                   color: const Color(0xFF2D9CDB),
                   radius: 100,
                 ),
                 PieChartSectionData(
-                  value: workingTeachers?.length.toDouble(),
+                  value: workingTeachers,
                   color: const Color(0xFF3BB53B),
                   radius: 100,
                 ),
                 PieChartSectionData(
-                  value: retiredTeachers?.length.toDouble(),
+                  value: retiredTeachers,
                   color: const Color(0xFFFC8805),
                   radius: 100,
                 ),

@@ -9,7 +9,7 @@ import 'package:school_web/web/models/teacher.dart';
 import 'package:http/http.dart' as http;
 
 class Controller extends GetxController {
-  List<StudentData> allStudents = [];
+  List<Students> allStudents = [];
   List<TeacherData> allTeacher = [];
   int displayedItems = 10;
   int teacherItems = 10;
@@ -88,7 +88,7 @@ class Controller extends GetxController {
     return List.of(allTeacher);
   }
 
-  Future<List<StudentData>> getTotalNewListStudent() async {
+  Future<List<Students>> getTotalNewListStudent() async {
     var response = await http.get(
       Uri.parse('https://backend-shool-project.onrender.com/student/total_new_list'),
     );
@@ -96,7 +96,7 @@ class Controller extends GetxController {
     if (response.statusCode == 201) {
       final List<dynamic> data = json.decode(response.body)['students'];
 
-      List<StudentData> list = data.map((e) => StudentData.fromJson(e)).toList();
+      List<Students> list = data.map((e) => Students.fromJson(e)).toList();
 
       return list;
     } else {
@@ -104,7 +104,7 @@ class Controller extends GetxController {
     }
   }
 
-  Future<List<StudentData>> getNewListStudent() async {
+  Future<List<Students>> getNewListStudent() async {
     var response = await http.get(
       Uri.parse('https://backend-shool-project.onrender.com/student/new_list?page=$currentPage&limit=$displayedItems'),
     );
@@ -112,7 +112,7 @@ class Controller extends GetxController {
     if (response.statusCode == 201) {
       final List<dynamic> data = json.decode(response.body)['students'];
 
-      List<StudentData> list = data.map((e) => StudentData.fromJson(e)).toList();
+      List<Students> list = data.map((e) => Students.fromJson(e)).toList();
 
       return list;
     } else {
@@ -120,9 +120,9 @@ class Controller extends GetxController {
     }
   }
 
-  Future<List<StudentData>> getNextBatchOfStudents() async {
+  Future<List<Students>> getNextBatchOfStudents() async {
     currentPage++;
-    List<StudentData> nextBatch = await getNewListStudent();
+    List<Students> nextBatch = await getNewListStudent();
     allStudents.addAll(nextBatch);
     return List.of(allStudents);
   }

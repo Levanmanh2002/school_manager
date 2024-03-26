@@ -1,83 +1,59 @@
-class Fee {
+class Fees {
   String? sId;
-  String? name;
-  List<SubFees>? subFees;
+  String? maTraCuu;
+  String? tenHocPhi;
+  String? noiDungHocPhi;
+  int? soTienPhatHanh;
+  int? soTienDong;
+  int? soTienNo;
+  bool? status;
+  String? hanDongTien;
   int? iV;
-
-  Fee({this.sId, this.name, this.subFees, this.iV});
-
-  Fee.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    name = json['name'];
-    if (json['subFees'] != null) {
-      subFees = <SubFees>[];
-      json['subFees'].forEach((v) {
-        subFees!.add(SubFees.fromJson(v));
-      });
-    }
-    iV = json['__v'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['name'] = name;
-    if (subFees != null) {
-      data['subFees'] = subFees!.map((v) => v.toJson()).toList();
-    }
-    data['__v'] = iV;
-    return data;
-  }
-}
-
-class SubFees {
-  String? searchCode;
-  String? content;
-  int? issuedAmount;
-  int? paidAmount;
-  int? remainingAmount;
-  int? debtAmount;
-  String? dueDate;
-  String? sId;
   String? createdAt;
   String? updatedAt;
 
-  SubFees({
-    this.searchCode,
-    this.content,
-    this.issuedAmount,
-    this.paidAmount,
-    this.remainingAmount,
-    this.debtAmount,
-    this.dueDate,
+  Fees({
     this.sId,
+    this.maTraCuu,
+    this.tenHocPhi,
+    this.noiDungHocPhi,
+    this.soTienPhatHanh,
+    this.soTienDong,
+    this.soTienNo,
+    this.status,
+    this.hanDongTien,
+    this.iV,
     this.createdAt,
     this.updatedAt,
   });
 
-  SubFees.fromJson(Map<String, dynamic> json) {
-    searchCode = json['searchCode'];
-    content = json['content'];
-    issuedAmount = json['issuedAmount'];
-    paidAmount = json['paidAmount'];
-    remainingAmount = json['remainingAmount'];
-    debtAmount = json['debtAmount'];
-    dueDate = json['dueDate'];
+  Fees.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
+    maTraCuu = json['maTraCuu'];
+    tenHocPhi = json['tenHocPhi'];
+    noiDungHocPhi = json['noiDungHocPhi'];
+    soTienPhatHanh = json['soTienPhatHanh'];
+    soTienDong = json['soTienDong'];
+    soTienNo = json['soTienNo'];
+    status = json['status'];
+    hanDongTien = json['hanDongTien'];
+    iV = json['__v'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['searchCode'] = searchCode;
-    data['content'] = content;
-    data['issuedAmount'] = issuedAmount;
-    data['paidAmount'] = paidAmount;
-    data['remainingAmount'] = remainingAmount;
-    data['debtAmount'] = debtAmount;
-    data['dueDate'] = dueDate;
     data['_id'] = sId;
+    data['maTraCuu'] = maTraCuu;
+    data['tenHocPhi'] = tenHocPhi;
+    data['noiDungHocPhi'] = noiDungHocPhi;
+    data['soTienPhatHanh'] = soTienPhatHanh;
+    data['soTienDong'] = soTienDong;
+    data['soTienNo'] = soTienNo;
+    data['status'] = status;
+    data['hanDongTien'] = hanDongTien;
+    data['__v'] = iV;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     return data;

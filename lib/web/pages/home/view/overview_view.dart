@@ -1,99 +1,108 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:school_web/web/models/classes.dart';
-import 'package:school_web/web/models/student.dart';
-import 'package:school_web/web/models/teacher.dart';
+import 'package:school_web/web/controllers/home/home_controller.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
-import 'package:school_web/web/pages/home/controller/chart_controller.dart';
-import 'package:school_web/web/pages/home/controller/controller.dart';
+import 'package:school_web/web/utils/assets/images.dart';
 
-class OverviewView extends StatefulWidget {
-  const OverviewView({required this.controller, super.key});
+class OverviewView extends StatelessWidget {
+  const OverviewView({required this.homeController, super.key});
 
-  final ChartController controller;
-
-  @override
-  State<OverviewView> createState() => _OverviewViewState();
-}
-
-class _OverviewViewState extends State<OverviewView> {
-  final ctl = Get.put(Controller());
-  List<StudentData>? newStudentData;
-  List<TeacherData>? teacherData;
-  List<Classes>? classData;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadData();
-  }
-
-  Future<void> _loadData() async {
-    newStudentData = await ctl.getTotalNewListStudent();
-    teacherData = await ctl.getTotalTeacher();
-    classData = await ctl.getClassInfo();
-    setState(() {});
-  }
+  final HomeController homeController;
 
   @override
   Widget build(BuildContext context) {
-    final totalStudent = widget.controller.numberOfActiveStudents.value.toDouble() +
-        widget.controller.numberOfInactiveStudents.value.toDouble() +
-        widget.controller.numberOfSuspendedStudents.value.toDouble() +
-        widget.controller.numberOfExpelledStudents.value.toDouble();
-
     if (Responsive.isMobile(context)) {
-      return Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: itemCartDashboard(
-                  context,
-                  image: 'assets/images/student.png',
-                  data: totalStudent.toString(),
-                  text: 'Học sinh',
+      return Obx(
+        () => Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: itemCartDashboard(
+                    context,
+                    image: ImagesAssets.studentImage,
+                    data: homeController.totalAll.toString(),
+                    text: 'Tổng số học sinh',
+                  ),
                 ),
-              ),
-              Expanded(child: _buildItem(context, 'assets/images/student.png', 'Học sinh mới', newStudentData)),
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(child: _buildItem(context, 'assets/images/teach_image.png', 'Giáo viên', teacherData)),
-              Expanded(child: _buildItem(context, 'assets/images/book_image.png', 'Lớp học', classData)),
-            ],
-          ),
-        ],
+                Expanded(
+                  child: _buildItem(
+                    context,
+                    ImagesAssets.studentImage,
+                    'Học sinh mới',
+                    homeController.totalNewStudent.toString(),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildItem(
+                    context,
+                    ImagesAssets.teachImage,
+                    'Giáo viên',
+                    homeController.totalTeacher.toString(),
+                  ),
+                ),
+                Expanded(
+                  child: _buildItem(
+                    context,
+                    ImagesAssets.bookImage,
+                    'Lớp học',
+                    homeController.totalClass.toString(),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       );
     } else {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: itemCartCirle(
-              context,
-              image: 'assets/images/student.png',
-              data: totalStudent.toString(),
-              text: 'Tất cả học sinh',
+      return Obx(
+        () => Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: itemCartCirle(
+                context,
+                image: ImagesAssets.studentImage,
+                data: homeController.totalAll.toString(),
+                text: 'Tổng số học sinh',
+              ),
             ),
-          ),
-          Expanded(
-            child: _buildItemCirle(context, 'assets/images/student.png', 'Học sinh mới', newStudentData),
-          ),
-          Expanded(
-            child: _buildItemCirle(context, 'assets/images/teach_image.png', 'Tất cả giáo viên', teacherData),
-          ),
-          Expanded(
-            child: _buildItemCirle(context, 'assets/images/book_image.png', 'Lớp học', classData),
-          ),
-        ],
+            Expanded(
+              child: _buildItemCirle(
+                context,
+                ImagesAssets.studentImage,
+                'Học sinh mới',
+                homeController.totalNewStudent.toString(),
+              ),
+            ),
+            Expanded(
+              child: _buildItemCirle(
+                context,
+                ImagesAssets.teachImage,
+                'Tất cả giáo viên',
+                homeController.totalTeacher.toString(),
+              ),
+            ),
+            Expanded(
+              child: _buildItemCirle(
+                context,
+                ImagesAssets.bookImage,
+                'Lớp học',
+                homeController.totalClass.toString(),
+              ),
+            ),
+          ],
+        ),
       );
     }
   }
 }
 
-Widget _buildItem<T>(BuildContext context, String image, String text, List<T>? data) {
+Widget _buildItem<T>(BuildContext context, String image, String text, String data) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
     child: Container(
@@ -129,7 +138,7 @@ Widget _buildItem<T>(BuildContext context, String image, String text, List<T>? d
           Column(
             children: [
               Text(
-                data?.length.toString() ?? '0',
+                data,
                 style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, height: 1.5, color: Colors.black),
               ),
               const SizedBox(height: 4),
@@ -145,7 +154,7 @@ Widget _buildItem<T>(BuildContext context, String image, String text, List<T>? d
   );
 }
 
-Widget _buildItemCirle<T>(BuildContext context, String image, String text, List<T>? data) {
+Widget _buildItemCirle<T>(BuildContext context, String image, String text, String data) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
     child: Container(
@@ -174,7 +183,7 @@ Widget _buildItemCirle<T>(BuildContext context, String image, String text, List<
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  data?.length.toString() ?? '0',
+                  data,
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
