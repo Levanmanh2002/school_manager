@@ -1,15 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:school_web/main.dart';
 import 'package:school_web/web/constants/style.dart';
 import 'package:school_web/web/controllers/auth_controller.dart';
-import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
-import 'package:school_web/web/pages/screen/teacher/view/reset_password.dart';
+import 'package:school_web/web/pages/authentication/reset_password.dart';
 import 'package:school_web/web/routes/pages.dart';
+import 'package:school_web/web/utils/assets/images.dart';
 import 'package:school_web/web/widgets/custom_text.dart';
 
 class AuthenticationPage extends StatefulWidget {
@@ -22,7 +22,6 @@ class AuthenticationPage extends StatefulWidget {
 class _AuthenticationPageState extends State<AuthenticationPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final AuthController authController = Get.put(AuthController());
-  final profileController = Get.put(AuthenticationController());
   final _teacherCodeController = TextEditingController();
   final _passTeacherController = TextEditingController();
   final isLoading = false.obs;
@@ -48,15 +47,15 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         Get.snackbar(
           "Lỗi đăng nhập",
           "Sai mã số giáo viên.",
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
+          backgroundColor: appTheme.errorColor,
+          colorText: appTheme.whiteColor,
         );
       } else if (res['status'] == 'wrong_pass') {
         Get.snackbar(
           "Lỗi đăng nhập",
           "Mật khẩu không đúng.",
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
+          backgroundColor: appTheme.errorColor,
+          colorText: appTheme.whiteColor,
         );
       } else if (res['status'] == 'SUCCESS') {
         var token = res['token'];
@@ -69,10 +68,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         Get.snackbar(
           "Thành công",
           "Đăng nhập thành công!",
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
+          backgroundColor: appTheme.successColor,
+          colorText: appTheme.whiteColor,
         );
-        profileController.getProfileData();
+        authController.getProfileData();
         Get.offAllNamed(Routes.DASHBOARD);
 
         return res;
@@ -80,9 +79,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         Get.snackbar(
           "Thất bại",
           "Lỗi đăng nhập.",
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
+          backgroundColor: appTheme.errorColor,
+          colorText: appTheme.whiteColor,
         );
+
         print("Response Status Code: ${response.statusCode}");
       }
     } catch (e) {
@@ -101,137 +101,137 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
 
   @override
   Widget build(BuildContext context) {
-    final authController = Get.put(AuthenticationController());
-
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Center(
-            child: Container(
-              constraints: const BoxConstraints(maxWidth: 400),
-              padding: const EdgeInsets.only(left: 16, right: 16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 12),
-                    child: Image.asset("assets/images/admin.png", width: 300),
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height / 2,
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Column(
-                        children: [
-                          Container(
-                            alignment: Alignment.topLeft,
-                            child: const CustomText(
-                              text: "Chào mừng quay trở lại bảng quản trị",
-                              color: lightGrey,
-                            ),
-                          ),
-                          const SizedBox(height: 15),
-                          TextFormField(
-                            controller: _teacherCodeController,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.deny(RegExp(r'[.,-/]')),
-                              FilteringTextInputFormatter.deny(' '),
-                              LengthLimitingTextInputFormatter(25),
-                            ],
-                            decoration: InputDecoration(
-                              labelText: "Mã số giáo viên",
-                              hintText: "0123456789",
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                            ),
-                            onChanged: (value) => authController.updateUsername(value),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Mã số giáo viên không được để trống';
-                              }
+      body: Form(
+        key: _formKey,
+        child: Center(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 500),
+            padding: const EdgeInsets.only(left: 16, right: 16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  ImagesAssets.adminImage,
+                  width: 200,
+                ),
+                const SizedBox(height: 36),
+                Container(
+                  height: MediaQuery.of(context).size.height / 2,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.topLeft,
+                        child: CustomText(
+                          text: "Chào mừng quay trở lại bảng quản trị",
+                          color: appTheme.lightGrey,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      TextFormField(
+                        controller: _teacherCodeController,
+                        decoration: InputDecoration(
+                          labelText: "Mã số giáo viên",
+                          hintText: "0123456789",
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Mã số giáo viên không được để trống';
+                          }
 
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 15),
-                          TextFormField(
-                            controller: _passTeacherController,
-                            obscureText: true,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.deny(' '),
-                              LengthLimitingTextInputFormatter(25),
-                            ],
-                            decoration: InputDecoration(
-                              labelText: "Password",
-                              hintText: "123456",
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                            ),
-                            onChanged: (value) => authController.updatePassword(value),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Mật khẩu không được để trống';
-                              }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _passTeacherController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: "Password",
+                          hintText: "123456",
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Mật khẩu không được để trống';
+                          }
 
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 15),
-                          InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) => const ResetPasswordView()),
-                              );
-                            },
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              child: const CustomText(text: "Quên mật khẩu?", color: active),
-                            ),
-                          ),
-                          const SizedBox(height: 15),
-                          Obx(
-                            () => InkWell(
-                              onTap: () {
-                                if (_formKey.currentState!.validate()) {
-                                  signinTeacher();
-                                }
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(color: active, borderRadius: BorderRadius.circular(8)),
-                                alignment: Alignment.center,
-                                width: double.maxFinite,
-                                padding: const EdgeInsets.symmetric(vertical: 16),
-                                child: isLoading.value
-                                    ? const Center(
-                                        child: SizedBox(
-                                        width: 16,
-                                        height: 16,
-                                        child: CircularProgressIndicator(),
-                                      ))
-                                    : const CustomText(text: "Đăng nhập", color: Colors.white),
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 15),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const ResetPasswordStudentsView(
+                                title: 'Quên mật khẩu',
+                                oftenTitle: 'lấy mật khẩu',
+                                loginPass: false,
+                                text: 'đặt',
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  RichText(
-                    textAlign: TextAlign.center,
-                    text: const TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "Không có thông tin đăng nhập của quản trị viên? ",
-                          style: TextStyle(color: dark),
+                          );
+                        },
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          child: CustomText(text: "Quên mật khẩu?", color: appTheme.appColor),
                         ),
-                        TextSpan(text: "Yêu cầu thông tin xác thực! ", style: TextStyle(color: active))
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 15),
+                      Obx(
+                        () => InkWell(
+                          onTap: () {
+                            FocusScope.of(context).unfocus();
+                            if (_formKey.currentState!.validate()) {
+                              signinTeacher();
+                            }
+                          },
+                          child: Container(
+                            height: 52,
+                            decoration: BoxDecoration(
+                              color: appTheme.appColor,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            alignment: Alignment.center,
+                            width: double.maxFinite,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: isLoading.value
+                                ? Center(
+                                    child: SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: CircularProgressIndicator(color: appTheme.whiteColor),
+                                    ),
+                                  )
+                                : CustomText(text: "Đăng nhập", color: appTheme.whiteColor),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        child: RichText(
+          textAlign: TextAlign.center,
+          text: const TextSpan(
+            children: [
+              TextSpan(
+                text: "Không có thông tin đăng nhập của quản trị viên? ",
+                style: TextStyle(color: dark),
+              ),
+              TextSpan(text: "Yêu cầu thông tin xác thực! ", style: TextStyle(color: active))
+            ],
           ),
         ),
       ),

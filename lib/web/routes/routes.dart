@@ -3,11 +3,12 @@
 part of 'pages.dart';
 
 abstract class Routes {
+  /// Teacher
+  static const SIGNIN = '/signin';
+
   /// Main
   static const DASHBOARD = '/dashboard';
 
-  /// Teacher
-  static const SIGNIN = '/signin';
   static const HOME = '/home';
   static const PROFILE = '/profile';
   static const SETTING = '/setting';

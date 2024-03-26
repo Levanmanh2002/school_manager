@@ -6,25 +6,38 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:school_web/web/constants/style.dart';
-import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
 import 'package:school_web/web/l10n/app_localizations.dart';
 import 'package:school_web/web/l10n/language_constants.dart';
 import 'package:school_web/web/pages/language/constant.dart';
 import 'package:school_web/web/routes/pages.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:school_web/web/theme/app_theme_util.dart';
+import 'package:school_web/web/theme/base_theme_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
+AppThemeUtil themeUtil = AppThemeUtil();
+
+BaseThemeData get appTheme => themeUtil.getAppTheme();
 
 Future<void> main() async {
   runZonedGuarded<Future<void>>(
     () async {
       await GetStorage.init('MyStorage');
-      Get.put(AuthenticationController());
+      // Get.put(AuthController());
+      // Get.put(HomeController());
+      // Get.put(ListDataController());
+      // Get.put(StudentController());
+      // Get.put(TeacherController());
+      // Get.put(ClassesController());
+      // Get.put(OtherController());
+      // Get.put(ThemeController());
+      final token = await const FlutterSecureStorage().read(key: 'token');
+
       Get.put(const FlutterSecureStorage());
       HttpOverrides.global = MyHttpOverrides();
 
-      runApp(
-        const AppSchoolWeb(),
-      );
+      runApp(AppSchoolWeb(token: token));
     },
     (error, stack) {
       print("Caught an error: $error");
@@ -34,7 +47,8 @@ Future<void> main() async {
 }
 
 class AppSchoolWeb extends StatefulWidget {
-  const AppSchoolWeb({super.key});
+  const AppSchoolWeb({required this.token, super.key});
+  final String? token;
 
   static void setLocale(BuildContext context, Locale locale) async {
     AppSchoolWebState? state = context.findAncestorStateOfType<AppSchoolWebState>();
@@ -76,6 +90,13 @@ class AppSchoolWebState extends State<AppSchoolWeb> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    themeUtil.dispose();
+    _localeStream.close();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: _localeStream.stream,
@@ -90,7 +111,9 @@ class AppSchoolWebState extends State<AppSchoolWeb> {
           AppLocalizations.delegate,
         ],
         supportedLocales: supportedLocales,
-        initialRoute: Routes.SIGNIN,
+        initialRoute: widget.token != null ? Routes.DASHBOARD : Routes.SIGNIN,
+
+        // initialRoute: Routes.SIGNIN,
         getPages: AppPages.pages,
         theme: ThemeData(
           scaffoldBackgroundColor: primaryBg,

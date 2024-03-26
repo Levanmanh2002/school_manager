@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:school_web/web/constants/style.dart';
 import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
-import 'package:school_web/web/pages/screen/teacher/view/reset_password.dart';
 
 class SettingPages extends StatefulWidget {
   const SettingPages({super.key});
@@ -61,7 +60,7 @@ class _SettingPagesState extends State<SettingPages> {
         child: Column(
           children: [
             const SizedBox(height: 16),
-            const ResetPasswordView(),
+            // const ResetPasswordView(),
             const SizedBox(height: 16),
             Center(
               child: InkWell(
