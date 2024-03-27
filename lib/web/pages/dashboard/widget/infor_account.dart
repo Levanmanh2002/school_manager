@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:school_web/web/controllers/auth/auth_controller.dart';
@@ -6,6 +7,7 @@ import 'package:school_web/web/pages/language/language_value.dart';
 import 'package:school_web/web/pages/notifications/notifications.dart';
 import 'package:school_web/web/pages/search/search_view.dart';
 import 'package:school_web/web/routes/pages.dart';
+import 'package:school_web/web/utils/assets/images.dart';
 
 class InforAccount extends StatefulWidget {
   const InforAccount({
@@ -75,12 +77,13 @@ class _InforAccountState extends State<InforAccount> {
                   ),
                   child: Row(
                     children: [
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(
-                          widget.authController.teacherData.value?.avatarUrl ?? 'https://i.stack.imgur.com/l60Hf.png',
-                        ),
-                        radius: 25,
-                      ),
+                      // CircleAvatar(
+                      //   backgroundImage: NetworkImage(
+                      //     widget.authController.teacherData.value?.avatarUrl ?? 'https://i.stack.imgur.com/l60Hf.png',
+                      //   ),
+                      //   radius: 25,
+                      // ),
+
                       const SizedBox(width: 8),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,11 +190,23 @@ class _InforAccountState extends State<InforAccount> {
                 ),
                 child: Row(
                   children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        widget.authController.teacherData.value?.avatarUrl ?? 'https://i.stack.imgur.com/l60Hf.png',
+                    // CircleAvatar(
+                    //   backgroundImage: NetworkImage(
+                    //     widget.authController.teacherData.value?.avatarUrl ?? 'https://i.stack.imgur.com/l60Hf.png',
+                    //   ),
+                    //   radius: 25,
+                    // ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(1000),
+                      child: CachedNetworkImage(
+                        imageUrl: widget.authController.teacherData.value?.avatarUrl.toString() ?? '',
+                        width: 46,
+                        height: 46,
+                        fit: BoxFit.cover,
+                        errorWidget: (context, url, error) {
+                          return Image.asset(ImagesAssets.noUrlImage, fit: BoxFit.cover);
+                        },
                       ),
-                      radius: 25,
                     ),
                     const SizedBox(width: 8),
                     Column(

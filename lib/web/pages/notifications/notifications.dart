@@ -16,6 +16,7 @@ class NotificationsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final AuthController authController = Get.put(AuthController());
     final NotificationsController notificationsController = Get.put(NotificationsController());
+    // final SideBarController sideBarController = Get.put(SideBarController());
 
     String formatDateTime(String dateTimeString) {
       DateTime dateTime = DateTime.parse(dateTimeString);
@@ -120,22 +121,27 @@ class NotificationsView extends StatelessWidget {
           }).toList(),
           PopupMenuItem(
             enabled: false,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Xem thêm',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF3A73C2),
+            child: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Xem thêm',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF3A73C2),
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 8),
-                  Icon(Icons.arrow_forward_ios_rounded, size: 16, color: Color(0xFF3A73C2)),
-                ],
+                    SizedBox(width: 8),
+                    Icon(Icons.arrow_forward_ios_rounded, size: 16, color: Color(0xFF3A73C2)),
+                  ],
+                ),
               ),
             ),
           ),

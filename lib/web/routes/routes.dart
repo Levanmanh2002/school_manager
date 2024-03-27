@@ -12,6 +12,7 @@ abstract class Routes {
   static const HOME = '/home';
   static const PROFILE = '/profile';
   static const SETTING = '/setting';
+  static const NOTIDETAILS = '/noti_details';
   static const ADDTEACHER = '/add_teacher';
   static const ADDSTUDENT = '/add_student';
   static const GETTEACHER = '/get_teacher';

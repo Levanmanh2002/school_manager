@@ -211,6 +211,7 @@ class _DashboardState extends State<Dashboard> {
                     buildListTile('Học phí', IconAssets.moneyIcon, 5, controller),
                     buildListTile('Các khoản thu khác', IconAssets.revenueIcon, 6, controller),
                     buildListTile('Học sinh chuyển lớp', IconAssets.tranferIcon, 7, controller),
+                    buildListTile('Thông báo', IconAssets.notiIcon, 8, controller),
                     // buildListTile('Quản lý đánh giá', IconAssets.evaluateIcon, 9, controller),
                   ],
                 ),
