@@ -1,12 +1,15 @@
 // ignore_for_file: unnecessary_null_comparison
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
+import 'package:school_web/main.dart';
 import 'package:school_web/web/constants/style.dart';
+import 'package:school_web/web/controllers/auth_controller.dart';
+import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
+import 'package:school_web/web/style/style_theme.dart';
+import 'package:school_web/web/utils/assets/icons.dart';
 import 'package:school_web/web/widgets/custom_text_widgets.dart';
 import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
 
@@ -18,6 +21,9 @@ class AddTeacherView extends StatefulWidget {
 }
 
 class _AddTeacherViewState extends State<AddTeacherView> {
+  final TeacherController teacherController = Get.put(TeacherController());
+  final AuthController authController = Get.put(AuthController());
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController teacherCodeController = TextEditingController();
@@ -26,7 +32,6 @@ class _AddTeacherViewState extends State<AddTeacherView> {
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController cccdController = TextEditingController();
-  final TextEditingController birthDateController = TextEditingController();
   final TextEditingController birthPlaceController = TextEditingController();
   final TextEditingController ethnicityController = TextEditingController();
   final TextEditingController nicknameController = TextEditingController();
@@ -35,30 +40,19 @@ class _AddTeacherViewState extends State<AddTeacherView> {
   final TextEditingController experienceController = TextEditingController();
   final TextEditingController departmentController = TextEditingController();
   final TextEditingController roleController = TextEditingController();
-  final TextEditingController joinDateController = TextEditingController();
-  final TextEditingController civilServantController = TextEditingController();
   final TextEditingController contractTypeController = TextEditingController();
   final TextEditingController primarySubjectController = TextEditingController();
   final TextEditingController secondarySubjectController = TextEditingController();
-  final TextEditingController isWorkingController = TextEditingController();
   final TextEditingController academicDegreeController = TextEditingController();
   final TextEditingController standardDegreeController = TextEditingController();
   final TextEditingController politicalTheoryController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
-  final TextEditingController cityController = TextEditingController();
-  final TextEditingController districtController = TextEditingController();
-  final TextEditingController wardController = TextEditingController();
 
   ValueNotifier<DateTime> selectedBirthDateNotifier = ValueNotifier<DateTime>(DateTime.now());
   ValueNotifier<DateTime> selectedJoinDateNotifier = ValueNotifier<DateTime>(DateTime.now());
 
-  late bool isCivilServant = true;
-  late bool isSeletedIsWorking = true;
-
   DateTime? selectedBirthDate;
   DateTime? selectedJoinDate;
-
-  final isLoading = false.obs;
 
   Future<void> _selectDate(BuildContext context, String type) async {
     final DateTime picked = (await showDatePicker(
@@ -83,100 +77,9 @@ class _AddTeacherViewState extends State<AddTeacherView> {
     }
   }
 
-  Future<dynamic> addTeacher() async {
-    isLoading(true);
-
-    var headers = {'Content-Type': 'application/json'};
-    var request = http.Request('POST', Uri.parse('https://backend-shool-project.onrender.com/admin/add'));
-    request.body = json.encode({
-      "fullName": fullNameController.text,
-      "teacherCode": teacherCodeController.text,
-      "email": emailController.text,
-      "password": passwordController.text,
-      "phoneNumber": phoneNumberController.text,
-      "gender": genderController.text,
-      "cccd": cccdController.text,
-      "birthDate": selectedBirthDateNotifier.value.toString(),
-      "birthPlace": birthPlaceController.text,
-      "ethnicity": ethnicityController.text,
-      "nickname": nicknameController.text,
-      "teachingLevel": teachingLevelController.text,
-      "position": positionController.text,
-      "experience": experienceController.text,
-      "department": departmentController.text,
-      "role": roleController.text,
-      "joinDate": selectedJoinDateNotifier.value.toString(),
-      "civilServant": isCivilServant.toString(),
-      "contractType": contractTypeController.text,
-      "primarySubject": primarySubjectController.text,
-      "secondarySubject": secondarySubjectController.text,
-      "isWorking": isSeletedIsWorking.toString(),
-      "academicDegree": academicDegreeController.text,
-      "standardDegree": standardDegreeController.text,
-      "politicalTheory": politicalTheoryController.text,
-      "address": addressController.text,
-      "city": cityController.text,
-      "district": districtController.text,
-      "ward": wardController.text,
-    });
-    request.headers.addAll(headers);
-
-    http.StreamedResponse response = await request.send();
-
-    final res = await json.decode(await response.stream.bytesToString());
-    if (res['status'] == 'email_check') {
-      Get.snackbar(
-        "Thất bại",
-        "Email đã tồn tại!",
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-    } else if (res['status'] == 'phone_check') {
-      Get.snackbar(
-        "Thất bại",
-        "Số điện thoại đã tồn tại!",
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-    } else if (res['status'] == 'code_check') {
-      Get.snackbar(
-        "Thất bại",
-        "Mã giáo viên đã tồn tại!",
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-    } else if (res['status'] == 'cccd_check') {
-      Get.snackbar(
-        "Thất bại",
-        "CCCD đã tồn tại!",
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-    } else if (res['status'] == 'SUCCESS') {
-      Get.snackbar(
-        "Thành công",
-        "Giáo viên đã được thêm thành công!",
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
-      Navigator.of(context);
-      Navigator.of(context);
-    } else {
-      Get.snackbar(
-        "Thất bại",
-        "Lỗi kết nối!",
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-    }
-
-    isLoading(false);
-  }
-
   @override
   void dispose() {
     super.dispose();
-
     fullNameController.dispose();
     teacherCodeController.dispose();
     emailController.dispose();
@@ -184,7 +87,6 @@ class _AddTeacherViewState extends State<AddTeacherView> {
     phoneNumberController.dispose();
     genderController.dispose();
     cccdController.dispose();
-    birthDateController.dispose();
     birthPlaceController.dispose();
     ethnicityController.dispose();
     nicknameController.dispose();
@@ -193,21 +95,15 @@ class _AddTeacherViewState extends State<AddTeacherView> {
     experienceController.dispose();
     departmentController.dispose();
     roleController.dispose();
-    joinDateController.dispose();
-    civilServantController.dispose();
     contractTypeController.dispose();
     primarySubjectController.dispose();
     secondarySubjectController.dispose();
-    isWorkingController.dispose();
     academicDegreeController.dispose();
     standardDegreeController.dispose();
     politicalTheoryController.dispose();
     selectedBirthDateNotifier.dispose();
     selectedJoinDateNotifier.dispose();
     addressController.dispose();
-    cityController.dispose();
-    districtController.dispose();
-    wardController.dispose();
   }
 
   @override
@@ -216,14 +112,14 @@ class _AddTeacherViewState extends State<AddTeacherView> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: appTheme.blackColor),
         titleSpacing: 0.0,
         automaticallyImplyLeading: false,
-        title: const Padding(
-          padding: EdgeInsets.all(16),
+        title: Padding(
+          padding: const EdgeInsets.all(24 + 24),
           child: Text(
             'Thêm giáo viên mới',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: appTheme.blackColor),
           ),
         ),
       ),
@@ -236,7 +132,7 @@ class _AddTeacherViewState extends State<AddTeacherView> {
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: Colors.white,
+              color: appTheme.whiteColor,
               boxShadow: const [
                 BoxShadow(
                   color: Color(0x143A73C2),
@@ -255,32 +151,32 @@ class _AddTeacherViewState extends State<AddTeacherView> {
               children: [
                 Responsive.isMobile(context)
                     ? const SizedBox.shrink()
-                    : const Column(
+                    : Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           CircleAvatar(
-                            backgroundImage: NetworkImage(
+                            backgroundImage: const NetworkImage(
                               'https://firebasestorage.googleapis.com/v0/b/school-manager-793a1.appspot.com/o/image_email%2Fadmin.png?alt=media&token=7523b31b-0184-420c-86b6-b2b873086d60',
                             ),
                             radius: 100,
-                            backgroundColor: Colors.white,
+                            backgroundColor: appTheme.whiteColor,
                           ),
-                          SizedBox(height: 24),
-                          // Container(
-                          //   padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                          //   decoration: BoxDecoration(
-                          //     borderRadius: BorderRadius.circular(8),
-                          //     color: AppColors.primaryColor,
-                          //   ),
-                          //   child: const Text(
-                          //     'Chọn ảnh',
-                          //     style: TextStyle(
-                          //       fontSize: 14,
-                          //       fontWeight: FontWeight.w700,
-                          //       color: AppColors.whiteColor,
-                          //     ),
-                          //   ),
-                          // )
+                          const SizedBox(height: 24),
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: appTheme.appColor,
+                            ),
+                            child: Text(
+                              'Chọn ảnh',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: appTheme.whiteColor,
+                              ),
+                            ),
+                          )
                         ],
                       ),
                 Responsive.isMobile(context) ? const SizedBox.shrink() : const SizedBox(width: 24),
@@ -319,6 +215,8 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                       initialData: '',
                                       keyboardType: TextInputType.name,
                                       validator: true,
+                                      checkLength: true,
+                                      borderRadius: 8,
                                     ),
                                   ),
                                   SizedBox(
@@ -327,8 +225,8 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                       controller: teacherCodeController,
                                       title: 'MSGV',
                                       hintText: 'Nhập mã giáo viên',
-                                      initialData: '',
                                       validator: true,
+                                      borderRadius: 8,
                                     ),
                                   ),
                                   SizedBox(
@@ -337,9 +235,10 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                       controller: emailController,
                                       title: 'Email',
                                       hintText: 'Nhập email',
-                                      initialData: '',
                                       keyboardType: TextInputType.emailAddress,
                                       validator: true,
+                                      checkEmail: true,
+                                      borderRadius: 8,
                                     ),
                                   ),
                                   SizedBox(
@@ -348,8 +247,9 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                       controller: passwordController,
                                       title: 'Mật khẩu',
                                       hintText: 'Nhập mật khẩu',
-                                      initialData: '',
                                       validator: true,
+                                      checkLength: true,
+                                      borderRadius: 8,
                                     ),
                                   ),
                                   SizedBox(
@@ -358,8 +258,8 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                       controller: cccdController,
                                       title: 'CCCD',
                                       hintText: 'Nhập CCCD',
-                                      initialData: '',
                                       validator: true,
+                                      borderRadius: 8,
                                     ),
                                   ),
                                   SizedBox(
@@ -371,6 +271,8 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                       initialData: '',
                                       keyboardType: TextInputType.phone,
                                       validator: true,
+                                      checkPhone: true,
+                                      borderRadius: 8,
                                     ),
                                   ),
                                   SizedBox(
@@ -379,10 +281,9 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                       children: [
                                         Container(
                                           alignment: Alignment.topLeft,
-                                          child: const Text(
+                                          child: Text(
                                             'Giới tính',
-                                            style: TextStyle(
-                                                fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF373A43)),
+                                            style: StyleThemeData.styleSize14Weight400(color: appTheme.textDesColor),
                                           ),
                                         ),
                                         const SizedBox(height: 8),
@@ -408,10 +309,10 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                                 value: value,
                                                 child: Text(
                                                   value,
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w400,
-                                                    color: AppColors.blackColor,
+                                                    color: appTheme.blackColor,
                                                   ),
                                                 ),
                                               );
@@ -430,14 +331,8 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                       children: [
                                         Container(
                                           alignment: Alignment.topLeft,
-                                          child: const Text(
-                                            'Ngày tháng năm sinh',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: AppColors.blackColor,
-                                            ),
-                                          ),
+                                          child: Text('Ngày tháng năm sinh',
+                                              style: StyleThemeData.styleSize14Weight400(color: appTheme.textDesColor)),
                                         ),
                                         const SizedBox(height: 8),
                                         InkWell(
@@ -479,9 +374,10 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                               const SizedBox(height: 24),
                               Container(
                                 alignment: Alignment.topLeft,
-                                child: const Text(
+                                child: Text(
                                   '2. Địa chỉ',
-                                  style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
+                                  style:
+                                      TextStyle(color: appTheme.blackColor, fontSize: 16, fontWeight: FontWeight.w600),
                                 ),
                               ),
                               const SizedBox(height: 24),
@@ -495,34 +391,165 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                       controller: addressController,
                                       title: 'Địa chỉ',
                                       hintText: 'Nhập số nhà và tên đường',
-                                      initialData: '',
+                                      borderRadius: 8,
                                     ),
                                   ),
                                   SizedBox(
                                     width: Responsive.isMobile(context) ? null : 200,
-                                    child: CustomTextWidgets(
-                                      controller: cityController,
-                                      title: 'Thành phố',
-                                      hintText: 'Nhập thành phố',
-                                      initialData: '',
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            'Thành phố',
+                                            style: StyleThemeData.styleSize14Weight500(color: appTheme.textDesColor),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Obx(
+                                          () => Container(
+                                            width:
+                                                Responsive.isMobile(context) ? MediaQuery.of(context).size.width : 200,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(8),
+                                              border: Border.all(color: const Color(0xFFD2D5DA)),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                                              child: DropdownButtonHideUnderline(
+                                                child: DropdownButton<String>(
+                                                  value: authController.selectedProvince.value.isNotEmpty
+                                                      ? authController.selectedProvince.value
+                                                      : null,
+                                                  hint: Text('Chọn thành phố',
+                                                      style: StyleThemeData.styleSize14Weight400()),
+                                                  onChanged: (value) {
+                                                    authController.selectProvince(value!);
+                                                  },
+                                                  items: authController.provinces
+                                                      .where((province) => province.isNotEmpty)
+                                                      .map((province) {
+                                                    return DropdownMenuItem<String>(
+                                                      value: province,
+                                                      child:
+                                                          Text(province, style: StyleThemeData.styleSize14Weight400()),
+                                                    );
+                                                  }).toList(),
+                                                  icon: SvgPicture.asset(IconAssets.caretDownIcon),
+                                                  menuMaxHeight: 400,
+                                                  dropdownColor: appTheme.background,
+                                                  borderRadius: BorderRadius.circular(8),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   SizedBox(
                                     width: Responsive.isMobile(context) ? null : 200,
-                                    child: CustomTextWidgets(
-                                      controller: districtController,
-                                      title: 'Quận/Huyện',
-                                      hintText: 'Nhập quận huyện',
-                                      initialData: '',
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            'Quận/Huyện',
+                                            style: StyleThemeData.styleSize14Weight500(color: appTheme.textDesColor),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Obx(
+                                          () => Container(
+                                            width:
+                                                Responsive.isMobile(context) ? MediaQuery.of(context).size.width : 200,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(8),
+                                              border: Border.all(color: const Color(0xFFD2D5DA)),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                                              child: DropdownButtonHideUnderline(
+                                                child: DropdownButton<String>(
+                                                  value: (authController.selectedDistrict.value.isNotEmpty &&
+                                                          authController.selectedDistrict.value != ' ')
+                                                      ? authController.selectedDistrict.value
+                                                      : null,
+                                                  hint: Text('Chọn quận/huyện',
+                                                      style: StyleThemeData.styleSize14Weight400()),
+                                                  onChanged: (value) {
+                                                    authController.selectDistrict(value!);
+                                                  },
+                                                  items: authController.districts.map((district) {
+                                                    return DropdownMenuItem<String>(
+                                                      value: district,
+                                                      child:
+                                                          Text(district, style: StyleThemeData.styleSize14Weight400()),
+                                                    );
+                                                  }).toList(),
+                                                  icon: SvgPicture.asset(IconAssets.caretDownIcon),
+                                                  menuMaxHeight: 400,
+                                                  dropdownColor: appTheme.background,
+                                                  borderRadius: BorderRadius.circular(8),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   SizedBox(
                                     width: Responsive.isMobile(context) ? null : 200,
-                                    child: CustomTextWidgets(
-                                      controller: wardController,
-                                      title: 'Phường/Xã',
-                                      hintText: 'Nhập phường xã',
-                                      initialData: '',
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            'Phường/Xã',
+                                            style: StyleThemeData.styleSize14Weight500(color: appTheme.textDesColor),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Obx(
+                                          () => Container(
+                                            width:
+                                                Responsive.isMobile(context) ? MediaQuery.of(context).size.width : 200,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(8),
+                                              border: Border.all(color: const Color(0xFFD2D5DA)),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                                              child: DropdownButtonHideUnderline(
+                                                child: DropdownButton<String>(
+                                                  value: authController.selectedWard.value.isNotEmpty
+                                                      ? authController.selectedWard.value
+                                                      : null,
+                                                  hint: Text('Chọn phường/xã',
+                                                      style: StyleThemeData.styleSize14Weight400()),
+                                                  onChanged: (value) {
+                                                    authController.selectWard(value!);
+                                                  },
+                                                  items: authController.wards.map((ward) {
+                                                    return DropdownMenuItem<String>(
+                                                      value: ward,
+                                                      child: Text(ward, style: StyleThemeData.styleSize14Weight400()),
+                                                    );
+                                                  }).toList(),
+                                                  icon: SvgPicture.asset(IconAssets.caretDownIcon),
+                                                  menuMaxHeight: 400,
+                                                  dropdownColor: appTheme.background,
+                                                  borderRadius: BorderRadius.circular(8),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
@@ -530,10 +557,10 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                               const SizedBox(height: 24),
                               Container(
                                 alignment: Alignment.topLeft,
-                                child: const Text(
+                                child: Text(
                                   '3. Trình độ chuyên môn',
                                   style: TextStyle(
-                                    color: AppColors.blackColor,
+                                    color: appTheme.blackColor,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -545,12 +572,12 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                 runSpacing: Responsive.isMobile(context) ? 12 : 32,
                                 children: [
                                   SizedBox(
-                                    width: Responsive.isMobile(context) ? null : MediaQuery.of(context).size.width / 4,
+                                    width: Responsive.isMobile(context) ? null : 200,
                                     child: CustomTextWidgets(
                                       controller: academicDegreeController,
                                       title: 'Học vấn',
                                       hintText: 'Nhập học vấn',
-                                      initialData: '',
+                                      borderRadius: 8,
                                     ),
                                   ),
                                   SizedBox(
@@ -559,7 +586,7 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                       controller: positionController,
                                       title: 'Chức vụ',
                                       hintText: 'Nhập chức vụ',
-                                      initialData: '',
+                                      borderRadius: 8,
                                     ),
                                   ),
                                   SizedBox(
@@ -568,7 +595,7 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                       controller: experienceController,
                                       title: 'Kinh nghiệm giảng dạy',
                                       hintText: 'Nhập kinh nghiệm',
-                                      initialData: '',
+                                      borderRadius: 8,
                                     ),
                                   ),
                                   SizedBox(
@@ -577,13 +604,9 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                       children: [
                                         Container(
                                           alignment: Alignment.topLeft,
-                                          child: const Text(
+                                          child: Text(
                                             'Ngày nhận công việc',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: Color(0xFF373A43),
-                                            ),
+                                            style: StyleThemeData.styleSize14Weight400(color: appTheme.textDesColor),
                                           ),
                                         ),
                                         const SizedBox(height: 8),
@@ -611,8 +634,8 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w500,
                                                     color: selectedJoinDate != null
-                                                        ? AppColors.blackColor
-                                                        : AppColors.textDesColor,
+                                                        ? appTheme.blackColor
+                                                        : appTheme.textDesColor,
                                                   ),
                                                 ),
                                               );
@@ -628,7 +651,7 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                       controller: contractTypeController,
                                       title: 'Loại hợp đồng',
                                       hintText: 'Nhập tên hợp đồng',
-                                      initialData: '',
+                                      borderRadius: 8,
                                     ),
                                   ),
                                 ],
@@ -649,62 +672,93 @@ class _AddTeacherViewState extends State<AddTeacherView> {
         color: Colors.transparent,
         child: Padding(
           padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 40),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              InkWell(
-                onTap: () {
-                  showNoSystemWidget(
-                    context,
-                    title: 'Xác nhận hủy?',
-                    des: 'Bạn có chắc chắn muốn hủy và không thể lưu thông tin chỉnh sửa?',
-                    cancel: 'Đóng',
-                    confirm: 'Đồng ý',
-                    ontap: () {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pop();
-                    },
-                  );
-                },
-                child: Container(
-                  height: 35,
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: AppColors.primaryColor),
-                  ),
-                  child: const Text(
-                    'Hủy',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.primaryColor),
+          child: Obx(
+            () => Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                InkWell(
+                  onTap: () {
+                    showNoSystemWidget(
+                      context,
+                      title: 'Xác nhận hủy?',
+                      des: 'Bạn có chắc chắn muốn hủy và không thể lưu thông tin chỉnh sửa?',
+                      cancel: 'Đóng',
+                      confirm: 'Đồng ý',
+                      ontap: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                        authController.loadData();
+                      },
+                    );
+                  },
+                  child: Container(
+                    height: 35,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: appTheme.appColor),
+                    ),
+                    child: Text(
+                      'Hủy',
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: appTheme.appColor),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 16),
-              InkWell(
-                onTap: () {
-                  if (_formKey.currentState!.validate()) {
-                    addTeacher();
-                  }
-                },
-                child: Container(
-                  height: 35,
-                  padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 16),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: AppColors.primaryColor,
+                const SizedBox(width: 16),
+                InkWell(
+                  onTap: () {
+                    if (_formKey.currentState!.validate()) {
+                      teacherController.addTeacher(
+                        fullName: fullNameController.text,
+                        teacherCode: teacherCodeController.text,
+                        email: emailController.text,
+                        password: passwordController.text,
+                        phoneNumber: phoneNumberController.text,
+                        gender: genderController.text,
+                        cccd: cccdController.text,
+                        birthDate: selectedBirthDate != null ? selectedBirthDate.toString() : '',
+                        birthPlace: birthPlaceController.text,
+                        ethnicity: ethnicityController.text,
+                        nickname: nicknameController.text,
+                        teachingLevel: teachingLevelController.text,
+                        position: positionController.text,
+                        experience: experienceController.text,
+                        department: departmentController.text,
+                        role: roleController.text,
+                        joinDate: selectedJoinDate != null ? selectedJoinDate.toString() : '',
+                        contractType: contractTypeController.text,
+                        primarySubject: primarySubjectController.text,
+                        secondarySubject: secondarySubjectController.text,
+                        academicDegree: academicDegreeController.text,
+                        standardDegree: standardDegreeController.text,
+                        politicalTheory: politicalTheoryController.text,
+                        address: addressController.text,
+                        city: authController.selectedProvince.toString(),
+                        district: authController.selectedDistrict.toString(),
+                        ward: authController.selectedWard.toString(),
+                      );
+                    }
+                  },
+                  child: Container(
+                    height: 35,
+                    padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 16),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: appTheme.appColor,
+                    ),
+                    child: teacherController.isLoading.value
+                        ? const Center(child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator()))
+                        : Text(
+                            'Cập nhật thông tin',
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: appTheme.whiteColor),
+                          ),
                   ),
-                  child: isLoading.value
-                      ? const Center(child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator()))
-                      : const Text(
-                          'Cập nhật thông tin',
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.whiteColor),
-                        ),
                 ),
-              ),
-              const SizedBox(width: 16),
-            ],
+                const SizedBox(width: 16),
+              ],
+            ),
           ),
         ),
       ),
