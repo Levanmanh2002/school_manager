@@ -7,14 +7,12 @@ import 'package:get/get.dart';
 
 import 'package:school_web/web/constants/style.dart';
 import 'package:school_web/web/controllers/auth/auth_controller.dart';
-import 'package:school_web/web/models/student.dart';
+import 'package:school_web/web/controllers/home/home_controller.dart';
+import 'package:school_web/web/controllers/student/student_controller.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
-import 'package:school_web/web/pages/home/controller/chart_controller.dart';
-import 'package:school_web/web/pages/home/controller/controller.dart';
 import 'package:school_web/web/pages/home/view/mobile/widget/build_student_card_widget.dart';
 import 'package:school_web/web/pages/home/view/mobile/widget/table_info_student_widget.dart';
 import 'package:school_web/web/pages/home/view/mobile/widget/title_tab_widget.dart';
-import 'package:school_web/web/pages/screen/student/controller/student_controller.dart';
 import 'package:school_web/web/routes/pages.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
 import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
@@ -31,67 +29,23 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
   final searchController = TextEditingController();
   final ValueNotifier<bool> isClearVisible = ValueNotifier<bool>(false);
 
+  final HomeController homeController = Get.put(HomeController());
   final AuthenticationController authController = Get.put(AuthenticationController());
-  final controller = Get.put(StudentCtl());
-  final ctlNew = Get.put(Controller());
-  final ChartController ctlAll = Get.put(ChartController());
+  final StudentController studentController = Get.put(StudentController());
+
   ValueNotifier<int> tabSelected = ValueNotifier<int>(0);
-
-  final ValueNotifier<bool> isLoadingNotifier = ValueNotifier<bool>(false);
-
-  List<Students> allStudents = [];
-  int currentPage = 1;
-  List<Students>? newStudentData;
 
   @override
   void initState() {
     super.initState();
-    ctlAll.fetchNumberActiveData();
-    ctlAll.fetchNumberInactiveData();
-    ctlAll.fetchNumberSuspendedData();
-    ctlAll.fetchNumberExpelledData();
-    _loadStudent();
     _tabListController = TabController(length: 6, vsync: this);
     searchController.addListener(() {
       isClearVisible.value = searchController.text.isNotEmpty;
     });
 
-    if (allStudents.isEmpty) {
-      _loadData();
-    }
-
     _tabListController.addListener(() {
       tabSelected.value = _tabListController.index;
     });
-  }
-
-  Future<void> _loadStudent() async {
-    newStudentData = await ctlNew.getTotalNewListStudent();
-  }
-
-  Future<void> _loadData() async {
-    List<Students> nextBatch = await getNextBatchOfStudents();
-
-    List<Students> uniqueNewStudents = nextBatch
-        .where((newStudent) => !allStudents.any((existingStudent) => existingStudent.sId == newStudent.sId))
-        .toList();
-
-    setState(() {
-      allStudents.addAll(uniqueNewStudents);
-    });
-  }
-
-  Future<List<Students>> getNextBatchOfStudents() async {
-    currentPage++;
-    List<Students> nextBatch = await ctlNew.getNewListStudent();
-
-    List<Students> uniqueNewStudents = nextBatch
-        .where((newStudent) => !allStudents.any((existingStudent) => existingStudent.sId == newStudent.sId))
-        .toList();
-
-    allStudents.addAll(uniqueNewStudents);
-
-    return uniqueNewStudents;
   }
 
   @override
@@ -100,16 +54,10 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
     _tabListController.dispose();
     searchController.dispose();
     isClearVisible.dispose();
-    isLoadingNotifier.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final totalStudent = ctlAll.numberOfActiveStudents.value.toDouble() +
-        ctlAll.numberOfInactiveStudents.value.toDouble() +
-        ctlAll.numberOfSuspendedStudents.value.toDouble() +
-        ctlAll.numberOfExpelledStudents.value.toDouble();
-
     return SingleChildScrollView(
       child: Padding(
         padding: Responsive.isMobile(context)
@@ -160,7 +108,7 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
                       Container(
                         alignment: Alignment.centerLeft,
                         child: const Text(
-                          'Danh sách giáo viên',
+                          'Danh sách học sinh',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -201,18 +149,18 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
                           ),
                           child: Text(
                             selectedTab == 0
-                                ? 'Tất cả: $totalStudent'
+                                ? 'Tất cả: ${homeController.totalAll}'
                                 : selectedTab == 1
-                                    ? 'Đang học: '
+                                    ? 'Đang học: ${homeController.activeStudents}'
                                     : selectedTab == 2
-                                        ? 'Học sinh mới: ${newStudentData?.length.toDouble()}'
+                                        ? 'Học sinh mới: ${homeController.totalNewStudent}'
                                         : selectedTab == 3
-                                            ? 'Nghỉ học: '
+                                            ? 'Nghỉ học: ${homeController.selfSuspendedStudents}'
                                             : selectedTab == 4
-                                                ? 'Đình chỉ: '
+                                                ? 'Đình chỉ: ${homeController.suspendedStudents}'
                                                 : selectedTab == 5
-                                                    ? 'Bị buổi học: '
-                                                    : 'Tất cả',
+                                                    ? 'Bị buổi học: ${homeController.expelledStudents}'
+                                                    : '',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -275,6 +223,9 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
                                       FilteringTextInputFormatter.deny(RegExp(r'[.,-/]')),
                                       LengthLimitingTextInputFormatter(25),
                                     ],
+                                    onChanged: (value) {
+                                      studentController.searchAllStudent(value);
+                                    },
                                     decoration: InputDecoration(
                                       isDense: true,
                                       fillColor: const Color(0xFFF7F7FC),
@@ -299,6 +250,7 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
                                               onTap: () {
                                                 searchController.clear();
                                                 isClearVisible.value = false;
+                                                studentController.searchAllStudent('');
                                               },
                                               child: Padding(
                                                 padding: const EdgeInsets.only(right: 16),
@@ -361,381 +313,242 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
   }
 
   Widget tabBarView1() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SizedBox(
-        width:
-            Responsive.isTablet(context) ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width / 1.26,
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          children: [
-            const SizedBox(height: 16),
-            Responsive.isMobile(context)
-                ? const SizedBox.shrink()
-                : titleTabWidget(
-                    name: 'Họ và tên',
-                    code: 'MSSV',
-                    industry: 'Ngành học',
-                    email: 'Email',
-                    phone: 'Số điện thoại',
-                    status: 'Trạng thái',
-                    detail: 'Chi tiết',
-                  ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: allStudents.length,
-                itemBuilder: (context, index) {
-                  final student = allStudents[index];
-                  return Responsive.isMobile(context)
-                      ? buildStudentCard(student, context)
-                      : tableInfoStudentWidget(student, context);
-                },
-              ),
-            ),
-            InkWell(
-              onTap: () async {
-                isLoadingNotifier.value = true;
-
-                List<Students> updatedList = await ctlNew.getNextBatchOfStudents();
-
-                isLoadingNotifier.value = false;
-
-                if (updatedList.isNotEmpty) {
-                  setState(() {
-                    List<Students> updatedLists = updatedList
-                        .where((newStudent) =>
-                            !allStudents.any((existingStudent) => existingStudent.sId == newStudent.sId))
-                        .toList();
-
-                    allStudents.addAll(updatedLists);
-                  });
-                } else {
-                  print('Danh sách Student mobile rỗng hoặc có lỗi khi cập nhật');
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                alignment: Alignment.center,
-                child: ValueListenableBuilder<bool>(
-                  valueListenable: isLoadingNotifier,
-                  builder: (context, isLoading, child) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (isLoading)
-                          const SizedBox(
-                            width: 12,
-                            height: 12,
-                            child: CircularProgressIndicator(),
-                          ),
-                        if (isLoading) const SizedBox(width: 8),
-                        const Text(
-                          'Xem thêm',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        if (!isLoading)
-                          const Icon(
-                            Icons.keyboard_arrow_down_outlined,
-                            color: AppColors.primaryColor,
-                          ),
-                      ],
-                    );
+    return Obx(
+      () => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: SizedBox(
+          width: Responsive.isTablet(context)
+              ? MediaQuery.of(context).size.width
+              : MediaQuery.of(context).size.width / 1.26,
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [
+              const SizedBox(height: 16),
+              Responsive.isMobile(context)
+                  ? const SizedBox.shrink()
+                  : titleTabWidget(
+                      name: 'Họ và tên',
+                      code: 'MSSV',
+                      industry: 'Ngành học',
+                      email: 'Email',
+                      phone: 'Số điện thoại',
+                      status: 'Trạng thái',
+                      detail: 'Chi tiết',
+                    ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: studentController.filteredAllStudents.length,
+                  itemBuilder: (context, index) {
+                    final student = studentController.filteredAllStudents[index];
+                    return Responsive.isMobile(context)
+                        ? buildStudentCard(student, context)
+                        : tableInfoStudentWidget(student, context);
                   },
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget tabBarView2() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SizedBox(
-        width:
-            Responsive.isTablet(context) ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width / 1.26,
-        height: MediaQuery.of(context).size.height,
-        child: FutureBuilder<List<Students>>(
-          future: controller.getActiveStudent(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(child: Text('Không có học sinh nào đang học.'));
-            } else {
-              return Column(
-                children: [
-                  const SizedBox(height: 16),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Danh sách học sinh đang học: ${snapshot.data?.length}',
-                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.green),
+    return Obx(
+      () => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: SizedBox(
+          width: Responsive.isTablet(context)
+              ? MediaQuery.of(context).size.width
+              : MediaQuery.of(context).size.width / 1.26,
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [
+              const SizedBox(height: 16),
+              Responsive.isMobile(context)
+                  ? const SizedBox.shrink()
+                  : titleTabWidget(
+                      name: 'Họ và tên',
+                      code: 'MSSV',
+                      industry: 'Ngành học',
+                      email: 'Email',
+                      phone: 'Số điện thoại',
+                      status: 'Trạng thái',
+                      detail: 'Chi tiết',
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        final student = snapshot.data![index];
-                        return Responsive.isMobile(context)
-                            ? buildStudentCard(student, context)
-                            : tableInfoStudentWidget(student, context);
-                      },
-                    ),
-                  ),
-                ],
-              );
-            }
-          },
+              Expanded(
+                child: ListView.builder(
+                  itemCount: studentController.filteredActiveStudents.length,
+                  itemBuilder: (context, index) {
+                    final student = studentController.filteredActiveStudents[index];
+                    return Responsive.isMobile(context)
+                        ? buildStudentCard(student, context)
+                        : tableInfoStudentWidget(student, context);
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget tabBarView3() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SizedBox(
-        width:
-            Responsive.isTablet(context) ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width / 1.26,
-        child: Column(
-          children: [
-            const SizedBox(height: 16),
-            Responsive.isMobile(context)
-                ? const SizedBox.shrink()
-                : titleTabWidget(
-                    name: 'Họ và tên',
-                    code: 'MSSV',
-                    industry: 'Ngành học',
-                    email: 'Email',
-                    phone: 'Số điện thoại',
-                    status: 'Trạng thái',
-                    detail: 'Chi tiết',
-                  ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: allStudents.length,
-                itemBuilder: (context, index) {
-                  final student = allStudents[index];
-                  return Responsive.isMobile(context)
-                      ? buildStudentCard(student, context)
-                      : tableInfoStudentWidget(student, context);
-                },
-              ),
-            ),
-            InkWell(
-              onTap: () async {
-                isLoadingNotifier.value = true;
-
-                List<Students> updatedList = await ctlNew.getNextBatchOfStudents();
-
-                isLoadingNotifier.value = false;
-
-                if (updatedList.isNotEmpty) {
-                  setState(() {
-                    List<Students> updatedLists = updatedList
-                        .where((newStudent) =>
-                            !allStudents.any((existingStudent) => existingStudent.sId == newStudent.sId))
-                        .toList();
-
-                    allStudents.addAll(updatedLists);
-                  });
-                } else {
-                  print('Danh sách Student mobile rỗng hoặc có lỗi khi cập nhật');
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                alignment: Alignment.center,
-                child: ValueListenableBuilder<bool>(
-                  valueListenable: isLoadingNotifier,
-                  builder: (context, isLoading, child) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (isLoading)
-                          const SizedBox(
-                            width: 12,
-                            height: 12,
-                            child: CircularProgressIndicator(),
-                          ),
-                        if (isLoading) const SizedBox(width: 8),
-                        const Text(
-                          'Xem thêm',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        if (!isLoading)
-                          const Icon(
-                            Icons.keyboard_arrow_down_outlined,
-                            color: AppColors.primaryColor,
-                          ),
-                      ],
-                    );
+    return Obx(
+      () => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: SizedBox(
+          width: Responsive.isTablet(context)
+              ? MediaQuery.of(context).size.width
+              : MediaQuery.of(context).size.width / 1.26,
+          child: Column(
+            children: [
+              const SizedBox(height: 16),
+              Responsive.isMobile(context)
+                  ? const SizedBox.shrink()
+                  : titleTabWidget(
+                      name: 'Họ và tên',
+                      code: 'MSSV',
+                      industry: 'Ngành học',
+                      email: 'Email',
+                      phone: 'Số điện thoại',
+                      status: 'Trạng thái',
+                      detail: 'Chi tiết',
+                    ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: studentController.filteredActiveStudents.length,
+                  itemBuilder: (context, index) {
+                    final student = studentController.filteredActiveStudents[index];
+                    return Responsive.isMobile(context)
+                        ? buildStudentCard(student, context)
+                        : tableInfoStudentWidget(student, context);
                   },
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget tabBarView4() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SizedBox(
-        width:
-            Responsive.isTablet(context) ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width / 1.26,
-        height: MediaQuery.of(context).size.height,
-        child: FutureBuilder<List<Students>>(
-          future: controller.getInactiveStudent(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(child: Text('Không có học sinh nào nghỉ học.'));
-            } else {
-              return Column(
-                children: [
-                  const SizedBox(height: 16),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Danh sách học sinh đã nghỉ học: ${snapshot.data?.length}',
-                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.green),
+    return Obx(
+      () => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: SizedBox(
+          width: Responsive.isTablet(context)
+              ? MediaQuery.of(context).size.width
+              : MediaQuery.of(context).size.width / 1.26,
+          child: Column(
+            children: [
+              const SizedBox(height: 16),
+              Responsive.isMobile(context)
+                  ? const SizedBox.shrink()
+                  : titleTabWidget(
+                      name: 'Họ và tên',
+                      code: 'MSSV',
+                      industry: 'Ngành học',
+                      email: 'Email',
+                      phone: 'Số điện thoại',
+                      status: 'Trạng thái',
+                      detail: 'Chi tiết',
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        final student = snapshot.data![index];
-                        return Responsive.isMobile(context)
-                            ? buildStudentCard(student, context)
-                            : tableInfoStudentWidget(student, context);
-                      },
-                    ),
-                  ),
-                ],
-              );
-            }
-          },
+              Expanded(
+                child: ListView.builder(
+                  itemCount: studentController.filteredInactiveStudents.length,
+                  itemBuilder: (context, index) {
+                    final student = studentController.filteredInactiveStudents[index];
+                    return Responsive.isMobile(context)
+                        ? buildStudentCard(student, context)
+                        : tableInfoStudentWidget(student, context);
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget tabBarView5() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SizedBox(
-        width:
-            Responsive.isTablet(context) ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width / 1.26,
-        height: MediaQuery.of(context).size.height,
-        child: FutureBuilder<List<Students>>(
-          future: controller.getSuspendedStudent(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(child: Text('Không có học sinh nào bị đình chỉ.'));
-            } else {
-              return Column(
-                children: [
-                  const SizedBox(height: 16),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Danh sách học sinh đang bị đình chỉ: ${snapshot.data?.length}',
-                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.green),
+    return Obx(
+      () => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: SizedBox(
+          width: Responsive.isTablet(context)
+              ? MediaQuery.of(context).size.width
+              : MediaQuery.of(context).size.width / 1.26,
+          child: Column(
+            children: [
+              const SizedBox(height: 16),
+              Responsive.isMobile(context)
+                  ? const SizedBox.shrink()
+                  : titleTabWidget(
+                      name: 'Họ và tên',
+                      code: 'MSSV',
+                      industry: 'Ngành học',
+                      email: 'Email',
+                      phone: 'Số điện thoại',
+                      status: 'Trạng thái',
+                      detail: 'Chi tiết',
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        final student = snapshot.data![index];
-                        return Responsive.isMobile(context)
-                            ? buildStudentCard(student, context)
-                            : tableInfoStudentWidget(student, context);
-                      },
-                    ),
-                  ),
-                ],
-              );
-            }
-          },
+              Expanded(
+                child: ListView.builder(
+                  itemCount: studentController.filteredSuspendedStudents.length,
+                  itemBuilder: (context, index) {
+                    final student = studentController.filteredSuspendedStudents[index];
+                    return Responsive.isMobile(context)
+                        ? buildStudentCard(student, context)
+                        : tableInfoStudentWidget(student, context);
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget tabBarView6() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SizedBox(
-        width:
-            Responsive.isTablet(context) ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width / 1.26,
-        height: MediaQuery.of(context).size.height,
-        child: FutureBuilder<List<Students>>(
-          future: controller.getExpelledStudent(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(child: Text('Không có học sinh nào bị đuổi học.'));
-            } else {
-              return Column(
-                children: [
-                  const SizedBox(height: 16),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Danh sách học sinh bị đuổi học: ${snapshot.data?.length}',
-                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.green),
+    return Obx(
+      () => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: SizedBox(
+          width: Responsive.isTablet(context)
+              ? MediaQuery.of(context).size.width
+              : MediaQuery.of(context).size.width / 1.26,
+          child: Column(
+            children: [
+              const SizedBox(height: 16),
+              Responsive.isMobile(context)
+                  ? const SizedBox.shrink()
+                  : titleTabWidget(
+                      name: 'Họ và tên',
+                      code: 'MSSV',
+                      industry: 'Ngành học',
+                      email: 'Email',
+                      phone: 'Số điện thoại',
+                      status: 'Trạng thái',
+                      detail: 'Chi tiết',
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        final student = snapshot.data![index];
-                        return Responsive.isMobile(context)
-                            ? buildStudentCard(student, context)
-                            : tableInfoStudentWidget(student, context);
-                      },
-                    ),
-                  ),
-                ],
-              );
-            }
-          },
+              Expanded(
+                child: ListView.builder(
+                  itemCount: studentController.filteredExpelledStudents.length,
+                  itemBuilder: (context, index) {
+                    final student = studentController.filteredExpelledStudents[index];
+                    return Responsive.isMobile(context)
+                        ? buildStudentCard(student, context)
+                        : tableInfoStudentWidget(student, context);
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

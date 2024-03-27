@@ -11,7 +11,6 @@ import 'package:school_web/web/component_library/image_picker_dialog.dart';
 import 'package:school_web/web/controllers/student/student_controller.dart';
 import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/models/student.dart';
-import 'package:school_web/web/widgets/custom_text_widgets.dart';
 import 'package:school_web/web/widgets/full_screen_image_screen.dart';
 
 class ProfileStudentView extends StatefulWidget {
@@ -57,8 +56,6 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
   final TextEditingController _motherFullNameController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
   final TextEditingController _isStudyingController = TextEditingController();
-
-  late final String? _selectedGender = studentController.studentData.value?.gender;
 
   ValueNotifier<DateTime> selectedBirthDateNotifier = ValueNotifier<DateTime>(DateTime.now());
   ValueNotifier<DateTime> selectedJoinDateNotifier = ValueNotifier<DateTime>(DateTime.now());
@@ -110,41 +107,9 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
     if (response.statusCode == 201) {
       final jsonData = await response.stream.bytesToString();
       final student = Students.fromJson(json.decode(jsonData));
-
-      studentController.studentData.value = student;
     } else {
       print(response.reasonPhrase);
       authController.logout();
-    }
-  }
-
-  Future<dynamic> updateAvatar() async {
-    var request = http.MultipartRequest(
-      'PUT',
-      Uri.parse(
-          'https://backend-shool-project.onrender.com/user/edit-avatar/${studentController.studentData.value!.sId}'),
-    );
-    request.files.add(await http.MultipartFile.fromPath('file', selectedImagePath.toString()));
-
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 201) {
-      Get.back();
-      Get.snackbar(
-        "Thành công",
-        "Đổi ảnh đại diện thành công!",
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
-      print(await response.stream.bytesToString());
-    } else {
-      Get.snackbar(
-        "Thất bại",
-        "Lỗi đổi ảnh đại diện!",
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-      print(response.reasonPhrase);
     }
   }
 
@@ -189,15 +154,15 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
   Widget build(BuildContext context) {
     bool isEditing = false;
 
-    final birthDateJson = studentController.studentData.value?.birthDate;
+    // final birthDateJson = studentController.studentData.value?.birthDate;
 
     final dateFormatter = DateFormat('dd/MM/yyyy');
-    DateTime? birthDate;
-    if (birthDateJson != null && birthDateJson.isNotEmpty) {
-      birthDate = DateTime.tryParse(birthDateJson);
-    }
+    // DateTime? birthDate;
+    // if (birthDateJson != null && birthDateJson.isNotEmpty) {
+    //   birthDate = DateTime.tryParse(birthDateJson);
+    // }
 
-    final formattedBirthDate = birthDate != null ? dateFormatter.format(birthDate) : 'N/A';
+    // final formattedBirthDate = birthDate != null ? dateFormatter.format(birthDate) : 'N/A';
 
     return Scaffold(
       appBar: AppBar(
@@ -212,12 +177,12 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                   Get.back();
                 },
                 icon: const Icon(Icons.arrow_back, size: 20, color: Colors.black)),
-            Obx(
-              () => Text(
-                isEditing ? 'Edit Profile' : studentController.studentData.value?.fullName ?? '',
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
-              ),
-            ),
+            // Obx(
+            //   () => Text(
+            //     isEditing ? 'Edit Profile' : studentController.studentData.value?.fullName ?? '',
+            //     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
+            //   ),
+            // ),
           ],
         ),
         actions: [
@@ -227,37 +192,37 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
               () => IconButton(
                 onPressed: () async {
                   if (isEditing) {
-                    await studentController.getPutProfileStudent(
-                      _gmailController.text,
-                      _phoneController.text,
-                      _fullNameController.text,
-                      selectedBirthDateNotifier.value.toString(),
-                      _cccdController.text,
-                      _birthPlaceController.text,
-                      _customYearController.text,
-                      _genderController.text,
-                      _hometownController.text,
-                      _permanentAddressController.text,
-                      _occupationController.text,
-                      _contactPhoneController.text,
-                      _contactAddressController.text,
-                      _educationLevelController.text,
-                      _academicPerformanceController.text,
-                      _conductController.text,
-                      _classRanking10Controller.text,
-                      _classRanking11Controller.text,
-                      _classRanking12Controller.text,
-                      _graduationYearController.text,
-                      _ethnicityController.text,
-                      _religionController.text,
-                      _beneficiaryController.text,
-                      _areaController.text,
-                      selectedJoinDateNotifier.value.toString(),
-                      _idCardIssuedPlaceController.text,
-                      _fatherFullNameController.text,
-                      _motherFullNameController.text,
-                      _notesController.text,
-                    );
+                    // await studentController.getPutProfileStudent(
+                    //   _gmailController.text,
+                    //   _phoneController.text,
+                    //   _fullNameController.text,
+                    //   selectedBirthDateNotifier.value.toString(),
+                    //   _cccdController.text,
+                    //   _birthPlaceController.text,
+                    //   _customYearController.text,
+                    //   _genderController.text,
+                    //   _hometownController.text,
+                    //   _permanentAddressController.text,
+                    //   _occupationController.text,
+                    //   _contactPhoneController.text,
+                    //   _contactAddressController.text,
+                    //   _educationLevelController.text,
+                    //   _academicPerformanceController.text,
+                    //   _conductController.text,
+                    //   _classRanking10Controller.text,
+                    //   _classRanking11Controller.text,
+                    //   _classRanking12Controller.text,
+                    //   _graduationYearController.text,
+                    //   _ethnicityController.text,
+                    //   _religionController.text,
+                    //   _beneficiaryController.text,
+                    //   _areaController.text,
+                    //   selectedJoinDateNotifier.value.toString(),
+                    //   _idCardIssuedPlaceController.text,
+                    //   _fatherFullNameController.text,
+                    //   _motherFullNameController.text,
+                    //   _notesController.text,
+                    // );
                   } else {
                     isEditing = true;
                   }
@@ -284,7 +249,7 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => FullScreenImageScreen(
-                              imageUrl: studentController.studentData.value!.avatarUrl ??
+                              imageUrl:
                                   'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
                             ),
                           ),
@@ -292,8 +257,7 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                       },
                       child: CircleAvatar(
                         backgroundImage: NetworkImage(
-                          studentController.studentData.value?.avatarUrl ??
-                              'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                          'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
                         ),
                         radius: 60,
                       ),
@@ -308,7 +272,6 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                                   final result = await ImagePickerDialog.imgFromGallery();
                                   if (result.isNotEmpty) {
                                     selectedImagePath = result[0];
-                                    updateAvatar();
                                   }
                                 },
                                 child: Container(
@@ -344,136 +307,36 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      isEditing == true
-                          ? CustomTextWidgets(
-                              controller: _fullNameController,
-                              title: 'Họ và Tên',
-                              initialData: studentController.studentData.value?.fullName,
-                              keyboardType: TextInputType.name,
-                            )
-                          : CustomTextWidgets(
-                              title: 'Mã sinh viên',
-                              initialData: studentController.studentData.value?.mssv,
-                              color: Colors.green,
-                            ),
-                      const SizedBox(height: 12),
-                      isEditing == true
-                          ? const SizedBox.shrink()
-                          : CustomTextWidgets(
-                              title: 'Học sinh lớp',
-                              initialData: studentController.studentData.value?.classStudent,
-                              color: Colors.green,
-                            ),
-                      const SizedBox(height: 12),
-                      CustomTextWidgets(
-                        controller: _gmailController,
-                        title: 'Email',
-                        initialData: studentController.studentData.value?.gmail,
-                        keyboardType: TextInputType.emailAddress,
-                        validator: true,
-                      ),
-                      const SizedBox(height: 12),
-                      CustomTextWidgets(
-                        controller: _phoneController,
-                        title: 'Số điện thoại',
-                        initialData: studentController.studentData.value?.phone,
-                        keyboardType: TextInputType.phone,
-                        validator: true,
-                      ),
-                      const SizedBox(height: 12),
-                      CustomTextWidgets(
-                        controller: _cccdController,
-                        title: 'CMND/CCCD',
-                        initialData: studentController.studentData.value?.cccd,
-                        validator: true,
-                      ),
-                      const SizedBox(height: 12),
-                      isEditing == true
-                          ? Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: const Color(0xFF9AA0AC)),
-                              ),
-                              child: DropdownButtonFormField<String>(
-                                decoration: const InputDecoration(
-                                  enabledBorder: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                ),
-                                value: _selectedGender,
-                                elevation: 0,
-                                icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                                padding: const EdgeInsets.only(left: 16, right: 24),
-                                items: ["Nam", "Nữ", "Khác"].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                onChanged: (newValue) {
-                                  _genderController.text = newValue!;
-                                },
-                              ),
-                            )
-                          : CustomTextWidgets(
-                              controller: _genderController,
-                              title: 'Giới tính',
-                              initialData: studentController.studentData.value?.gender,
-                            ),
-                      const SizedBox(height: 12),
-                      isEditing == true
-                          ? InkWell(
-                              onTap: () async {
-                                await _selectDate(context, 'birth');
-                              },
-                              child: ValueListenableBuilder(
-                                  valueListenable: selectedBirthDateNotifier,
-                                  builder: (context, date, child) {
-                                    return CustomTextWidgets(
-                                      title: 'Ngày sinh',
-                                      initialData: selectedBirthDate != null
-                                          ? '${selectedBirthDate!.day}/${selectedBirthDate!.month}/${selectedBirthDate!.year}'
-                                          : formattedBirthDate,
-                                      keyboardType: TextInputType.datetime,
-                                    );
-                                  }),
-                            )
-                          : CustomTextWidgets(
-                              title: 'Ngày sinh',
-                              // initialData: studentController.studentData.value?.birthDate,
-                              keyboardType: TextInputType.datetime,
-                              initialData: formattedBirthDate,
-                            ),
-                      const SizedBox(height: 12),
-                      CustomTextWidgets(
-                        controller: _ethnicityController,
-                        title: 'Dân tộc',
-                        initialData: studentController.studentData.value?.ethnicity,
-                      ),
-                      const SizedBox(height: 12),
-                      CustomTextWidgets(
-                        controller: _contactAddressController,
-                        title: 'Địa chỉ liên lạc',
-                        initialData: studentController.studentData.value?.contactAddress,
-                      ),
-                      const SizedBox(height: 12),
-                      CustomTextWidgets(
-                        controller: _beneficiaryController,
-                        title: 'Đối tượng học sinh (khu vực nào)',
-                        initialData: studentController.studentData.value?.beneficiary,
-                      ),
-                      const SizedBox(height: 12),
+                      // isEditing == true
+                      //     ? InkWell(
+                      //         onTap: () async {
+                      //           await _selectDate(context, 'birth');
+                      //         },
+                      //         child: ValueListenableBuilder(
+                      //             valueListenable: selectedBirthDateNotifier,
+                      //             builder: (context, date, child) {
+                      //               return CustomTextWidgets(
+                      //                 title: 'Ngày sinh',
+                      //                 initialData: selectedBirthDate != null
+                      //                     ? '${selectedBirthDate!.day}/${selectedBirthDate!.month}/${selectedBirthDate!.year}'
+                      //                     : formattedBirthDate,
+                      //                 keyboardType: TextInputType.datetime,
+                      //               );
+                      //             }),
+                      //       )
+                      //     : CustomTextWidgets(
+                      //         title: 'Ngày sinh',
+                      //         // initialData: studentController.studentData.value?.birthDate,
+                      //         keyboardType: TextInputType.datetime,
+                      //         initialData: formattedBirthDate,
+                      //       ),
+                      // const SizedBox(height: 12),
                       Container(
                         alignment: Alignment.topLeft,
                         child: const Text(
                           '2. Thông học lực học sinh',
                           style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
                         ),
-                      ),
-                      const SizedBox(height: 12),
-                      CustomTextWidgets(
-                        controller: _customYearController,
-                        title: 'Năm vào học',
-                        initialData: studentController.studentData.value?.customYear,
                       ),
                       const SizedBox(height: 12),
                       Container(
@@ -484,38 +347,6 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      CustomTextWidgets(
-                        controller: _contactPhoneController,
-                        title: 'Số điện thoại liên lạc',
-                        initialData: studentController.studentData.value?.contactPhone,
-                      ),
-                      const SizedBox(height: 12),
-                      CustomTextWidgets(
-                        controller: _fatherFullNameController,
-                        title: 'Họ tên Cha',
-                        initialData: studentController.studentData.value?.fatherFullName,
-                      ),
-                      const SizedBox(height: 12),
-                      CustomTextWidgets(
-                        controller: _motherFullNameController,
-                        title: 'Họ tên Mẹ',
-                        initialData: studentController.studentData.value?.motherFullName,
-                      ),
-                      const SizedBox(height: 12),
-                      CustomTextWidgets(
-                        controller: _notesController,
-                        title: 'Ghi chú',
-                        initialData: studentController.studentData.value?.notes,
-                      ),
-                      const SizedBox(height: 12),
-                      isEditing == true
-                          ? const SizedBox.shrink()
-                          : CustomTextWidgets(
-                              title: 'Tình trạng học sinh',
-                              initialData: studentController.studentData.value?.isStudying == true
-                                  ? 'Học sinh đang học'
-                                  : 'Học sinh đã nghỉ học',
-                            ),
                       const SizedBox(height: 12),
                     ],
                   ),
