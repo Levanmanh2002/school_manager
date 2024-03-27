@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:school_web/web/constants/style.dart';
-import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
+import 'package:school_web/web/controllers/auth/auth_controller.dart';
 
 class SettingPages extends StatefulWidget {
   const SettingPages({super.key});

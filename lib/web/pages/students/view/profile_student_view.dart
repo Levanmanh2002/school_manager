@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:school_web/web/component_library/image_picker_dialog.dart';
 import 'package:school_web/web/controllers/student/student_controller.dart';
-import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
+import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/models/student.dart';
 import 'package:school_web/web/widgets/custom_text_widgets.dart';
 import 'package:school_web/web/widgets/full_screen_image_screen.dart';

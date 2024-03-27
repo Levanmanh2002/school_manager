@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
+import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/dashboard/controller/side_bar_controller.dart';
 import 'package:school_web/web/pages/dashboard/widget/infor_account.dart';
@@ -39,6 +39,7 @@ class _DashboardState extends State<Dashboard> {
     super.dispose();
     searchController.dispose();
     isClearVisible.dispose();
+    controller.dispose();
   }
 
   @override

@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:school_web/web/component_library/generator_util.dart';
-import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
+import 'package:school_web/web/controllers/auth/auth_controller.dart';
 
 class FullScreenImageScreen extends StatefulWidget {
   const FullScreenImageScreen({required this.imageUrl, super.key});

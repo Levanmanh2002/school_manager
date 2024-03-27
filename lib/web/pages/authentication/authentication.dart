@@ -107,7 +107,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         key: _formKey,
         child: Center(
           child: Container(
-            constraints: const BoxConstraints(maxWidth: 500),
+            constraints: const BoxConstraints(maxWidth: 400),
             padding: const EdgeInsets.only(left: 16, right: 16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

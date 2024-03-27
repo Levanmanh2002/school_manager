@@ -5,14 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:school_web/web/constants/style.dart';
+import 'package:school_web/web/controllers/home/home_controller.dart';
+import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
-import 'package:school_web/web/models/teacher.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
-import 'package:school_web/web/pages/dashboard/controller/side_bar_controller.dart';
 import 'package:school_web/web/pages/home/view/mobile/widget/build_teacher_card_widget.dart';
 import 'package:school_web/web/pages/home/view/mobile/widget/table_info_teacher_widget.dart';
 import 'package:school_web/web/pages/home/view/mobile/widget/title_tab_widget.dart';
-import 'package:school_web/web/pages/screen/teacher/controller/teacher_controller.dart';
 import 'package:school_web/web/routes/pages.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
 import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
@@ -29,12 +28,10 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
   final searchController = TextEditingController();
   final ValueNotifier<bool> isClearVisible = ValueNotifier<bool>(false);
 
-  final controller = Get.put(TeacherController());
+  final HomeController homeController = Get.put(HomeController());
+  final TeacherController teacherController = Get.put(TeacherController());
   final AuthenticationController authController = Get.put(AuthenticationController());
-  List<TeacherData> workingTeachers = [];
-  List<TeacherData> retiredTeachers = [];
   ValueNotifier<int> tabSelected = ValueNotifier<int>(0);
-  final ctl = SideBarController();
 
   @override
   void initState() {
@@ -43,22 +40,9 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
     searchController.addListener(() {
       isClearVisible.value = searchController.text.isNotEmpty;
     });
-    if (workingTeachers.isEmpty || retiredTeachers.isEmpty) {
-      fetchData();
-    }
     _tabListController.addListener(() {
       tabSelected.value = _tabListController.index;
     });
-  }
-
-  Future<void> fetchData() async {
-    try {
-      workingTeachers = await controller.fetchWorkingTeachers();
-      retiredTeachers = await controller.fetchRetiredTeachers();
-      setState(() {});
-    } catch (error) {
-      print('Error fetching data: $error');
-    }
   }
 
   @override
@@ -67,6 +51,7 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
     _tabListController.dispose();
     searchController.dispose();
     isClearVisible.dispose();
+    tabSelected.dispose();
   }
 
   @override
@@ -150,8 +135,8 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
                           ),
                           child: Text(
                             selectedTab == 0
-                                ? 'Giáo viên đang làm việc: ${workingTeachers.length}'
-                                : 'Giáo viên nghỉ việc: ${retiredTeachers.length}',
+                                ? 'Giáo viên đang làm việc: ${homeController.totalWorkingTeachers.toString()}'
+                                : 'Giáo viên nghỉ việc: ${homeController.totalRetiredTeachers.toString()}',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -192,6 +177,9 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
                                       FilteringTextInputFormatter.deny(RegExp(r'[.,-/]')),
                                       LengthLimitingTextInputFormatter(25),
                                     ],
+                                    onChanged: (value) {
+                                      teacherController.searchTeachers(value);
+                                    },
                                     decoration: InputDecoration(
                                       isDense: true,
                                       fillColor: const Color(0xFFF7F7FC),
@@ -216,6 +204,7 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
                                               onTap: () {
                                                 searchController.clear();
                                                 isClearVisible.value = false;
+                                                teacherController.searchTeachers('');
                                               },
                                               child: Padding(
                                                 padding: const EdgeInsets.only(right: 16),
@@ -225,7 +214,11 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
                                                     shape: BoxShape.circle,
                                                     color: Color(0xFF7E8695),
                                                   ),
-                                                  child: const Icon(Icons.clear_rounded, color: Colors.white, size: 12),
+                                                  child: const Icon(
+                                                    Icons.clear_rounded,
+                                                    color: Colors.white,
+                                                    size: 12,
+                                                  ),
                                                 ),
                                               ),
                                             )
@@ -275,15 +268,17 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
                                         status: 'Trạng thái',
                                         detail: 'Chi tiết',
                                       ),
-                                Expanded(
-                                  child: ListView.builder(
-                                    itemCount: workingTeachers.length,
-                                    itemBuilder: (context, index) {
-                                      final teacher = workingTeachers[index];
-                                      return Responsive.isMobile(context)
-                                          ? buildTeacherCard(teacher, context)
-                                          : tableInfoTeacherWidget(teacher, context);
-                                    },
+                                Obx(
+                                  () => Expanded(
+                                    child: ListView.builder(
+                                      itemCount: teacherController.filteredTeachers.length,
+                                      itemBuilder: (context, index) {
+                                        final teacher = teacherController.filteredTeachers[index];
+                                        return Responsive.isMobile(context)
+                                            ? buildTeacherCard(teacher, context)
+                                            : tableInfoTeacherWidget(teacher, context);
+                                      },
+                                    ),
                                   ),
                                 ),
                               ],
@@ -310,15 +305,17 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
                                         status: 'Trạng thái',
                                         detail: 'Chi tiết',
                                       ),
-                                Expanded(
-                                  child: ListView.builder(
-                                    itemCount: retiredTeachers.length,
-                                    itemBuilder: (context, index) {
-                                      final teacher = retiredTeachers[index];
-                                      return Responsive.isMobile(context)
-                                          ? buildTeacherCard(teacher, context)
-                                          : tableInfoTeacherWidget(teacher, context);
-                                    },
+                                Obx(
+                                  () => Expanded(
+                                    child: ListView.builder(
+                                      itemCount: teacherController.filteredRetiredTeachers.length,
+                                      itemBuilder: (context, index) {
+                                        final teacher = teacherController.filteredRetiredTeachers[index];
+                                        return Responsive.isMobile(context)
+                                            ? buildTeacherCard(teacher, context)
+                                            : tableInfoTeacherWidget(teacher, context);
+                                      },
+                                    ),
                                   ),
                                 ),
                               ],

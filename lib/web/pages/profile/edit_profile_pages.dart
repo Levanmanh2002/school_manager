@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:school_web/web/component_library/image_picker_dialog.dart';
 import 'package:school_web/web/constants/style.dart';
-import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
+import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/models/teacher.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/routes/pages.dart';
