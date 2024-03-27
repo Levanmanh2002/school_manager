@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:school_web/main.dart';
+import 'package:school_web/web/controllers/auth_controller.dart';
 import 'package:school_web/web/controllers/notifications/notifications_controller.dart';
+import 'package:school_web/web/style/style_theme.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
+import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
 
 class NotificationsView extends StatelessWidget {
   const NotificationsView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AuthController authController = Get.put(AuthController());
     final NotificationsController notificationsController = Get.put(NotificationsController());
 
     String formatDateTime(String dateTimeString) {
@@ -31,7 +36,7 @@ class NotificationsView extends StatelessWidget {
       ),
       itemBuilder: (BuildContext context) {
         return [
-          const PopupMenuItem(
+          PopupMenuItem(
             enabled: false,
             child: Column(
               children: [
@@ -40,24 +45,33 @@ class NotificationsView extends StatelessWidget {
                   children: [
                     Text(
                       'Thông báo gần đây',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF3A73C2),
-                      ),
+                      style: StyleThemeData.styleSize16Weight500(color: appTheme.appColor),
                     ),
-                    SizedBox(width: 60),
-                    Text(
-                      'Đánh dấu đã đọc tất cả',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF3A73C2),
+                    const SizedBox(width: 60),
+                    InkWell(
+                      onTap: () {
+                        if (authController.teacherData.value?.system == 1 ||
+                            authController.teacherData.value?.system == 2) {
+                          notificationsController.updateMarkAllAsRead();
+                        } else {
+                          showNoSystemWidget(
+                            context,
+                            title: 'Bạn không có quyền',
+                            des: 'Xin lỗi, bạn không có quyền truy cập chức năng của giáo viên.',
+                            cancel: 'Hủy',
+                            confirm: 'Xác nhận',
+                            ontap: () => Navigator.pop(context),
+                          );
+                        }
+                      },
+                      child: Text(
+                        'Đánh dấu đã đọc tất cả',
+                        style: StyleThemeData.styleSize16Weight500(color: appTheme.appColor),
                       ),
                     ),
                   ],
                 ),
-                Divider(),
+                const Divider(),
               ],
             ),
           ),
@@ -67,38 +81,35 @@ class NotificationsView extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: Row(
                   children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        notification.teacherId?.avatarUrl ??
-                            'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(1000),
+                      child: SvgPicture.asset(
+                        (notification.studentId != null)
+                            ? IconAssets.notiStudentIcon
+                            : (notification.teacherId != null)
+                                ? IconAssets.notiTeacherIcon
+                                : (notification.classIds != null)
+                                    ? IconAssets.notiClassIcon
+                                    : (notification.feesIds != null)
+                                        ? IconAssets.notiFeesIcon
+                                        : (notification.uniformIds != null)
+                                            ? IconAssets.notiFeesIcon
+                                            : IconAssets.notiIcon,
                       ),
-                      radius: 25,
                     ),
                     const SizedBox(width: 12),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Thông báo!',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
-                        ),
+                        Text(notification.title ?? '', style: StyleThemeData.styleSize16Weight600()),
                         const SizedBox(height: 4),
                         Text(
                           notification.message ?? '',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                          ),
+                          style: StyleThemeData.styleSize14Weight400(color: appTheme.textDesColor),
                         ),
-                        const SizedBox(height: 4),
                         Text(
                           formatDateTime(notification.createdAt ?? ''),
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey,
-                          ),
+                          style: StyleThemeData.styleSize14Weight400(color: appTheme.strokeColor),
                         ),
                       ],
                     ),
