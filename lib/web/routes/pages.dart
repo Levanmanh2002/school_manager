@@ -14,7 +14,6 @@ import 'package:school_web/web/pages/screen/student/view/add_student_view.dart';
 import 'package:school_web/web/pages/screen/student/view/get_student_view.dart';
 import 'package:school_web/web/pages/screen/teacher/view/add_teacher_view.dart';
 import 'package:school_web/web/pages/screen/teacher/view/get_teachers_view.dart';
-import 'package:school_web/web/pages/screen/teacher/view/recover_account_view.dart';
 import 'package:school_web/web/pages/setting/setting_pages.dart';
 import 'package:school_web/web/pages/student_transfer/student_transfer_page.dart';
 
@@ -88,10 +87,6 @@ abstract class AppPages {
     GetPage(
       name: Routes.STUDENTTRANSFER,
       page: () => const StudentTransferPage(),
-    ),
-    GetPage(
-      name: Routes.RECOVERACCOUNT,
-      page: () => const RecoverAccountView(),
     ),
 
     /// Students

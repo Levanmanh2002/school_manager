@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:school_web/web/constants/style.dart';
+import 'package:school_web/main.dart';
 import 'package:school_web/web/controllers/home/home_controller.dart';
 import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
+import 'package:school_web/web/pages/dashboard/controller/side_bar_controller.dart';
 import 'package:school_web/web/pages/home/view/mobile/widget/build_teacher_card_widget.dart';
 import 'package:school_web/web/pages/home/view/mobile/widget/table_info_teacher_widget.dart';
 import 'package:school_web/web/pages/home/view/mobile/widget/title_tab_widget.dart';
-import 'package:school_web/web/routes/pages.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
 import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
 
@@ -31,6 +31,7 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
   final HomeController homeController = Get.put(HomeController());
   final TeacherController teacherController = Get.put(TeacherController());
   final AuthenticationController authController = Get.put(AuthenticationController());
+
   ValueNotifier<int> tabSelected = ValueNotifier<int>(0);
 
   @override
@@ -72,7 +73,7 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
                     style: TextStyle(
                       fontSize: Responsive.isMobile(context) ? 18 : 24,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.blackColor,
+                      color: appTheme.blackColor,
                     ),
                   ),
                 ),
@@ -105,12 +106,12 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
                     children: [
                       Container(
                         alignment: Alignment.centerLeft,
-                        child: const Text(
+                        child: Text(
                           'Danh sách giáo viên',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xFF373743),
+                            color: appTheme.blackColor,
                             height: 1.5,
                           ),
                         ),
@@ -131,7 +132,7 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
-                            color: selectedTab == 0 ? AppColors.green100Color : AppColors.yellow100Color,
+                            color: selectedTab == 0 ? appTheme.green100Color : appTheme.yellow100Color,
                           ),
                           child: Text(
                             selectedTab == 0
@@ -140,7 +141,7 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
-                              color: selectedTab == 0 ? AppColors.green500Color : AppColors.yellow500Color,
+                              color: selectedTab == 0 ? appTheme.successColor : appTheme.yellow500Color,
                             ),
                           ),
                         ),
@@ -155,9 +156,9 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
                         isScrollable: true,
                         labelStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                         unselectedLabelStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                        labelColor: const Color(0xFF3A73C2),
-                        unselectedLabelColor: const Color(0xFF7E8695),
-                        indicatorColor: const Color(0xFF3A73C2),
+                        labelColor: appTheme.appColor,
+                        unselectedLabelColor: appTheme.textDesColor,
+                        indicatorColor: appTheme.appColor,
                         indicatorWeight: 1,
                         tabs: const [
                           Tab(text: 'Đang làm việc'),
@@ -182,13 +183,13 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
                                     },
                                     decoration: InputDecoration(
                                       isDense: true,
-                                      fillColor: const Color(0xFFF7F7FC),
+                                      fillColor: appTheme.background700Color,
                                       filled: true,
                                       hintText: 'Tìm kiếm',
-                                      hintStyle: const TextStyle(
+                                      hintStyle: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400,
-                                        color: Color(0xFF7E8695),
+                                        color: appTheme.textDesColor,
                                       ),
                                       prefixIcon: Container(
                                         width: 20,
@@ -210,13 +211,13 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
                                                 padding: const EdgeInsets.only(right: 16),
                                                 child: Container(
                                                   padding: const EdgeInsets.all(3),
-                                                  decoration: const BoxDecoration(
+                                                  decoration: BoxDecoration(
                                                     shape: BoxShape.circle,
-                                                    color: Color(0xFF7E8695),
+                                                    color: appTheme.textDesColor,
                                                   ),
-                                                  child: const Icon(
+                                                  child: Icon(
                                                     Icons.clear_rounded,
-                                                    color: Colors.white,
+                                                    color: appTheme.whiteColor,
                                                     size: 12,
                                                   ),
                                                 ),
@@ -229,11 +230,11 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
                                       contentPadding: const EdgeInsets.symmetric(vertical: 16),
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(41),
-                                        borderSide: const BorderSide(color: Color(0xFFF7F7FC)),
+                                        borderSide: BorderSide(color: appTheme.background700Color),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(41),
-                                        borderSide: const BorderSide(color: Color(0xFFF7F7FC)),
+                                        borderSide: BorderSide(color: appTheme.background700Color),
                                       ),
                                     ),
                                   );
@@ -336,18 +337,17 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
 }
 
 class ItemOnTap extends StatelessWidget {
-  const ItemOnTap({
-    super.key,
-    required this.authController,
-  });
+  const ItemOnTap({super.key, required this.authController});
 
   final AuthenticationController authController;
 
   @override
   Widget build(BuildContext context) {
+    final SideBarController sideBarController = Get.put(SideBarController());
+
     return InkWell(
       onTap: () => authController.teacherData.value?.system == 1 || authController.teacherData.value?.system == 2
-          ? Get.toNamed(Routes.ADDTEACHER)
+          ? sideBarController.index.value = 9
           : showNoSystemWidget(
               context,
               title: 'Bạn không có quyền giáo viên',
@@ -360,18 +360,18 @@ class ItemOnTap extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: Responsive.isMobile(context) ? 4 : 8, horizontal: 16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: AppColors.primaryColor,
+          color: appTheme.appColor,
         ),
         child: Row(
           children: [
             SvgPicture.asset(IconAssets.teacherIcon),
             const SizedBox(width: 8),
-            const Text(
+            Text(
               'Thêm giáo viên',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
-                color: AppColors.whiteColor,
+                color: appTheme.whiteColor,
               ),
             ),
           ],

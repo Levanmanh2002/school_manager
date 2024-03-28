@@ -9,11 +9,13 @@ import 'package:school_web/web/constants/style.dart';
 import 'package:school_web/web/controllers/auth_controller.dart';
 import 'package:school_web/web/controllers/home/home_controller.dart';
 import 'package:school_web/web/controllers/list_data/list_data_controller.dart';
+import 'package:school_web/web/controllers/majors/majors_controller.dart';
 import 'package:school_web/web/controllers/notifications/notifications_controller.dart';
 import 'package:school_web/web/controllers/student/student_controller.dart';
 import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
 import 'package:school_web/web/l10n/app_localizations.dart';
 import 'package:school_web/web/l10n/language_constants.dart';
+import 'package:school_web/web/pages/dashboard/controller/side_bar_controller.dart';
 import 'package:school_web/web/pages/language/constant.dart';
 import 'package:school_web/web/routes/pages.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -31,11 +33,13 @@ Future<void> main() async {
     () async {
       await GetStorage.init('MyStorage');
       Get.put(AuthController());
+      Get.put(SideBarController());
       Get.put(HomeController());
       Get.put(ListDataController());
       Get.put(StudentController());
       Get.put(TeacherController());
       Get.put(NotificationsController());
+      Get.put(MajorsController());
       // Get.put(ClassesController());
       // Get.put(OtherController());
       // Get.put(ThemeController());

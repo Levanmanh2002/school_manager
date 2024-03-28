@@ -22,7 +22,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   final AuthenticationController authController = Get.put(AuthenticationController());
   bool isExpanded = true;
-  final sideBarController = SideBarController();
+  final SideBarController sideBarController = Get.put(SideBarController());
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final searchController = TextEditingController();
   final ValueNotifier<bool> isClearVisible = ValueNotifier<bool>(false);

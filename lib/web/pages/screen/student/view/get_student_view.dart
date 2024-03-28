@@ -10,10 +10,10 @@ import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/controllers/home/home_controller.dart';
 import 'package:school_web/web/controllers/student/student_controller.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
+import 'package:school_web/web/pages/dashboard/controller/side_bar_controller.dart';
 import 'package:school_web/web/pages/home/view/mobile/widget/build_student_card_widget.dart';
 import 'package:school_web/web/pages/home/view/mobile/widget/table_info_student_widget.dart';
 import 'package:school_web/web/pages/home/view/mobile/widget/title_tab_widget.dart';
-import 'package:school_web/web/routes/pages.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
 import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
 
@@ -565,9 +565,11 @@ class ItemOnTap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SideBarController sideBarController = Get.put(SideBarController());
+
     return InkWell(
       onTap: () => authController.teacherData.value?.system == 1 || authController.teacherData.value?.system == 2
-          ? Get.toNamed(Routes.ADDSTUDENT)
+          ? sideBarController.index.value = 10
           : showNoSystemWidget(
               context,
               title: 'Bạn không có quyền giáo viên',

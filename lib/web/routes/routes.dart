@@ -23,7 +23,6 @@ abstract class Routes {
   static const ADDTEACHERCLASS = '/add_teacher_class';
   static const EDITPROFILR = '/edit_profile';
   static const STUDENTTRANSFER = '/student_transfer';
-  static const RECOVERACCOUNT = '/recoverAccount';
 
   /// Students
   static const HOMESTUDENT = '/home_student';
