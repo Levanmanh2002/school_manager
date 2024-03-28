@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:school_web/main.dart';
 import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/dashboard/controller/side_bar_controller.dart';
@@ -61,7 +62,7 @@ class _InforAccountState extends State<InforAccount> {
 
   Widget _buildColumnInforAccount(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: appTheme.whiteColor,
       padding: const EdgeInsets.all(24),
       child: Obx(
         () => Column(
@@ -76,7 +77,7 @@ class _InforAccountState extends State<InforAccount> {
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40),
-                    color: const Color(0xFFF7F7FC),
+                    color: appTheme.background700Color,
                   ),
                   child: Row(
                     children: [
@@ -94,10 +95,10 @@ class _InforAccountState extends State<InforAccount> {
                         children: [
                           Text(
                             widget.authController.teacherData.value?.fullName ?? 'EDU Management',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xFF373743),
+                              color: appTheme.blackColor,
                               overflow: TextOverflow.ellipsis,
                             ),
                             maxLines: 1,
@@ -113,16 +114,16 @@ class _InforAccountState extends State<InforAccount> {
                                         : widget.authController.teacherData.value?.system == 4
                                             ? 'System'
                                             : 'EDU Management',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
-                              color: Color(0xFF7E8695),
+                              color: appTheme.textDesColor,
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(width: 12),
-                      const Icon(Icons.arrow_drop_down_outlined, size: 30, color: Color(0xFF7E8695)),
+                      Icon(Icons.arrow_drop_down_outlined, size: 30, color: appTheme.textDesColor),
                       const SizedBox(width: 12),
                     ],
                   ),
@@ -133,9 +134,9 @@ class _InforAccountState extends State<InforAccount> {
                   padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40),
-                    color: const Color(0xFFF7F7FC),
+                    color: appTheme.background700Color,
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
@@ -143,11 +144,11 @@ class _InforAccountState extends State<InforAccount> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xFF373743),
+                          color: appTheme.blackColor,
                         ),
                       ),
-                      SizedBox(width: 8),
-                      Icon(Icons.arrow_drop_down_outlined, size: 30, color: Color(0xFF7E8695)),
+                      const SizedBox(width: 8),
+                      Icon(Icons.arrow_drop_down_outlined, size: 30, color: appTheme.textDesColor),
                     ],
                   ),
                 ),
@@ -168,7 +169,7 @@ class _InforAccountState extends State<InforAccount> {
   Widget _buildRowInforAccount(BuildContext context) {
     return Obx(
       () => Container(
-        color: Colors.white,
+        color: appTheme.whiteColor,
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: Row(
           children: [
@@ -189,7 +190,7 @@ class _InforAccountState extends State<InforAccount> {
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(40),
-                  color: const Color(0xFFF7F7FC),
+                  color: appTheme.background700Color,
                 ),
                 child: Row(
                   children: [
@@ -203,8 +204,8 @@ class _InforAccountState extends State<InforAccount> {
                       borderRadius: BorderRadius.circular(1000),
                       child: CachedNetworkImage(
                         imageUrl: widget.authController.teacherData.value?.avatarUrl.toString() ?? '',
-                        width: 46,
-                        height: 46,
+                        width: 45,
+                        height: 45,
                         fit: BoxFit.cover,
                         errorWidget: (context, url, error) {
                           return Image.asset(ImagesAssets.noUrlImage, fit: BoxFit.cover);
@@ -218,10 +219,10 @@ class _InforAccountState extends State<InforAccount> {
                       children: [
                         Text(
                           widget.authController.teacherData.value?.fullName ?? 'EDU Management',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xFF373743),
+                            color: appTheme.blackColor,
                             overflow: TextOverflow.ellipsis,
                           ),
                           maxLines: 1,
@@ -237,16 +238,16 @@ class _InforAccountState extends State<InforAccount> {
                                       : widget.authController.teacherData.value?.system == 4
                                           ? 'System'
                                           : 'EDU Management',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
-                            color: Color(0xFF7E8695),
+                            color: appTheme.textDesColor,
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(width: 12),
-                    const Icon(Icons.arrow_drop_down_outlined, size: 30, color: Color(0xFF7E8695)),
+                    Icon(Icons.arrow_drop_down_outlined, size: 30, color: appTheme.textDesColor),
                     const SizedBox(width: 12),
                   ],
                 ),
