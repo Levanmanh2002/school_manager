@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
+import 'package:school_web/web/pages/dashboard/controller/side_bar_controller.dart';
 import 'package:school_web/web/pages/language/language_value.dart';
 import 'package:school_web/web/pages/notifications/notifications.dart';
 import 'package:school_web/web/pages/search/search_view.dart';
@@ -15,11 +16,13 @@ class InforAccount extends StatefulWidget {
     required this.isClearVisible,
     required this.searchController,
     required this.authController,
+    required this.sideBarController,
   });
 
   final ValueNotifier<bool> isClearVisible;
   final TextEditingController searchController;
   final AuthenticationController authController;
+  final SideBarController sideBarController;
 
   @override
   State<InforAccount> createState() => _InforAccountState();
@@ -66,7 +69,7 @@ class _InforAccountState extends State<InforAccount> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const NotificationsView(),
+                NotificationsView(sideBarController: widget.sideBarController),
                 const SizedBox(width: 16),
                 Container(
                   height: 56,
@@ -177,7 +180,7 @@ class _InforAccountState extends State<InforAccount> {
               ),
             ),
             const SizedBox(width: 150),
-            const NotificationsView(),
+            NotificationsView(sideBarController: widget.sideBarController),
             const SizedBox(width: 16),
             InkWell(
               onTap: () => Get.toNamed(Routes.PROFILE),

@@ -5,18 +5,20 @@ import 'package:intl/intl.dart';
 import 'package:school_web/main.dart';
 import 'package:school_web/web/controllers/auth_controller.dart';
 import 'package:school_web/web/controllers/notifications/notifications_controller.dart';
+import 'package:school_web/web/pages/dashboard/config/responsive.dart';
+import 'package:school_web/web/pages/dashboard/controller/side_bar_controller.dart';
 import 'package:school_web/web/style/style_theme.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
 import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
 
 class NotificationsView extends StatelessWidget {
-  const NotificationsView({super.key});
+  const NotificationsView({required this.sideBarController, super.key});
+  final SideBarController sideBarController;
 
   @override
   Widget build(BuildContext context) {
     final AuthController authController = Get.put(AuthController());
     final NotificationsController notificationsController = Get.put(NotificationsController());
-    // final SideBarController sideBarController = Get.put(SideBarController());
 
     String formatDateTime(String dateTimeString) {
       DateTime dateTime = DateTime.parse(dateTimeString);
@@ -33,7 +35,8 @@ class NotificationsView extends StatelessWidget {
       onSelected: (value) {},
       constraints: BoxConstraints(
         minWidth: 2.0 * 48.0,
-        maxWidth: MediaQuery.of(context).size.width,
+        maxWidth:
+            Responsive.isMobile(context) ? MediaQuery.of(context).size.width / 1.5 : MediaQuery.of(context).size.width,
       ),
       itemBuilder: (BuildContext context) {
         return [
@@ -65,10 +68,12 @@ class NotificationsView extends StatelessWidget {
                           );
                         }
                       },
-                      child: Text(
-                        'Đánh dấu đã đọc tất cả',
-                        style: StyleThemeData.styleSize16Weight500(color: appTheme.appColor),
-                      ),
+                      child: Responsive.isMobile(context)
+                          ? SvgPicture.asset(IconAssets.listChecksIcon, width: 24, height: 24)
+                          : Text(
+                              'Đánh dấu đã đọc tất cả',
+                              style: StyleThemeData.styleSize16Weight500(color: appTheme.appColor),
+                            ),
                     ),
                   ],
                 ),
@@ -76,75 +81,90 @@ class NotificationsView extends StatelessWidget {
               ],
             ),
           ),
-          ...notificationsController.notifications.take(5).map((notification) {
+          ...notificationsController.notifications.map((notification) {
             return PopupMenuItem(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                child: Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(1000),
-                      child: SvgPicture.asset(
-                        (notification.studentId != null)
-                            ? IconAssets.notiStudentIcon
-                            : (notification.teacherId != null)
-                                ? IconAssets.notiTeacherIcon
-                                : (notification.classIds != null)
-                                    ? IconAssets.notiClassIcon
-                                    : (notification.feesIds != null)
-                                        ? IconAssets.notiFeesIcon
-                                        : (notification.uniformIds != null)
-                                            ? IconAssets.notiFeesIcon
-                                            : IconAssets.notiIcon,
+              child: InkWell(
+                onTap: () {
+                  if (notification.teacherId != null) {
+                    Navigator.pop(context);
+
+                    sideBarController.index.value = 1;
+                  } else if (notification.studentId != null) {
+                    Navigator.pop(context);
+
+                    sideBarController.index.value = 2;
+                  } else if (notification.systemIds != null) {
+                    Navigator.pop(context);
+
+                    // sideBarController.index.value = 7;
+                  } else if (notification.classIds != null) {
+                    Navigator.pop(context);
+
+                    sideBarController.index.value = 3;
+                  } else if (notification.uniformIds != null) {
+                    Navigator.pop(context);
+
+                    sideBarController.index.value = 6;
+                  } else if (notification.feesIds != null) {
+                    Navigator.pop(context);
+
+                    sideBarController.index.value = 5;
+                  } else if (notification.majorIds != null) {
+                    Navigator.pop(context);
+
+                    sideBarController.index.value = 4;
+                  } else {
+                    Navigator.pop(context);
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(1000),
+                        child: SvgPicture.asset(
+                          (notification.studentId != null)
+                              ? IconAssets.notiStudentIcon
+                              : (notification.teacherId != null)
+                                  ? IconAssets.notiTeacherIcon
+                                  : (notification.classIds != null)
+                                      ? IconAssets.notiClassIcon
+                                      : (notification.feesIds != null)
+                                          ? IconAssets.notiFeesIcon
+                                          : (notification.uniformIds != null)
+                                              ? IconAssets.notiFeesIcon
+                                              : IconAssets.notiIcon,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(notification.title ?? '', style: StyleThemeData.styleSize16Weight600()),
-                        const SizedBox(height: 4),
-                        Text(
-                          notification.message ?? '',
-                          style: StyleThemeData.styleSize14Weight400(color: appTheme.textDesColor),
-                        ),
-                        Text(
-                          formatDateTime(notification.createdAt ?? ''),
-                          style: StyleThemeData.styleSize14Weight400(color: appTheme.strokeColor),
-                        ),
-                      ],
-                    ),
-                  ],
+                      const SizedBox(width: 12),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(notification.title ?? '', style: StyleThemeData.styleSize16Weight600()),
+                          const SizedBox(height: 4),
+                          Container(
+                            constraints: BoxConstraints(maxWidth: Responsive.isMobile(context) ? 220 : double.infinity),
+                            child: Text(
+                              notification.message ?? '',
+                              style: StyleThemeData.styleSize14Weight400(color: appTheme.textDesColor),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Text(
+                            formatDateTime(notification.createdAt ?? ''),
+                            style: StyleThemeData.styleSize14Weight400(color: appTheme.strokeColor),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
           }).toList(),
-          PopupMenuItem(
-            enabled: false,
-            child: InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Xem thêm',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF3A73C2),
-                      ),
-                    ),
-                    SizedBox(width: 8),
-                    Icon(Icons.arrow_forward_ios_rounded, size: 16, color: Color(0xFF3A73C2)),
-                  ],
-                ),
-              ),
-            ),
-          ),
         ];
       },
       child: Obx(
@@ -154,9 +174,9 @@ class NotificationsView extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Container(
                 padding: const EdgeInsets.all(12),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Color(0xFFF7F7FC),
+                  color: appTheme.background700Color,
                 ),
                 child: SvgPicture.asset(IconAssets.bellSimpleIcon),
               ),
@@ -168,16 +188,16 @@ class NotificationsView extends StatelessWidget {
                 onTap: () {},
                 child: Container(
                   padding: const EdgeInsets.all(4),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Color(0xFF3A73C2),
+                    color: appTheme.appColor,
                   ),
                   child: Text(
                     notificationsController.notifications.length.toString(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
-                      color: Colors.white,
+                      color: appTheme.whiteColor,
                     ),
                   ),
                 ),

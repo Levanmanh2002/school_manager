@@ -22,7 +22,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   final AuthenticationController authController = Get.put(AuthenticationController());
   bool isExpanded = true;
-  final controller = SideBarController();
+  final sideBarController = SideBarController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final searchController = TextEditingController();
   final ValueNotifier<bool> isClearVisible = ValueNotifier<bool>(false);
@@ -41,7 +41,7 @@ class _DashboardState extends State<Dashboard> {
     super.dispose();
     searchController.dispose();
     isClearVisible.dispose();
-    controller.dispose();
+    sideBarController.dispose();
   }
 
   @override
@@ -81,7 +81,7 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
               actions: [
-                const NotificationsView(),
+                NotificationsView(sideBarController: sideBarController),
                 const SizedBox(width: 16),
                 IconButton(
                   onPressed: () {
@@ -110,10 +110,11 @@ class _DashboardState extends State<Dashboard> {
                   isClearVisible: isClearVisible,
                   searchController: searchController,
                   authController: authController,
+                  sideBarController: sideBarController,
                 ),
                 Expanded(
                   child: Obx(
-                    () => controller.pageRoutes[controller.index.value],
+                    () => sideBarController.pageRoutes[sideBarController.index.value],
                   ),
                 ),
               ],
@@ -205,15 +206,14 @@ class _DashboardState extends State<Dashboard> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: ListView(
                   children: [
-                    buildListTile('Trang chủ', IconAssets.homeIcon, 0, controller),
-                    buildListTile('Giáo viên', IconAssets.teacherIcon, 1, controller),
-                    buildListTile('Học sinh', IconAssets.studentIcon, 2, controller),
-                    buildListTile('Lớp học', IconAssets.bookOpenIcon, 3, controller),
-                    buildListTile('Ngành học', IconAssets.booksIcon, 4, controller),
-                    buildListTile('Học phí', IconAssets.moneyIcon, 5, controller),
-                    buildListTile('Các khoản thu khác', IconAssets.revenueIcon, 6, controller),
-                    buildListTile('Học sinh chuyển lớp', IconAssets.tranferIcon, 7, controller),
-                    buildListTile('Thông báo', IconAssets.notiIcon, 8, controller),
+                    buildListTile('Trang chủ', IconAssets.homeIcon, 0, sideBarController),
+                    buildListTile('Giáo viên', IconAssets.teacherIcon, 1, sideBarController),
+                    buildListTile('Học sinh', IconAssets.studentIcon, 2, sideBarController),
+                    buildListTile('Lớp học', IconAssets.bookOpenIcon, 3, sideBarController),
+                    buildListTile('Ngành học', IconAssets.booksIcon, 4, sideBarController),
+                    buildListTile('Học phí', IconAssets.moneyIcon, 5, sideBarController),
+                    buildListTile('Các khoản thu khác', IconAssets.revenueIcon, 6, sideBarController),
+                    buildListTile('Học sinh chuyển lớp', IconAssets.tranferIcon, 7, sideBarController),
                     // buildListTile('Quản lý đánh giá', IconAssets.evaluateIcon, 9, controller),
                   ],
                 ),

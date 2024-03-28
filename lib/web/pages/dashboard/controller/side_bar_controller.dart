@@ -14,19 +14,13 @@ class SideBarController extends GetxController {
 
   var pageRoutes = [
     const HomeView(),
-    // const AddTeacherView(),
-    // const AddStudentView(),
     const GetTeachersView(),
     const GetStudentView(),
-    // const TimetablePage(),
     const ClassesInfoView(),
     const MajorsPages(),
     const FeePages(),
     const OtherPaymentPages(),
     const StudentTransferPage(),
-    // const AddStudentClassesView(),
-    // const AddTeacherClassesView(),
-    // const ProfilePages(),
     const NotificationsDetails(),
   ];
 }
