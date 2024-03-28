@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:school_web/main.dart';
 import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/dashboard/controller/side_bar_controller.dart';
@@ -49,8 +51,8 @@ class _DashboardState extends State<Dashboard> {
       appBar: Responsive.isMobile(context)
           ? AppBar(
               elevation: 0,
-              backgroundColor: Colors.white,
-              iconTheme: const IconThemeData(color: Colors.black),
+              backgroundColor: appTheme.whiteColor,
+              iconTheme: IconThemeData(color: appTheme.blackColor),
               automaticallyImplyLeading: false,
               titleSpacing: 0,
               title: Padding(
@@ -58,19 +60,20 @@ class _DashboardState extends State<Dashboard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Trang chủ',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, height: 1.5, color: Colors.black),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600, height: 1.5, color: appTheme.blackColor),
                     ),
                     const SizedBox(height: 4),
                     Obx(
                       () => Text(
                         'Chào buổi sáng, ${authController.teacherData.value?.fullName ?? 'EDU Management'}! ',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
                           height: 1.5,
-                          color: Color(0xFF7E8695),
+                          color: appTheme.textDesColor,
                         ),
                       ),
                     ),
@@ -125,7 +128,7 @@ class _DashboardState extends State<Dashboard> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: controller.index.value == index ? Colors.white : null,
+        color: controller.index.value == index ? appTheme.whiteColor : null,
       ),
       child: ListTile(
         title: Row(
@@ -136,7 +139,7 @@ class _DashboardState extends State<Dashboard> {
               icon,
               width: 24,
               height: 24,
-              color: controller.index.value == index ? const Color(0xFF3A73C2) : null,
+              color: controller.index.value == index ? appTheme.appColor : null,
             ),
             Responsive.isTablet(context) ? const SizedBox.shrink() : const SizedBox(width: 8),
             Responsive.isTablet(context)
@@ -154,17 +157,17 @@ class _DashboardState extends State<Dashboard> {
           Responsive.isMobile(context) ? Navigator.pop(context) : null;
         },
         selected: controller.index.value == index,
-        selectedColor: const Color(0xFF3A73C2),
-        selectedTileColor: const Color(0xFF3A73C2),
-        iconColor: Colors.white,
-        textColor: Colors.white,
+        selectedColor: appTheme.appColor,
+        selectedTileColor: appTheme.appColor,
+        iconColor: appTheme.whiteColor,
+        textColor: appTheme.whiteColor,
       ),
     );
   }
 
   Widget sideBarMe() {
     return Container(
-      color: const Color(0xFF3A73C2),
+      color: appTheme.appColor,
       child: Obx(
         () => Column(
           children: [
@@ -180,10 +183,10 @@ class _DashboardState extends State<Dashboard> {
                   Responsive.isTablet(context) ? const SizedBox.shrink() : const SizedBox(width: 12),
                   Responsive.isTablet(context)
                       ? const SizedBox.shrink()
-                      : const Expanded(
+                      : Expanded(
                           child: Text(
                             'EDU Management',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: appTheme.whiteColor),
                           ),
                         ),
                   Responsive.isTablet(context) ? const SizedBox.shrink() : const SizedBox(width: 12),
@@ -205,7 +208,6 @@ class _DashboardState extends State<Dashboard> {
                     buildListTile('Trang chủ', IconAssets.homeIcon, 0, controller),
                     buildListTile('Giáo viên', IconAssets.teacherIcon, 1, controller),
                     buildListTile('Học sinh', IconAssets.studentIcon, 2, controller),
-                    // buildListTile('Tạo thời khóa biểu', IconAssets.timetableIcon, 3, controller),
                     buildListTile('Lớp học', IconAssets.bookOpenIcon, 3, controller),
                     buildListTile('Ngành học', IconAssets.booksIcon, 4, controller),
                     buildListTile('Học phí', IconAssets.moneyIcon, 5, controller),
@@ -234,11 +236,23 @@ class _DashboardState extends State<Dashboard> {
                 child: Row(
                   mainAxisAlignment: Responsive.isTablet(context) ? MainAxisAlignment.center : MainAxisAlignment.start,
                   children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        authController.teacherData.value?.avatarUrl ?? 'https://i.stack.imgur.com/l60Hf.png',
+                    // CircleAvatar(
+                    //   backgroundImage: NetworkImage(
+                    //     authController.teacherData.value?.avatarUrl ?? 'https://i.stack.imgur.com/l60Hf.png',
+                    //   ),
+                    //   radius: 20,
+                    // ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(1000),
+                      child: CachedNetworkImage(
+                        imageUrl: authController.teacherData.value?.avatarUrl.toString() ?? '',
+                        width: 46,
+                        height: 46,
+                        fit: BoxFit.cover,
+                        errorWidget: (context, url, error) {
+                          return Image.asset(ImagesAssets.noUrlImage, fit: BoxFit.cover);
+                        },
                       ),
-                      radius: 20,
                     ),
                     Responsive.isTablet(context) ? const SizedBox.shrink() : const SizedBox(width: 17),
                     Responsive.isTablet(context)
@@ -249,10 +263,10 @@ class _DashboardState extends State<Dashboard> {
                             children: [
                               Text(
                                 authController.teacherData.value?.fullName ?? '',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
-                                  color: Colors.white,
+                                  color: appTheme.whiteColor,
                                 ),
                               ),
                               const SizedBox(height: 4),
@@ -266,10 +280,10 @@ class _DashboardState extends State<Dashboard> {
                                             : authController.teacherData.value?.system == 4
                                                 ? 'System'
                                                 : 'EDU Management',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
-                                  color: Colors.white,
+                                  color: appTheme.whiteColor,
                                 ),
                               ),
                             ],
@@ -289,7 +303,7 @@ class _DashboardState extends State<Dashboard> {
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          color: const Color(0xFFECFBFD),
+                          color: appTheme.primary50Color,
                         ),
                         child: SvgPicture.asset(IconAssets.logoutIcon, width: 20, height: 20),
                       )
@@ -299,17 +313,17 @@ class _DashboardState extends State<Dashboard> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          color: const Color(0xFFECFBFD),
+                          color: appTheme.primary50Color,
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
+                            Text(
                               'Đăng xuất',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
-                                color: Color(0xFF3A73C2),
+                                color: appTheme.appColor,
                               ),
                             ),
                             const SizedBox(width: 8),

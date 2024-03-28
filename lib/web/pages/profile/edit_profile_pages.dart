@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +9,7 @@ import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/models/teacher.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/routes/pages.dart';
+import 'package:school_web/web/utils/assets/images.dart';
 import 'package:school_web/web/widgets/custom_text_widgets.dart';
 import 'package:school_web/web/widgets/full_screen_image_screen.dart';
 import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
@@ -226,19 +228,30 @@ class _EditProfilePagesState extends State<EditProfilePages> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => FullScreenImageScreen(
-                                    imageUrl: authController.teacherData.value!.avatarUrl ??
-                                        'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                                  builder: (context) => FullImageWidget(
+                                    imageUrl: authController.teacherData.value?.avatarUrl,
                                   ),
                                 ),
                               );
                             },
-                            child: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                authController.teacherData.value?.avatarUrl ??
-                                    'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                            // child: CircleAvatar(
+                            //   backgroundImage: NetworkImage(
+                            //     authController.teacherData.value?.avatarUrl ??
+                            //         'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                            //   ),
+                            //   radius: 80,
+                            // ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(1000),
+                              child: CachedNetworkImage(
+                                imageUrl: authController.teacherData.value?.avatarUrl.toString() ?? '',
+                                width: 80,
+                                height: 80,
+                                fit: BoxFit.cover,
+                                errorWidget: (context, url, error) {
+                                  return Image.asset(ImagesAssets.noUrlImage, fit: BoxFit.cover);
+                                },
                               ),
-                              radius: 80,
                             ),
                           ),
                     Responsive.isMobile(context) ? const SizedBox.shrink() : const SizedBox(height: 24),
@@ -280,19 +293,30 @@ class _EditProfilePagesState extends State<EditProfilePages> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => FullScreenImageScreen(
-                                        imageUrl: authController.teacherData.value!.avatarUrl ??
-                                            'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                                      builder: (context) => FullImageWidget(
+                                        imageUrl: authController.teacherData.value?.avatarUrl,
                                       ),
                                     ),
                                   );
                                 },
-                                child: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                    authController.teacherData.value?.avatarUrl ??
-                                        'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                                // child: CircleAvatar(
+                                //   backgroundImage: NetworkImage(
+                                //     authController.teacherData.value?.avatarUrl ??
+                                //         'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                                //   ),
+                                //   radius: 80,
+                                // ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(1000),
+                                  child: CachedNetworkImage(
+                                    imageUrl: authController.teacherData.value?.avatarUrl.toString() ?? '',
+                                    width: 80,
+                                    height: 80,
+                                    fit: BoxFit.cover,
+                                    errorWidget: (context, url, error) {
+                                      return Image.asset(ImagesAssets.noUrlImage, fit: BoxFit.cover);
+                                    },
                                   ),
-                                  radius: 80,
                                 ),
                               )
                             : const SizedBox.shrink(),

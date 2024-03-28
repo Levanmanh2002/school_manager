@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +12,7 @@ import 'package:school_web/web/models/classes.dart';
 import 'package:school_web/web/models/student.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/screen/student/detail/student_detail_screen.dart';
+import 'package:school_web/web/utils/assets/images.dart';
 import 'package:school_web/web/widgets/full_screen_image_screen.dart';
 import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
 
@@ -265,19 +267,28 @@ class _StudentTransferPageState extends State<StudentTransferPage> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => FullScreenImageScreen(
-                                                imageUrl: student?.avatarUrl ??
-                                                    'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
-                                              ),
+                                              builder: (context) => FullImageWidget(imageUrl: student?.avatarUrl),
                                             ),
                                           );
                                         },
-                                        child: CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                            student?.avatarUrl ??
-                                                'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                                        // child: CircleAvatar(
+                                        //   backgroundImage: NetworkImage(
+                                        //     student?.avatarUrl ??
+                                        //         'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512',
+                                        //   ),
+                                        //   radius: 30,
+                                        // ),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(1000),
+                                          child: CachedNetworkImage(
+                                            imageUrl: student?.avatarUrl.toString() ?? '',
+                                            width: 30,
+                                            height: 30,
+                                            fit: BoxFit.cover,
+                                            errorWidget: (context, url, error) {
+                                              return Image.asset(ImagesAssets.noUrlImage, fit: BoxFit.cover);
+                                            },
                                           ),
-                                          radius: 30,
                                         ),
                                       ),
                                       title: Text(

@@ -9,6 +9,7 @@ import 'package:school_web/web/constants/style.dart';
 import 'package:school_web/web/controllers/auth_controller.dart';
 import 'package:school_web/web/controllers/home/home_controller.dart';
 import 'package:school_web/web/controllers/list_data/list_data_controller.dart';
+import 'package:school_web/web/controllers/notifications/notifications_controller.dart';
 import 'package:school_web/web/controllers/student/student_controller.dart';
 import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
 import 'package:school_web/web/l10n/app_localizations.dart';
@@ -34,6 +35,7 @@ Future<void> main() async {
       Get.put(ListDataController());
       Get.put(StudentController());
       Get.put(TeacherController());
+      Get.put(NotificationsController());
       // Get.put(ClassesController());
       // Get.put(OtherController());
       // Get.put(ThemeController());

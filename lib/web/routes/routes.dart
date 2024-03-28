@@ -29,10 +29,6 @@ abstract class Routes {
   static const HOMESTUDENT = '/home_student';
   static const SETTINGSSTUDENT = '/setting_profile';
 
-  /// Timetable
-  static const TIMETABLE = '/timetable';
-  static const CREATE = '/create';
-
   /// Payment
   static const OTHERPAYMENT = '/other_payment';
   static const PAYMENTFEE = '/payment_fee_pages';
