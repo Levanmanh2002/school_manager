@@ -49,4 +49,5 @@ class IconAssets {
   static String notiStudentIcon = '${_basePath}noti_student.svg';
   static String notiTeacherIcon = '${_basePath}noti_teacher.svg';
   static String listChecksIcon = '${_basePath}list_checks.svg';
+  static String noStudentIcon = '${_basePath}no_student.svg';
 }

@@ -176,23 +176,30 @@ class _ClassesInfoViewState extends State<ClassesInfoView> {
                                         job: classInfo.job.toString(),
                                         listStudent: classInfo.className ?? '',
                                         viewClassOnTap: () {
-                                          if (classInfo.students != null && classInfo.students!.isNotEmpty) {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (context) => ClassesInfoDetail(
+                                          // Navigator.of(context).push(
+                                          //   MaterialPageRoute(
+                                          //     builder: (context) => ClassesInfoDetail(
+                                          //       students: classInfo.students,
+                                          //       classes: classInfo.className.toString(),
+                                          //     ),
+                                          //   ),
+                                          // );
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return Dialog(
+                                                shape: const RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                                                ),
+                                                alignment: Alignment.center,
+                                                insetPadding: const EdgeInsets.all(40),
+                                                child: ClassesInfoDetail(
                                                   students: classInfo.students,
                                                   classes: classInfo.className.toString(),
                                                 ),
-                                              ),
-                                            );
-                                          } else {
-                                            Get.snackbar(
-                                              "Thông báo",
-                                              "Lớp học chưa có học sinh.",
-                                              backgroundColor: appTheme.yellow500Color,
-                                              colorText: appTheme.whiteColor,
-                                            );
-                                          }
+                                              );
+                                            },
+                                          );
                                         },
                                         deleteOnTap: () {
                                           if (authController.teacherData.value?.system == 1 ||
