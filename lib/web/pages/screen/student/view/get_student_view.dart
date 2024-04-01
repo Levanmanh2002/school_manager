@@ -329,7 +329,7 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
                   : titleTabWidget(
                       name: 'Họ và tên',
                       code: 'MSSV',
-                      industry: 'Ngành học',
+                      industry: 'Ngành nghề',
                       email: 'Email',
                       phone: 'Số điện thoại',
                       status: 'Trạng thái',
@@ -370,7 +370,7 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
                   : titleTabWidget(
                       name: 'Họ và tên',
                       code: 'MSSV',
-                      industry: 'Ngành học',
+                      industry: 'Ngành nghề',
                       email: 'Email',
                       phone: 'Số điện thoại',
                       status: 'Trạng thái',
@@ -410,7 +410,7 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
                   : titleTabWidget(
                       name: 'Họ và tên',
                       code: 'MSSV',
-                      industry: 'Ngành học',
+                      industry: 'Ngành nghề',
                       email: 'Email',
                       phone: 'Số điện thoại',
                       status: 'Trạng thái',
@@ -450,7 +450,7 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
                   : titleTabWidget(
                       name: 'Họ và tên',
                       code: 'MSSV',
-                      industry: 'Ngành học',
+                      industry: 'Ngành nghề',
                       email: 'Email',
                       phone: 'Số điện thoại',
                       status: 'Trạng thái',
@@ -490,7 +490,7 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
                   : titleTabWidget(
                       name: 'Họ và tên',
                       code: 'MSSV',
-                      industry: 'Ngành học',
+                      industry: 'Ngành nghề',
                       email: 'Email',
                       phone: 'Số điện thoại',
                       status: 'Trạng thái',
@@ -530,7 +530,7 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
                   : titleTabWidget(
                       name: 'Họ và tên',
                       code: 'MSSV',
-                      industry: 'Ngành học',
+                      industry: 'Ngành nghề',
                       email: 'Email',
                       phone: 'Số điện thoại',
                       status: 'Trạng thái',

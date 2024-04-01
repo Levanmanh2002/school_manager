@@ -842,7 +842,7 @@ class _OtherPaymentPagesState extends State<OtherPaymentPages> {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           title: const Text(
-            "Xác nhận xóa ngành học",
+            "Xác nhận xóa ngành nghề",
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,

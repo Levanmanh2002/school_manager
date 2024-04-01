@@ -192,7 +192,7 @@ class _ClassesInfoDetailState extends State<ClassesInfoDetail> {
         titleTabWidget(
           name: 'Họ và tên',
           code: 'MSSV',
-          industry: 'Ngành học',
+          industry: 'Ngành nghề',
           email: 'Email',
           phone: 'Số điện thoại',
           status: 'Trạng thái',

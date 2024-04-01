@@ -210,7 +210,7 @@ class _DashboardState extends State<Dashboard> {
                     buildListTile('Giáo viên', IconAssets.teacherIcon, 1, sideBarController),
                     buildListTile('Học sinh', IconAssets.studentIcon, 2, sideBarController),
                     buildListTile('Lớp học', IconAssets.bookOpenIcon, 3, sideBarController),
-                    buildListTile('Ngành học', IconAssets.booksIcon, 4, sideBarController),
+                    buildListTile('Ngành nghề', IconAssets.booksIcon, 4, sideBarController),
                     buildListTile('Học phí', IconAssets.moneyIcon, 5, sideBarController),
                     buildListTile('Các khoản thu khác', IconAssets.revenueIcon, 6, sideBarController),
                     buildListTile('Học sinh chuyển lớp', IconAssets.tranferIcon, 7, sideBarController),
