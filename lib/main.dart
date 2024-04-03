@@ -40,8 +40,8 @@ Future<void> main() async {
       Get.put(StudentController());
       Get.put(TeacherController());
       Get.put(NotificationsController());
-      Get.put(MajorsController());
       Get.put(ClassesController());
+      Get.put(MajorsController());
       // Get.put(OtherController());
       // Get.put(ThemeController());
       final token = await const FlutterSecureStorage().read(key: 'token');

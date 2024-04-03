@@ -11,6 +11,7 @@ class CardWidget extends StatelessWidget {
     required this.text,
     required this.clearOntap,
     this.des = '',
+    this.showClear = false,
     super.key,
   });
 
@@ -18,6 +19,7 @@ class CardWidget extends StatelessWidget {
   final String text;
   final VoidCallback clearOntap;
   final String des;
+  final bool showClear;
 
   static final Random _random = Random();
 
@@ -104,21 +106,22 @@ class CardWidget extends StatelessWidget {
               ],
             ),
           ),
-          Positioned(
-            top: -4,
-            right: -8,
-            child: InkWell(
-              onTap: clearOntap,
-              child: Container(
-                padding: const EdgeInsets.all(4),
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.textDesColor,
+          if (showClear)
+            Positioned(
+              top: -4,
+              right: -8,
+              child: InkWell(
+                onTap: clearOntap,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.textDesColor,
+                  ),
+                  child: const Icon(Icons.clear, size: 16, color: AppColors.whiteColor),
                 ),
-                child: const Icon(Icons.clear, size: 16, color: AppColors.whiteColor),
               ),
             ),
-          ),
         ],
       ),
     );
