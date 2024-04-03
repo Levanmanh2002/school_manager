@@ -8,6 +8,8 @@ import 'package:school_web/web/utils/flash/toast.dart';
 class NotificationsController extends GetxController {
   RxList<Notifications> notifications = <Notifications>[].obs;
 
+  var unreadCountNoti = 0.obs;
+
   int countUnreadNotifications() {
     return notifications.where((notification) => !notification.isRead!).length;
   }
@@ -16,6 +18,7 @@ class NotificationsController extends GetxController {
   void onInit() {
     super.onInit();
     fetchNotifications();
+    unreadCount();
   }
 
   Future<void> fetchNotifications() async {
@@ -69,6 +72,7 @@ class NotificationsController extends GetxController {
         if (index != -1) {
           notifications[index].isRead = true;
         }
+        unreadCount();
         notifications.refresh();
       } else {
         showSimpleIconsToast('Đánh dấu thất bại');
@@ -92,12 +96,29 @@ class NotificationsController extends GetxController {
           notification.isRead = true;
         }
 
+        unreadCount();
         notifications.refresh();
       } else {
         showSimpleIconsToast('Đánh dấu thất bại');
       }
     } catch (error) {
       print('Lỗi mark all as read: $error');
+    }
+  }
+
+  Future<void> unreadCount() async {
+    try {
+      var response = await http.get(Uri.parse('https://backend-shool-project.onrender.com/admin/unread-count'));
+
+      if (response.statusCode == 201) {
+        final result = json.decode(response.body);
+
+        unreadCountNoti.value = result['unreadCount'];
+      } else {
+        print(response.reasonPhrase);
+      }
+    } catch (error) {
+      print('Lỗi get data unread count:  $error');
     }
   }
 }

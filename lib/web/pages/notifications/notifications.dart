@@ -85,6 +85,8 @@ class NotificationsView extends StatelessWidget {
             return PopupMenuItem(
               child: InkWell(
                 onTap: () {
+                  notificationsController.updateMarkAsRead(notification.sId.toString());
+
                   if (notification.teacherId != null) {
                     Navigator.pop(context);
 
@@ -122,21 +124,39 @@ class NotificationsView extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(1000),
-                        child: SvgPicture.asset(
-                          (notification.studentId != null)
-                              ? IconAssets.notiStudentIcon
-                              : (notification.teacherId != null)
-                                  ? IconAssets.notiTeacherIcon
-                                  : (notification.classIds != null)
-                                      ? IconAssets.notiClassIcon
-                                      : (notification.feesIds != null)
-                                          ? IconAssets.notiFeesIcon
-                                          : (notification.uniformIds != null)
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(1000),
+                            child: SvgPicture.asset(
+                              (notification.studentId != null)
+                                  ? IconAssets.notiStudentIcon
+                                  : (notification.teacherId != null)
+                                      ? IconAssets.notiTeacherIcon
+                                      : (notification.classIds != null)
+                                          ? IconAssets.notiClassIcon
+                                          : (notification.feesIds != null)
                                               ? IconAssets.notiFeesIcon
-                                              : IconAssets.notiIcon,
-                        ),
+                                              : (notification.uniformIds != null)
+                                                  ? IconAssets.notiFeesIcon
+                                                  : IconAssets.notiIcon,
+                            ),
+                          ),
+                          if (notification.isRead == false)
+                            Positioned(
+                              top: -3,
+                              right: -3,
+                              child: Container(
+                                padding: const EdgeInsets.all(1),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: appTheme.whiteColor,
+                                ),
+                                child: Icon(Icons.circle, size: 16, color: appTheme.errorColor),
+                              ),
+                            ),
+                        ],
                       ),
                       const SizedBox(width: 12),
                       Column(
@@ -181,28 +201,29 @@ class NotificationsView extends StatelessWidget {
                 child: SvgPicture.asset(IconAssets.bellSimpleIcon),
               ),
             ),
-            Positioned(
-              top: 0,
-              right: 4,
-              child: InkWell(
-                onTap: () {},
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: appTheme.appColor,
-                  ),
-                  child: Text(
-                    notificationsController.notifications.length.toString(),
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: appTheme.whiteColor,
+            if (notificationsController.unreadCountNoti.value != 0)
+              Positioned(
+                top: 0,
+                right: 4,
+                child: InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: appTheme.appColor,
+                    ),
+                    child: Text(
+                      notificationsController.unreadCountNoti.toString(),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: appTheme.whiteColor,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
           ],
         ),
       ),
