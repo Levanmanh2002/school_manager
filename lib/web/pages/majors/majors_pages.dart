@@ -268,8 +268,7 @@ class _MajorsPagesState extends State<MajorsPages> {
                           Navigator.of(context).pop();
                         },
                         child: Container(
-                          width: 80,
-                          padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             color: appTheme.whiteColor,
@@ -297,8 +296,7 @@ class _MajorsPagesState extends State<MajorsPages> {
                           }
                         },
                         child: Container(
-                          width: 99,
-                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             color: appTheme.appColor,
@@ -448,8 +446,7 @@ class _MajorsPagesState extends State<MajorsPages> {
                       InkWell(
                         onTap: () => Navigator.of(context).pop(),
                         child: Container(
-                          width: 80,
-                          padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             color: appTheme.whiteColor,
@@ -478,8 +475,7 @@ class _MajorsPagesState extends State<MajorsPages> {
                           }
                         },
                         child: Container(
-                          width: 99,
-                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             color: appTheme.appColor,
@@ -517,37 +513,42 @@ class _MajorsPagesState extends State<MajorsPages> {
             style: StyleThemeData.styleSize14Weight400(color: appTheme.textDesColor),
           ),
           actions: [
-            InkWell(
-              onTap: () => Navigator.of(context).pop(),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: appTheme.textDesColor),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                InkWell(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: appTheme.textDesColor),
+                    ),
+                    child: Text(
+                      'Hủy',
+                      style: StyleThemeData.styleSize14Weight700(color: appTheme.textDesColor),
+                    ),
+                  ),
                 ),
-                child: Text(
-                  'Hủy',
-                  style: StyleThemeData.styleSize14Weight700(color: appTheme.textDesColor),
+                const SizedBox(width: 16),
+                InkWell(
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                    await majorsController.onDeleteMajors(majorsData.sId.toString());
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: appTheme.appColor,
+                    ),
+                    child: Text(
+                      'Xác nhận',
+                      style: StyleThemeData.styleSize14Weight700(color: appTheme.whiteColor),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            const SizedBox(width: 12),
-            InkWell(
-              onTap: () async {
-                Navigator.of(context).pop();
-                await majorsController.onDeleteMajors(majorsData.sId.toString());
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: appTheme.appColor,
-                ),
-                child: Text(
-                  'Xác nhận',
-                  style: StyleThemeData.styleSize14Weight700(color: appTheme.whiteColor),
-                ),
-              ),
+              ],
             ),
           ],
         );
