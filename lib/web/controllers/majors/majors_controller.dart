@@ -79,19 +79,23 @@ class MajorsController extends GetxController {
   }
 
   Future<dynamic> onDeleteMajors(String id) async {
-    var request = http.Request(
-      'DELETE',
-      Uri.parse('https://backend-shool-project.onrender.com/admin/delete-major/$id'),
-    );
+    try {
+      var request = http.Request(
+        'DELETE',
+        Uri.parse('https://backend-shool-project.onrender.com/admin/delete-major/$id'),
+      );
 
-    http.StreamedResponse response = await request.send();
+      http.StreamedResponse response = await request.send();
 
-    if (response.statusCode == 201) {
-      fetchMajors();
+      if (response.statusCode == 201) {
+        fetchMajors();
 
-      showSimpleToast('Ngành nghề đã được xóa');
-    } else {
-      showSimpleIconsToast('Lỗi xóa ngành nghề');
+        showSimpleToast('Ngành nghề đã được xóa');
+      } else {
+        showSimpleIconsToast('Lỗi xóa ngành nghề');
+      }
+    } catch (error) {
+      print('Lỗi delete major: $error');
     }
   }
 }

@@ -24,7 +24,6 @@ class _MajorsPagesState extends State<MajorsPages> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final MajorsController majorsController = Get.put(MajorsController());
   final AuthController authController = Get.put(AuthController());
-  final valueNotifier = ValueNotifier<bool>(false);
 
   final nameController = TextEditingController();
   final desController = TextEditingController();
@@ -34,7 +33,6 @@ class _MajorsPagesState extends State<MajorsPages> {
     super.dispose();
     nameController.dispose();
     desController.dispose();
-    valueNotifier.dispose();
   }
 
   @override
@@ -56,73 +54,46 @@ class _MajorsPagesState extends State<MajorsPages> {
                     ),
                   ),
                   const Spacer(),
-                  ValueListenableBuilder<bool>(
-                    valueListenable: valueNotifier,
-                    builder: (context, showEdit, child) => showEdit
-                        ? InkWell(
-                            onTap: () {
-                              if (authController.teacherData.value?.system == 1 ||
-                                  authController.teacherData.value?.system == 2) {
-                                _showAddMajorsConfirmationDialog(
-                                  context,
-                                  majorsController.addMajors(
-                                    nameController: nameController.text,
-                                    desController: desController.text,
-                                  ),
-                                );
-                              } else {
-                                showNoSystemWidget(
-                                  context,
-                                  title: 'Bạn không có quyền giáo viên',
-                                  des: 'Xin lỗi, bạn không có quyền truy cập chức năng của giáo viên.',
-                                  cancel: 'Hủy',
-                                  confirm: 'Xác nhận',
-                                  ontap: () => Navigator.pop(context),
-                                );
-                              }
-                            },
-                            child: Container(
-                              padding:
-                                  EdgeInsets.symmetric(vertical: Responsive.isMobile(context) ? 4 : 8, horizontal: 16),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: appTheme.appColor,
-                              ),
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(IconAssets.booksIcon),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    'Tạo ngành nghề',
-                                    style: StyleThemeData.styleSize14Weight500(color: appTheme.whiteColor, height: 0),
-                                  ),
-                                ],
-                              ),
+                  Opacity(
+                    opacity: authController.teacherData.value?.system == 1 ||
+                            authController.teacherData.value?.system == 2 ||
+                            authController.teacherData.value?.system == 3
+                        ? 1
+                        : 0.5,
+                    child: InkWell(
+                      onTap: () {
+                        if (authController.teacherData.value?.system == 1 ||
+                            authController.teacherData.value?.system == 2) {
+                          _showAddMajorsConfirmationDialog(context);
+                        } else {
+                          showNoSystemWidget(
+                            context,
+                            title: 'Bạn không có quyền giáo viên',
+                            des: 'Xin lỗi, bạn không có quyền truy cập chức năng của giáo viên.',
+                            cancel: 'Hủy',
+                            confirm: 'Xác nhận',
+                            ontap: () => Navigator.pop(context),
+                          );
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: Responsive.isMobile(context) ? 4 : 8, horizontal: 16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: appTheme.appColor,
+                        ),
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(IconAssets.booksIcon),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Tạo ngành nghề',
+                              style: StyleThemeData.styleSize14Weight500(color: appTheme.whiteColor, height: 0),
                             ),
-                          )
-                        : InkWell(
-                            onTap: () {
-                              valueNotifier.value = !valueNotifier.value;
-                            },
-                            child: Container(
-                              padding:
-                                  EdgeInsets.symmetric(vertical: Responsive.isMobile(context) ? 4 : 8, horizontal: 16),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: appTheme.appColor,
-                              ),
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(IconAssets.booksIcon),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    'Chỉnh sửa ngành nghề',
-                                    style: StyleThemeData.styleSize14Weight500(color: appTheme.whiteColor, height: 0),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -136,63 +107,42 @@ class _MajorsPagesState extends State<MajorsPages> {
                     (index) {
                       final majors = majorsController.majorsList[index];
 
-                      return ValueListenableBuilder<bool>(
-                        valueListenable: valueNotifier,
-                        builder: (context, showEdit, child) => CardWidget(
-                          onTap: () {
-                            if (showEdit) {
-                              final nameEditController = TextEditingController(text: majors.name);
-                              final desEditController = TextEditingController(text: majors.description);
+                      return CardWidget(
+                        onTap: () {
+                          if (authController.teacherData.value?.system == 1 ||
+                              authController.teacherData.value?.system == 2 ||
+                              authController.teacherData.value?.system == 3) {
+                            final nameEditController = TextEditingController(text: majors.name);
+                            final desEditController = TextEditingController(text: majors.description);
 
-                              if (authController.teacherData.value?.system == 1 ||
-                                  authController.teacherData.value?.system == 2 ||
-                                  authController.teacherData.value?.system == 3) {
-                                _showEditMajorsConfirmationDialog(
-                                  context,
-                                  majors,
-                                  majorsController.onEditMajors(
-                                    majors.sId.toString(),
-                                    nameEditController: nameEditController.text,
-                                    desEditController: desEditController.text,
-                                  ),
-                                  nameEditController,
-                                  desEditController,
-                                );
-                              } else {
-                                showNoSystemWidget(
-                                  context,
-                                  title: 'Bạn không có quyền giáo viên',
-                                  des: 'Xin lỗi, bạn không có quyền truy cập chức năng của giáo viên.',
-                                  cancel: 'Hủy',
-                                  confirm: 'Xác nhận',
-                                  ontap: () => Navigator.pop(context),
-                                );
-                              }
-                            }
-                          },
-                          text: majors.name ?? '',
-                          des: majors.description ?? '',
-                          showClear: showEdit,
-                          clearOntap: () {
-                            if (authController.teacherData.value?.system == 1 ||
-                                authController.teacherData.value?.system == 2) {
-                              _showDeleteMajorsConfirmationDialog(
-                                context,
-                                majors,
-                                majorsController.onDeleteMajors(majors.sId.toString()),
-                              );
-                            } else {
-                              showNoSystemWidget(
-                                context,
-                                title: 'Bạn không có quyền giáo viên',
-                                des: 'Xin lỗi, bạn không có quyền truy cập chức năng của giáo viên.',
-                                cancel: 'Hủy',
-                                confirm: 'Xác nhận',
-                                ontap: () => Navigator.pop(context),
-                              );
-                            }
-                          },
-                        ),
+                            _showEditMajorsConfirmationDialog(
+                              context,
+                              majors,
+                              nameEditController,
+                              desEditController,
+                            );
+                          }
+                        },
+                        text: majors.name ?? '',
+                        des: majors.description ?? '',
+                        showClear: authController.teacherData.value?.system == 1 ||
+                            authController.teacherData.value?.system == 2 ||
+                            authController.teacherData.value?.system == 3,
+                        clearOntap: () {
+                          if (authController.teacherData.value?.system == 1 ||
+                              authController.teacherData.value?.system == 2) {
+                            _showDeleteMajorsConfirmationDialog(context, majors);
+                          } else {
+                            showNoSystemWidget(
+                              context,
+                              title: 'Bạn không có quyền giáo viên',
+                              des: 'Xin lỗi, bạn không có quyền truy cập chức năng của giáo viên.',
+                              cancel: 'Hủy',
+                              confirm: 'Xác nhận',
+                              ontap: () => Navigator.pop(context),
+                            );
+                          }
+                        },
                       );
                     },
                   ),
@@ -205,7 +155,7 @@ class _MajorsPagesState extends State<MajorsPages> {
     );
   }
 
-  _showAddMajorsConfirmationDialog(BuildContext context, dynamic addMajors) {
+  _showAddMajorsConfirmationDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) {
@@ -334,10 +284,16 @@ class _MajorsPagesState extends State<MajorsPages> {
                       ),
                       const SizedBox(width: 24),
                       InkWell(
-                        onTap: () {
+                        onTap: () async {
                           if (_formKey.currentState!.validate()) {
-                            addMajors();
                             Navigator.of(context).pop();
+                            await majorsController.addMajors(
+                              nameController: nameController.text,
+                              desController: desController.text,
+                            );
+
+                            nameController.clear();
+                            desController.clear();
                           }
                         },
                         child: Container(
@@ -368,7 +324,6 @@ class _MajorsPagesState extends State<MajorsPages> {
   _showEditMajorsConfirmationDialog(
     BuildContext context,
     MajorsData majorsData,
-    dynamic addMajors,
     TextEditingController nameEditController,
     TextEditingController desEditController,
   ) {
@@ -491,9 +446,7 @@ class _MajorsPagesState extends State<MajorsPages> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       InkWell(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
+                        onTap: () => Navigator.of(context).pop(),
                         child: Container(
                           width: 80,
                           padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 8),
@@ -511,10 +464,17 @@ class _MajorsPagesState extends State<MajorsPages> {
                       ),
                       const SizedBox(width: 16),
                       InkWell(
-                        onTap: () {
+                        onTap: () async {
                           if (_formKey.currentState!.validate()) {
-                            addMajors(majorsData.sId);
                             Navigator.of(context).pop();
+                            await majorsController.onEditMajors(
+                              majorsData.sId.toString(),
+                              nameEditController: nameEditController.text,
+                              desEditController: desEditController.text,
+                            );
+
+                            nameEditController.clear();
+                            desEditController.clear();
                           }
                         },
                         child: Container(
@@ -542,8 +502,7 @@ class _MajorsPagesState extends State<MajorsPages> {
     );
   }
 
-  Future<void> _showDeleteMajorsConfirmationDialog(
-      BuildContext context, MajorsData majorsData, dynamic onDeleteMajors) async {
+  Future<bool?> _showDeleteMajorsConfirmationDialog(BuildContext context, MajorsData majorsData) async {
     return showDialog(
       context: context,
       builder: (context) {
@@ -559,9 +518,7 @@ class _MajorsPagesState extends State<MajorsPages> {
           ),
           actions: [
             InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
+              onTap: () => Navigator.of(context).pop(),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
                 decoration: BoxDecoration(
@@ -576,9 +533,9 @@ class _MajorsPagesState extends State<MajorsPages> {
             ),
             const SizedBox(width: 12),
             InkWell(
-              onTap: () {
+              onTap: () async {
                 Navigator.of(context).pop();
-                onDeleteMajors(majorsData.sId);
+                await majorsController.onDeleteMajors(majorsData.sId.toString());
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:school_web/main.dart';
 import 'package:school_web/web/constants/style.dart';
 import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/models/other_payment.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:http/http.dart' as http;
+import 'package:school_web/web/style/style_theme.dart';
 import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
 
 class OtherPaymentPages extends StatefulWidget {
@@ -184,11 +186,14 @@ class _OtherPaymentPagesState extends State<OtherPaymentPages> {
                       }
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: AppColors.primaryColor),
-                      child: const Text(
+                      padding: EdgeInsets.symmetric(vertical: Responsive.isMobile(context) ? 6 : 10, horizontal: 16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: appTheme.appColor,
+                      ),
+                      child: Text(
                         'Thêm khoản thu',
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.whiteColor),
+                        style: StyleThemeData.styleSize14Weight500(color: appTheme.whiteColor, height: 0),
                       ),
                     ),
                   ),
