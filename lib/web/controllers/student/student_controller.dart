@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:school_web/web/controllers/auth_controller.dart';
 import 'package:school_web/web/controllers/home/home_controller.dart';
 import 'package:school_web/web/models/student.dart';
-import 'package:school_web/web/utils/flash/toast.dart';
+import 'package:school_web/web/utils/status/status.dart';
 
 class StudentController extends GetxController {
   final HomeController homeController = Get.put(HomeController());
@@ -316,26 +316,23 @@ class StudentController extends GetxController {
       final res = await json.decode(await response.stream.bytesToString());
 
       if (res['status'] == 'check_email') {
-        showSimpleIconsToast('Email đã tồn tại');
+        showErrorStatus('Email đã tồn tại');
 
         isLoading(false);
       } else if (res['status'] == 'check_phone') {
-        showSimpleIconsToast('Số điện thoại đã tồn tại');
+        showErrorStatus('Số điện thoại đã tồn tại');
 
         isLoading(false);
       } else if (res['status'] == 'check_cccd') {
-        showSimpleIconsToast('CCCD đã tồn tại');
+        showErrorStatus('CCCD đã tồn tại');
 
         isLoading(false);
       } else if (res['status'] == 'invalid_major') {
-        showSimpleIconsToast('Chuyên ngành được cung cấp không hợp lệ');
+        showErrorStatus('Chuyên ngành được cung cấp không hợp lệ');
 
         isLoading(false);
       } else if (res['status'] == 'SUCCESS') {
-        showSimpleToast(
-          'Học sinh đã được thêm thành công, kiểm tra email của bạn để biết thông tin tài khoản!',
-          borderRadius: 8,
-        );
+        showSuccessStatus('Học sinh đã được thêm thành công, kiểm tra email của bạn để biết thông tin tài khoản');
 
         fetchAllStudent();
         fetchActiveStudents();
@@ -347,7 +344,7 @@ class StudentController extends GetxController {
         Get.back();
         isLoading(false);
       } else {
-        showSimpleIconsToast('Lỗi kết nối!');
+        showErrorStatus('Lỗi kết nối!');
 
         isLoading(false);
       }
@@ -417,23 +414,23 @@ class StudentController extends GetxController {
       final res = await json.decode(await response.stream.bytesToString());
 
       if (res['status'] == 'check_gmail') {
-        showSimpleIconsToast('Email đã tồn tại');
+        showErrorStatus('Email đã tồn tại');
 
         isEditLoading(false);
       } else if (res['status'] == 'check_phone') {
-        showSimpleIconsToast('Số điện thoại đã tồn tại');
+        showErrorStatus('Số điện thoại đã tồn tại');
 
         isEditLoading(false);
       } else if (res['status'] == 'check_cccd') {
-        showSimpleIconsToast('CCCD đã tồn tại');
+        showErrorStatus('CCCD đã tồn tại');
 
         isEditLoading(false);
       } else if (res['status'] == 'invalid_major') {
-        showSimpleIconsToast('Chuyên ngành được cung cấp không hợp lệ');
+        showErrorStatus('Chuyên ngành được cung cấp không hợp lệ');
 
         isEditLoading(false);
       } else if (res['status'] == 'SUCCESS') {
-        showSimpleToast('Chỉnh sửa thông tin thành công!');
+        showSuccessStatus('Chỉnh sửa thông tin thành công');
 
         fetchAllStudent();
         fetchActiveStudents();
@@ -445,7 +442,7 @@ class StudentController extends GetxController {
         Get.back();
         isEditLoading(false);
       } else {
-        showSimpleIconsToast('Lỗi kết nối. Vui lòng thử lại sau!');
+        showErrorStatus('Lỗi kết nối. Vui lòng thử lại sau!');
 
         isEditLoading(false);
       }

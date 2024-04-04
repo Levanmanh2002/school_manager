@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:school_web/web/models/teacher.dart';
 import 'package:school_web/web/routes/pages.dart';
-import 'package:school_web/web/utils/flash/toast.dart';
+import 'package:school_web/web/utils/status/status.dart';
 
 class AuthController extends GetxController {
   RxString token = ''.obs;
@@ -120,15 +120,15 @@ class AuthController extends GetxController {
       print(res['status']);
 
       if (res['status'] == 'check_email') {
-        showSimpleIconsToast('Email đã tồn tại');
+        showErrorStatus('Email đã tồn tại');
 
         isUpdateLoading(false);
       } else if (res['status'] == 'check_phone') {
-        showSimpleIconsToast('Số điện thoại đã tồn tại');
+        showErrorStatus('Số điện thoại đã tồn tại');
 
         isUpdateLoading(false);
       } else if (res['status'] == 'check_cccd') {
-        showSimpleIconsToast('CMND/CCCD đã tồn tại');
+        showErrorStatus('CCCD đã tồn tại');
 
         isUpdateLoading(false);
       } else if (res['status'] == 'SUCCESS') {
@@ -138,12 +138,12 @@ class AuthController extends GetxController {
         teacherData.value = teacher.data;
 
         Get.back();
-        showSimpleToast('Cập nhật tài khoản thành công');
+        showSuccessStatus('Cập nhật tài khoản thành công');
         loadData();
 
         isUpdateLoading(false);
       } else {
-        showSimpleIconsToast('Lỗi kết nối!');
+        showErrorStatus('Lỗi kết nối!');
 
         isUpdateLoading(false);
       }
@@ -173,11 +173,11 @@ class AuthController extends GetxController {
       http.StreamedResponse response = await request.send();
 
       if (response.statusCode == 201) {
-        showSimpleToast('Cập nhật ảnh đại diện thành công');
+        showSuccessStatus('Cập nhật ảnh đại diện thành công');
 
         await getProfileData();
       } else {
-        showSimpleIconsToast('Cập nhật ảnh đại diện thất bại');
+        showFailStatus('Cập nhật ảnh đại diện thất bại');
       }
     } catch (error) {
       print('Lỗi upload avatar teacher: $error');
@@ -202,11 +202,11 @@ class AuthController extends GetxController {
       http.StreamedResponse response = await request.send();
 
       if (response.statusCode == 201) {
-        showSimpleToast('Cập nhật ảnh bìa thành công');
+        showSuccessStatus('Cập nhật ảnh bìa thành công');
 
         await getProfileData();
       } else {
-        showSimpleIconsToast('Cập nhật ảnh bìa thất bại');
+        showFailStatus('Cập nhật ảnh bìa thất bại');
       }
     } catch (error) {
       print('Lỗi update background image url: $error');

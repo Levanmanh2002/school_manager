@@ -2,8 +2,9 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:school_web/main.dart';
 import 'package:school_web/web/models/majors_models.dart';
-import 'package:school_web/web/utils/flash/toast.dart';
+import 'package:school_web/web/utils/status/status.dart';
 
 class MajorsController extends GetxController {
   var majorsList = <MajorsData>[].obs;
@@ -42,9 +43,14 @@ class MajorsController extends GetxController {
       if (response.statusCode == 201) {
         fetchMajors();
 
-        showSimpleToast('Ngành nghề mới đã được thêm thành công');
+        showSuccessStatus('Ngành nghề mới đã được thêm thành công');
       } else {
-        showSimpleIconsToast('Thêm mới ngành nghề thất bại');
+        Get.snackbar(
+          "Thất bại",
+          "Thêm mới ngành nghề thất bại.",
+          backgroundColor: appTheme.errorColor,
+          colorText: appTheme.whiteColor,
+        );
 
         print(response.reasonPhrase);
       }
@@ -65,13 +71,11 @@ class MajorsController extends GetxController {
       if (response.statusCode == 201) {
         fetchMajors();
 
-        showSimpleToast('Ngành nghề đã được chỉnh sửa');
+        showSuccessStatus('Ngành nghề đã được chỉnh sửa');
       } else if (response.statusCode == 400) {
-        showSimpleIconsToast('Ngành nghề đã tồn tại');
+        showErrorStatus('Ngành nghề đã tồn tại');
       } else {
-        showSimpleIconsToast('Chỉnh sửa ngành nghề thất bại');
-
-        print(response.reasonPhrase);
+        showFailStatus('Chỉnh sửa ngành nghề thất bại');
       }
     } catch (error) {
       print('Lỗi edit majors: $error');
@@ -89,10 +93,9 @@ class MajorsController extends GetxController {
 
       if (response.statusCode == 201) {
         fetchMajors();
-
-        showSimpleToast('Ngành nghề đã được xóa');
+        showSuccessStatus('Ngành nghề đã được xóa');
       } else {
-        showSimpleIconsToast('Lỗi xóa ngành nghề');
+        showErrorStatus('Lỗi xóa ngành nghề');
       }
     } catch (error) {
       print('Lỗi delete major: $error');

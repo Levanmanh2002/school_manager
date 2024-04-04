@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:school_web/web/models/notifications.dart';
-import 'package:school_web/web/utils/flash/toast.dart';
+import 'package:school_web/web/utils/status/status.dart';
 
 class NotificationsController extends GetxController {
   RxList<Notifications> notifications = <Notifications>[].obs;
@@ -49,9 +49,9 @@ class NotificationsController extends GetxController {
       if (response.statusCode == 200) {
         notifications.removeWhere((element) => element.sId == id);
 
-        showSimpleToast('Xóa thông báo thành công');
+        showSuccessStatus('Xóa thông báo thành công');
       } else {
-        showSimpleIconsToast('Xóa thất bại');
+        showFailStatus('Xóa thất bại');
       }
     } catch (error) {
       print('Lỗi xóa notification: $error');
@@ -75,7 +75,7 @@ class NotificationsController extends GetxController {
         unreadCount();
         notifications.refresh();
       } else {
-        showSimpleIconsToast('Đánh dấu thất bại');
+        showFailStatus('Đánh dấu thất bại. Vui lòng thử lại sau');
       }
     } catch (error) {
       print('Lỗi update mark as read: $error');
@@ -99,7 +99,7 @@ class NotificationsController extends GetxController {
         unreadCount();
         notifications.refresh();
       } else {
-        showSimpleIconsToast('Đánh dấu thất bại');
+        showFailStatus('Đánh dấu thất bại. Vui lòng thử lại sau');
       }
     } catch (error) {
       print('Lỗi mark all as read: $error');

@@ -14,7 +14,7 @@ import 'package:school_web/web/pages/dashboard/controller/side_bar_controller.da
 import 'package:school_web/web/style/style_theme.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
 import 'package:school_web/web/utils/assets/images.dart';
-import 'package:school_web/web/utils/flash/toast.dart';
+import 'package:school_web/web/utils/status/status.dart';
 import 'package:school_web/web/widgets/custom_text_widgets.dart';
 import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
 
@@ -774,7 +774,7 @@ class _AddStudentViewState extends State<AddStudentView> {
                           ward: authController.selectedWard.toString(),
                         );
                       } else {
-                        showSimpleIconsToast('Vui lòng chọn chuyên ngành');
+                        showErrorStatus('Vui lòng chọn chuyên ngành');
                       }
                     }
                   },

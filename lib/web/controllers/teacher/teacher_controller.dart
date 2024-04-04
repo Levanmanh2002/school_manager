@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:school_web/web/controllers/auth_controller.dart';
 import 'package:school_web/web/controllers/home/home_controller.dart';
 import 'package:school_web/web/models/teacher.dart';
-import 'package:school_web/web/utils/flash/toast.dart';
+import 'package:school_web/web/utils/status/status.dart';
 
 class TeacherController extends GetxController {
   final HomeController homeController = Get.put(HomeController());
@@ -202,23 +202,23 @@ class TeacherController extends GetxController {
       final res = await json.decode(await response.stream.bytesToString());
 
       if (res['status'] == 'email_check') {
-        showSimpleIconsToast('Email đã tồn tại');
+        showErrorStatus('Email đã tồn tại');
 
         isLoading(false);
       } else if (res['status'] == 'phone_check') {
-        showSimpleIconsToast('Số điện thoại đã tồn tại');
+        showErrorStatus('Số điện thoại đã tồn tại');
 
         isLoading(false);
       } else if (res['status'] == 'code_check') {
-        showSimpleIconsToast('Mã giáo viên đã tồn tại');
+        showErrorStatus('Mã giáo viên đã tồn tại');
 
         isLoading(false);
       } else if (res['status'] == 'cccd_check') {
-        showSimpleIconsToast('CCCD đã tồn tại');
+        showErrorStatus('CCCD đã tồn tại');
 
         isLoading(false);
       } else if (res['status'] == 'SUCCESS') {
-        showSimpleToast('Giáo viên đã được thêm thành công');
+        showSuccessStatus('Giáo viên đã được thêm thành công');
 
         homeController.totalWorkingTeacherData();
         fetchWorkingTeachers();
@@ -227,7 +227,7 @@ class TeacherController extends GetxController {
         Get.back();
         isLoading(false);
       } else {
-        showSimpleIconsToast('Lỗi kết nối!');
+        showErrorStatus('Lỗi kết nối!');
 
         isLoading(false);
       }
@@ -292,19 +292,19 @@ class TeacherController extends GetxController {
       final res = await json.decode(await response.stream.bytesToString());
 
       if (res['status'] == 'check_email') {
-        showSimpleIconsToast('Email đã tồn tại');
+        showErrorStatus('Email đã tồn tại');
 
         isEditLoading(false);
       } else if (res['status'] == 'check_phone') {
-        showSimpleIconsToast('Số điện thoại đã tồn tại');
+        showErrorStatus('Số điện thoại đã tồn tại');
 
         isEditLoading(false);
       } else if (res['status'] == 'check_cccd') {
-        showSimpleIconsToast('CCCD đã tồn tại');
+        showErrorStatus('CCCD đã tồn tại');
 
         isEditLoading(false);
       } else if (res['status'] == 'SUCCESS') {
-        showSimpleToast('Giáo viên đã được chỉnh sửa thành công');
+        showSuccessStatus('Giáo viên đã được chỉnh sửa thành công');
 
         homeController.totalWorkingTeacherData();
         fetchWorkingTeachers();
@@ -313,7 +313,7 @@ class TeacherController extends GetxController {
         Get.back();
         isEditLoading(false);
       } else {
-        showSimpleIconsToast('Lỗi kết nối!');
+        showErrorStatus('Lỗi kết nối!');
 
         isEditLoading(false);
       }
