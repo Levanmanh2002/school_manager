@@ -8,6 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:school_web/web/constants/style.dart';
 import 'package:school_web/web/controllers/auth_controller.dart';
 import 'package:school_web/web/controllers/class/class_controller.dart';
+import 'package:school_web/web/controllers/fees/fees_controller.dart';
 import 'package:school_web/web/controllers/home/home_controller.dart';
 import 'package:school_web/web/controllers/list_data/list_data_controller.dart';
 import 'package:school_web/web/controllers/majors/majors_controller.dart';
@@ -42,6 +43,7 @@ Future<void> main() async {
       Get.put(NotificationsController());
       Get.put(ClassesController());
       Get.put(MajorsController());
+      Get.put(FeesController());
       // Get.put(OtherController());
       // Get.put(ThemeController());
       final token = await const FlutterSecureStorage().read(key: 'token');

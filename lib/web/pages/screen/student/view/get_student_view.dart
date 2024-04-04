@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:school_web/main.dart';
 
-import 'package:school_web/web/constants/style.dart';
 import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/controllers/home/home_controller.dart';
 import 'package:school_web/web/controllers/student/student_controller.dart';
@@ -14,6 +14,7 @@ import 'package:school_web/web/pages/dashboard/controller/side_bar_controller.da
 import 'package:school_web/web/pages/home/view/mobile/widget/build_student_card_widget.dart';
 import 'package:school_web/web/pages/home/view/mobile/widget/table_info_student_widget.dart';
 import 'package:school_web/web/pages/home/view/mobile/widget/title_tab_widget.dart';
+import 'package:school_web/web/style/style_theme.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
 import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
 
@@ -74,7 +75,7 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
                     style: TextStyle(
                       fontSize: Responsive.isMobile(context) ? 18 : 24,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.blackColor,
+                      color: appTheme.blackColor,
                     ),
                   ),
                 ),
@@ -134,18 +135,18 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             color: selectedTab == 0
-                                ? AppColors.primary50Color
+                                ? appTheme.primary50Color
                                 : selectedTab == 1
-                                    ? AppColors.green100Color
+                                    ? appTheme.green100Color
                                     : selectedTab == 2
-                                        ? AppColors.green100Color
+                                        ? appTheme.green100Color
                                         : selectedTab == 3
-                                            ? AppColors.yellow100Color
+                                            ? appTheme.yellow100Color
                                             : selectedTab == 4
-                                                ? AppColors.trokeColor
+                                                ? appTheme.strokeColor
                                                 : selectedTab == 5
-                                                    ? AppColors.red100Color
-                                                    : AppColors.primary50Color,
+                                                    ? appTheme.red100Color
+                                                    : appTheme.primary50Color,
                           ),
                           child: Text(
                             selectedTab == 0
@@ -165,18 +166,18 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
                               color: selectedTab == 0
-                                  ? AppColors.primaryColor
+                                  ? appTheme.appColor
                                   : selectedTab == 1
-                                      ? AppColors.green500Color
+                                      ? appTheme.successColor
                                       : selectedTab == 2
-                                          ? AppColors.green500Color
+                                          ? appTheme.successColor
                                           : selectedTab == 3
-                                              ? AppColors.yellow500Color
+                                              ? appTheme.yellow500Color
                                               : selectedTab == 4
-                                                  ? AppColors.textDesColor
+                                                  ? appTheme.textDesColor
                                                   : selectedTab == 5
-                                                      ? AppColors.redColor
-                                                      : AppColors.primaryColor,
+                                                      ? appTheme.errorColor
+                                                      : appTheme.appColor,
                             ),
                           ),
                         ),
@@ -195,9 +196,9 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
                               isScrollable: true,
                               labelStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                               unselectedLabelStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                              labelColor: AppColors.primaryColor,
-                              unselectedLabelColor: AppColors.textDesColor,
-                              indicatorColor: AppColors.primaryColor,
+                              labelColor: appTheme.appColor,
+                              unselectedLabelColor: appTheme.textDesColor,
+                              indicatorColor: appTheme.appColor,
                               indicatorWeight: 1,
                               tabs: const [
                                 Tab(text: 'Tất cả'),
@@ -231,11 +232,7 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
                                       fillColor: const Color(0xFFF7F7FC),
                                       filled: true,
                                       hintText: 'Tìm kiếm',
-                                      hintStyle: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        color: AppColors.textDesColor,
-                                      ),
+                                      hintStyle: StyleThemeData.styleSize16Weight400(color: appTheme.textDesColor),
                                       prefixIcon: Container(
                                         width: 20,
                                         height: 20,
@@ -256,13 +253,13 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
                                                 padding: const EdgeInsets.only(right: 16),
                                                 child: Container(
                                                   padding: const EdgeInsets.all(3),
-                                                  decoration: const BoxDecoration(
+                                                  decoration: BoxDecoration(
                                                     shape: BoxShape.circle,
-                                                    color: AppColors.textDesColor,
+                                                    color: appTheme.textDesColor,
                                                   ),
-                                                  child: const Icon(
+                                                  child: Icon(
                                                     Icons.clear_rounded,
-                                                    color: AppColors.whiteColor,
+                                                    color: appTheme.whiteColor,
                                                     size: 12,
                                                   ),
                                                 ),
@@ -582,19 +579,15 @@ class ItemOnTap extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: Responsive.isMobile(context) ? 4 : 8, horizontal: 16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: AppColors.primaryColor,
+          color: appTheme.appColor,
         ),
         child: Row(
           children: [
             SvgPicture.asset(IconAssets.studentIcon),
             const SizedBox(width: 8),
-            const Text(
+            Text(
               'Thêm học sinh',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: AppColors.whiteColor,
-              ),
+              style: StyleThemeData.styleSize14Weight500(color: appTheme.whiteColor),
             ),
           ],
         ),

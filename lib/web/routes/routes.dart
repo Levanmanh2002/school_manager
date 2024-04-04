@@ -19,8 +19,6 @@ abstract class Routes {
   static const GETSTUDENT = '/get_student';
   static const GETMAJORS = '/get_majors';
   static const CLASSESINFO = '/classes';
-  static const ADDSTUDENTCLASS = '/add_student_class';
-  static const ADDTEACHERCLASS = '/add_teacher_class';
   static const EDITPROFILR = '/edit_profile';
   static const STUDENTTRANSFER = '/student_transfer';
 

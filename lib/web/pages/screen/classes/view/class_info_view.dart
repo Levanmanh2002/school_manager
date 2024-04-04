@@ -77,7 +77,11 @@ class _ClassesInfoViewState extends State<ClassesInfoView> {
                 children: [
                   Text(
                     'Danh sách lớp học',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: appTheme.blackColor),
+                    style: TextStyle(
+                      fontSize: Responsive.isMobile(context) ? 18 : 24,
+                      fontWeight: FontWeight.w600,
+                      color: appTheme.blackColor,
+                    ),
                   ),
                   InkWell(
                     onTap: () {

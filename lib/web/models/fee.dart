@@ -1,5 +1,6 @@
 class Fees {
   String? sId;
+  String? feesIds;
   String? maTraCuu;
   String? tenHocPhi;
   String? noiDungHocPhi;
@@ -14,6 +15,7 @@ class Fees {
 
   Fees({
     this.sId,
+    this.feesIds,
     this.maTraCuu,
     this.tenHocPhi,
     this.noiDungHocPhi,
@@ -29,6 +31,7 @@ class Fees {
 
   Fees.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
+    feesIds = json['feesIds'];
     maTraCuu = json['maTraCuu'];
     tenHocPhi = json['tenHocPhi'];
     noiDungHocPhi = json['noiDungHocPhi'];
@@ -45,6 +48,7 @@ class Fees {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = sId;
+    data['feesIds'] = feesIds;
     data['maTraCuu'] = maTraCuu;
     data['tenHocPhi'] = tenHocPhi;
     data['noiDungHocPhi'] = noiDungHocPhi;

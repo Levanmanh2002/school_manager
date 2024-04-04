@@ -18,7 +18,7 @@ void showErrorStatus(
   Get.snackbar(
     "Lỗi",
     message,
-    backgroundColor: appTheme.successColor,
+    backgroundColor: appTheme.errorColor,
     colorText: appTheme.whiteColor,
   );
 }
@@ -29,7 +29,7 @@ void showFailStatus(
   Get.snackbar(
     "Thất bại",
     message,
-    backgroundColor: appTheme.successColor,
+    backgroundColor: appTheme.errorColor,
     colorText: appTheme.whiteColor,
   );
 }
