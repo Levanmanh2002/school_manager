@@ -16,6 +16,7 @@ import 'package:school_web/web/pages/home/view/mobile/widget/table_info_student_
 import 'package:school_web/web/pages/home/view/mobile/widget/title_tab_widget.dart';
 import 'package:school_web/web/style/style_theme.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
+import 'package:school_web/web/utils/formatter/no_initial_spaceInput_formatter_widgets.dart';
 import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
 
 class GetStudentView extends StatefulWidget {
@@ -223,6 +224,7 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
                                     inputFormatters: [
                                       FilteringTextInputFormatter.deny(RegExp(r'[.,-/]')),
                                       LengthLimitingTextInputFormatter(25),
+                                      NoInitialSpaceInputFormatterWidgets(),
                                     ],
                                     onChanged: (value) {
                                       studentController.searchAllStudent(value);

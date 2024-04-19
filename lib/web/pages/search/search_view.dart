@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:school_web/web/l10n/l10n.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
+import 'package:school_web/web/utils/formatter/no_initial_spaceInput_formatter_widgets.dart';
 
 class SearchView extends StatelessWidget {
   const SearchView({
@@ -26,6 +27,7 @@ class SearchView extends StatelessWidget {
           inputFormatters: [
             FilteringTextInputFormatter.deny(RegExp(r'[.,-/]')),
             LengthLimitingTextInputFormatter(25),
+            NoInitialSpaceInputFormatterWidgets(),
           ],
           decoration: InputDecoration(
             isDense: true,

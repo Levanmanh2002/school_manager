@@ -3,7 +3,7 @@ import 'package:school_web/main.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/style/style_theme.dart';
 
-Widget itemTextWidget(BuildContext context) {
+Widget itemTextWidget(BuildContext context, {bool showStatus = false, bool showAct = true, bool dataTime = true}) {
   return Container(
     padding: const EdgeInsets.symmetric(vertical: 12),
     decoration: BoxDecoration(
@@ -49,22 +49,32 @@ Widget itemTextWidget(BuildContext context) {
               style: StyleThemeData.styleSize14Weight500(color: appTheme.whiteColor),
             ),
           ),
+          if (showStatus) const SizedBox(width: 8),
+          if (showStatus)
+            SizedBox(
+              width: Responsive.isMobile(context) ? 80 : MediaQuery.of(context).size.width / 10,
+              child: Text(
+                dataTime ? 'Trạng thái' : 'Phương thức thanh toán',
+                style: StyleThemeData.styleSize14Weight500(color: appTheme.whiteColor),
+              ),
+            ),
           const SizedBox(width: 8),
           SizedBox(
             width: Responsive.isMobile(context) ? 80 : MediaQuery.of(context).size.width / 10,
             child: Text(
-              'Hạn đóng',
+              dataTime ? 'Hạn đóng' : 'Ngày đóng tiền',
               style: StyleThemeData.styleSize14Weight500(color: appTheme.whiteColor),
             ),
           ),
-          const SizedBox(width: 8),
-          SizedBox(
-            width: Responsive.isMobile(context) ? 150 : MediaQuery.of(context).size.width / 8,
-            child: Text(
-              'Hành động',
-              style: StyleThemeData.styleSize14Weight500(color: appTheme.whiteColor),
+          if (showAct) const SizedBox(width: 8),
+          if (showAct)
+            SizedBox(
+              width: Responsive.isMobile(context) ? 150 : MediaQuery.of(context).size.width / 8,
+              child: Text(
+                'Hành động',
+                style: StyleThemeData.styleSize14Weight500(color: appTheme.whiteColor),
+              ),
             ),
-          ),
         ],
       ),
     ),

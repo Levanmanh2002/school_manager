@@ -2,8 +2,17 @@
 
 import 'package:flutter/material.dart';
 
-Widget titleTabWidget({required String name, required String code, required String industry, required String email, required String phone, required String status, required String detail}) {
-  return  Padding(
+Widget titleTabWidget({
+  required String name,
+  required String code,
+  required String industry,
+  required String email,
+  required String phone,
+  required String status,
+  required String detail,
+  bool showDivider = true,
+}) {
+  return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 16),
     child: Column(
       children: [
@@ -118,10 +127,11 @@ Widget titleTabWidget({required String name, required String code, required Stri
             ),
           ],
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 12),
-          child: Divider(height: 0),
-        ),
+        if (showDivider)
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 12),
+            child: Divider(height: 0),
+          ),
       ],
     ),
   );

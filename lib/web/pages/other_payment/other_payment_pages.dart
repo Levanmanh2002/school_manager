@@ -10,6 +10,7 @@ import 'package:school_web/web/models/other_payment.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:http/http.dart' as http;
 import 'package:school_web/web/style/style_theme.dart';
+import 'package:school_web/web/utils/formatter/no_initial_spaceInput_formatter_widgets.dart';
 import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
 
 class OtherPaymentPages extends StatefulWidget {
@@ -304,6 +305,7 @@ class _OtherPaymentPagesState extends State<OtherPaymentPages> {
                     controller: nameController,
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(100),
+                      NoInitialSpaceInputFormatterWidgets(),
                     ],
                     decoration: const InputDecoration(
                       hintText: 'Nhập tên khoản thu',
@@ -357,6 +359,7 @@ class _OtherPaymentPagesState extends State<OtherPaymentPages> {
                     controller: descriptionController,
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(300),
+                      NoInitialSpaceInputFormatterWidgets(),
                     ],
                     decoration: const InputDecoration(
                       hintText: 'Mô tả khoản thu',
@@ -410,6 +413,7 @@ class _OtherPaymentPagesState extends State<OtherPaymentPages> {
                     controller: addressController,
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(300),
+                      NoInitialSpaceInputFormatterWidgets(),
                     ],
                     decoration: const InputDecoration(
                       hintText: 'Nhập nơi nhận',
@@ -592,6 +596,7 @@ class _OtherPaymentPagesState extends State<OtherPaymentPages> {
                     controller: editNameController,
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(100),
+                      NoInitialSpaceInputFormatterWidgets(),
                     ],
                     decoration: InputDecoration(
                       hintText: otherPayment.name,
@@ -645,6 +650,7 @@ class _OtherPaymentPagesState extends State<OtherPaymentPages> {
                     controller: editDescriptionController,
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(300),
+                      NoInitialSpaceInputFormatterWidgets(),
                     ],
                     decoration: InputDecoration(
                       hintText: otherPayment.description,
@@ -698,6 +704,7 @@ class _OtherPaymentPagesState extends State<OtherPaymentPages> {
                     controller: editAddressController,
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(300),
+                      NoInitialSpaceInputFormatterWidgets(),
                     ],
                     decoration: InputDecoration(
                       hintText: otherPayment.address,

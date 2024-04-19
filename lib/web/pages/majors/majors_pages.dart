@@ -11,6 +11,7 @@ import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/majors/widget/card_widget.dart';
 import 'package:school_web/web/style/style_theme.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
+import 'package:school_web/web/utils/formatter/no_initial_spaceInput_formatter_widgets.dart';
 import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
 
 class MajorsPages extends StatefulWidget {
@@ -186,6 +187,7 @@ class _MajorsPagesState extends State<MajorsPages> {
                     controller: nameController,
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(50),
+                      NoInitialSpaceInputFormatterWidgets(),
                     ],
                     decoration: InputDecoration(
                       hintText: 'Nhập tên ngành',
@@ -229,6 +231,7 @@ class _MajorsPagesState extends State<MajorsPages> {
                     controller: desController,
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(300),
+                      NoInitialSpaceInputFormatterWidgets(),
                     ],
                     decoration: InputDecoration(
                       hintText: 'Mô tả ngành nghề',
@@ -362,6 +365,7 @@ class _MajorsPagesState extends State<MajorsPages> {
                     controller: nameEditController,
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(50),
+                      NoInitialSpaceInputFormatterWidgets(),
                     ],
                     decoration: InputDecoration(
                       hintText: majorsData.name,
@@ -409,6 +413,7 @@ class _MajorsPagesState extends State<MajorsPages> {
                     controller: desEditController,
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(300),
+                      NoInitialSpaceInputFormatterWidgets(),
                     ],
                     decoration: InputDecoration(
                       hintText: majorsData.description,

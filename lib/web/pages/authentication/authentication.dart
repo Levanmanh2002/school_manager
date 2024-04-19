@@ -22,8 +22,8 @@ class AuthenticationPage extends StatefulWidget {
 class _AuthenticationPageState extends State<AuthenticationPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final AuthController authController = Get.put(AuthController());
-  final _teacherCodeController = TextEditingController();
-  final _passTeacherController = TextEditingController();
+  final _teacherCodeController = TextEditingController(text: 'GV001');
+  final _passTeacherController = TextEditingController(text: 'admin1234');
   final isLoading = false.obs;
 
   Future<dynamic> signinTeacher() async {

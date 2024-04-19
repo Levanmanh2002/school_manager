@@ -20,6 +20,12 @@ class FeesController extends GetxController {
   var isLodingUpdateFeeToStudent = false.obs;
   var isLoadingPay = false.obs;
 
+  var feesView = 1.obs;
+
+  void changeFeesView(int view) {
+    feesView.value = view;
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -63,6 +69,7 @@ class FeesController extends GetxController {
         isLoadingSearch(false);
       }
     } catch (error) {
+      showErrorStatus('MSSV không đúng');
       print('Lỗi search student: $error');
       isLoadingSearch(false);
     } finally {
@@ -285,7 +292,7 @@ class FeesController extends GetxController {
       if (response.statusCode == 201) {
         showSuccessStatus('Cập nhật thành công');
 
-        Get.back();
+        changeFeesView(1);
 
         isLoadingAddFeesStudent(false);
       } else {

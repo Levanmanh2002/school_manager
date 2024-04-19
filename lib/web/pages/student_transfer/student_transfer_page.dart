@@ -13,6 +13,7 @@ import 'package:school_web/web/models/student.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/screen/student/detail/student_detail_screen.dart';
 import 'package:school_web/web/utils/assets/images.dart';
+import 'package:school_web/web/utils/formatter/no_initial_spaceInput_formatter_widgets.dart';
 import 'package:school_web/web/widgets/full_screen_image_screen.dart';
 import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
 
@@ -199,6 +200,7 @@ class _StudentTransferPageState extends State<StudentTransferPage> {
                       inputFormatters: [
                         FilteringTextInputFormatter.deny(RegExp(r'[.,-/]')),
                         LengthLimitingTextInputFormatter(25),
+                        NoInitialSpaceInputFormatterWidgets(),
                       ],
                       decoration: InputDecoration(
                         hintText: "Tìm kiếm",
