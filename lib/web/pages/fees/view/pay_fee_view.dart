@@ -128,6 +128,7 @@ class _PayFeeViewState extends State<PayFeeView> {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
               height: 40,
+              width: 121,
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),

@@ -137,6 +137,7 @@ class _NewFeeStudentViewState extends State<NewFeeStudentView> {
             },
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+              width: 180,
               height: 40,
               alignment: Alignment.center,
               decoration: BoxDecoration(
