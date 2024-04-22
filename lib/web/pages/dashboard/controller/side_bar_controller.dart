@@ -9,7 +9,7 @@ import 'package:school_web/web/pages/screen/student/view/add_student_view.dart';
 import 'package:school_web/web/pages/screen/student/view/get_student_view.dart';
 import 'package:school_web/web/pages/screen/teacher/view/add_teacher_view.dart';
 import 'package:school_web/web/pages/screen/teacher/view/get_teachers_view.dart';
-import 'package:school_web/web/pages/student_transfer/student_transfer_page.dart';
+import 'package:school_web/web/pages/change_majors/change_majors_page.dart';
 
 class SideBarController extends GetxController {
   RxInt index = 0.obs;
@@ -22,7 +22,7 @@ class SideBarController extends GetxController {
     const MajorsPages(), // 4
     const FeePages(), // 5
     const OtherPaymentPages(), // 6
-    const StudentTransferPage(), // 7
+    const ChangeMajorsPage(), // 7
     const NotificationsDetails(), // 8
     const AddTeacherView(), // 9
     const AddStudentView(), // 10

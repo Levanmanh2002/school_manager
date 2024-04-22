@@ -12,7 +12,7 @@ import 'package:school_web/web/pages/screen/student/view/get_student_view.dart';
 import 'package:school_web/web/pages/screen/teacher/view/add_teacher_view.dart';
 import 'package:school_web/web/pages/screen/teacher/view/get_teachers_view.dart';
 import 'package:school_web/web/pages/setting/setting_pages.dart';
-import 'package:school_web/web/pages/student_transfer/student_transfer_page.dart';
+import 'package:school_web/web/pages/change_majors/change_majors_page.dart';
 
 part 'routes.dart';
 
@@ -76,7 +76,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: Routes.STUDENTTRANSFER,
-      page: () => const StudentTransferPage(),
+      page: () => const ChangeMajorsPage(),
     ),
 
     /// Students
