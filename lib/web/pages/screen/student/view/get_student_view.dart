@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:school_web/main.dart';
-
 import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/controllers/home/home_controller.dart';
 import 'package:school_web/web/controllers/student/student_controller.dart';
@@ -32,7 +31,7 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
   final ValueNotifier<bool> isClearVisible = ValueNotifier<bool>(false);
 
   final HomeController homeController = Get.put(HomeController());
-  final AuthenticationController authController = Get.put(AuthenticationController());
+  final AuthController authController = Get.put(AuthController());
   final StudentController studentController = Get.put(StudentController());
 
   ValueNotifier<int> tabSelected = ValueNotifier<int>(0);
@@ -560,7 +559,7 @@ class ItemOnTap extends StatelessWidget {
     required this.authController,
   });
 
-  final AuthenticationController authController;
+  final AuthController authController;
 
   @override
   Widget build(BuildContext context) {

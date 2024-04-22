@@ -22,7 +22,7 @@ class InforAccount extends StatefulWidget {
 
   final ValueNotifier<bool> isClearVisible;
   final TextEditingController searchController;
-  final AuthenticationController authController;
+  final AuthController authController;
   final SideBarController sideBarController;
 
   @override

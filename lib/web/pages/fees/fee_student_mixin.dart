@@ -21,7 +21,7 @@ import 'package:school_web/web/widgets/box_shadow_widget.dart';
 import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
 
 mixin FeeStudentMixin on State<FeePages> {
-  final AuthenticationController authController = Get.put(AuthenticationController());
+  final AuthController authController = Get.put(AuthController());
   final FeesController feesController = Get.put(FeesController());
 
   Widget buildListDataStudent() {

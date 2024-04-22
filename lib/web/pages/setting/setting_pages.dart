@@ -14,7 +14,7 @@ class SettingPages extends StatefulWidget {
 class _SettingPagesState extends State<SettingPages> {
   @override
   Widget build(BuildContext context) {
-    final authController = Get.put(AuthenticationController());
+    final authController = Get.put(AuthController());
 
     Future<dynamic> deleteTeacher() async {
       var request = http.Request(

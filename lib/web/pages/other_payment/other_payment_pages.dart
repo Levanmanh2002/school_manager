@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:school_web/main.dart';
 import 'package:school_web/web/constants/style.dart';
-import 'package:school_web/web/controllers/auth_controller.dart';
+import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/controllers/other/other_controller.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/style/style_theme.dart';

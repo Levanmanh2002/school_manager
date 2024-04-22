@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:school_web/main.dart';
 import 'package:school_web/web/constants/style.dart';
-import 'package:school_web/web/controllers/auth_controller.dart';
+import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/pages/authentication/reset_password.dart';
 import 'package:school_web/web/routes/pages.dart';
 import 'package:school_web/web/utils/assets/images.dart';

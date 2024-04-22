@@ -6,7 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:school_web/web/constants/style.dart';
-import 'package:school_web/web/controllers/auth_controller.dart';
+import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/controllers/class/class_controller.dart';
 import 'package:school_web/web/controllers/fees/fees_controller.dart';
 import 'package:school_web/web/controllers/home/home_controller.dart';

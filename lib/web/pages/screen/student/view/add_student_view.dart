@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:school_web/main.dart';
-import 'package:school_web/web/controllers/auth_controller.dart';
+import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/controllers/majors/majors_controller.dart';
 import 'package:school_web/web/controllers/student/student_controller.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';

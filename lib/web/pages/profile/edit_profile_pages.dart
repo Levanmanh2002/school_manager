@@ -24,7 +24,7 @@ class EditProfilePages extends StatefulWidget {
 class _EditProfilePagesState extends State<EditProfilePages> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TeacherData? teacherData;
-  final authController = Get.put(AuthenticationController());
+  final authController = Get.put(AuthController());
   late final String? _selectedGender = authController.teacherData.value?.gender;
 
   late bool isCivilServant = authController.teacherData.value?.civilServant ?? true;
@@ -776,35 +776,35 @@ class _EditProfilePagesState extends State<EditProfilePages> {
               InkWell(
                 onTap: () async {
                   if (_formKey.currentState!.validate()) {
-                    await authController.getPutProfileTeacher(
-                      _fullNameController.text,
-                      _cccdController.text,
-                      _emailController.text,
-                      _phoneNumberController.text,
-                      _genderController.text,
-                      selectedBirthDateNotifier.value.toString(),
-                      _birthPlaceController.text,
-                      _ethnicityController.text,
-                      _nicknameController.text,
-                      _teachingLevelController.text,
-                      _positionController.text,
-                      _experienceController.text,
-                      _departmentController.text,
-                      _roleController.text,
-                      selectedJoinDateNotifier.value.toString(),
-                      isCivilServant.toString(),
-                      _contractTypeController.text,
-                      _primarySubjectController.text,
-                      _secondarySubjectController.text,
-                      isSeletedIsWorking.toString(),
-                      _academicDegreeController.text,
-                      _standardDegreeController.text,
-                      _politicalTheoryController.text,
-                      addressController.text,
-                      cityController.text,
-                      districtController.text,
-                      wardController.text,
-                    );
+                    // await authController.getPutProfileTeacher(
+                    //   _fullNameController.text,
+                    //   _cccdController.text,
+                    //   _emailController.text,
+                    //   _phoneNumberController.text,
+                    //   _genderController.text,
+                    //   selectedBirthDateNotifier.value.toString(),
+                    //   _birthPlaceController.text,
+                    //   _ethnicityController.text,
+                    //   _nicknameController.text,
+                    //   _teachingLevelController.text,
+                    //   _positionController.text,
+                    //   _experienceController.text,
+                    //   _departmentController.text,
+                    //   _roleController.text,
+                    //   selectedJoinDateNotifier.value.toString(),
+                    //   isCivilServant.toString(),
+                    //   _contractTypeController.text,
+                    //   _primarySubjectController.text,
+                    //   _secondarySubjectController.text,
+                    //   isSeletedIsWorking.toString(),
+                    //   _academicDegreeController.text,
+                    //   _standardDegreeController.text,
+                    //   _politicalTheoryController.text,
+                    //   addressController.text,
+                    //   cityController.text,
+                    //   districtController.text,
+                    //   wardController.text,
+                    // );
                   }
                 },
                 child: Container(

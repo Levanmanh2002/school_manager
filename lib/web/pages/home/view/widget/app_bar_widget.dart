@@ -7,7 +7,7 @@ class AppBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthenticationController authController = Get.put(AuthenticationController());
+    final AuthController authController = Get.put(AuthController());
 
     return Row(
       children: [

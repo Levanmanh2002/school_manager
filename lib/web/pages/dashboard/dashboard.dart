@@ -20,7 +20,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  final AuthenticationController authController = Get.put(AuthenticationController());
+  final AuthController authController = Get.put(AuthController());
   bool isExpanded = true;
   final SideBarController sideBarController = Get.put(SideBarController());
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();

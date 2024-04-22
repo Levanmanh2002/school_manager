@@ -22,7 +22,7 @@ class ProfilePages extends StatefulWidget {
 
 class _ProfilePagesState extends State<ProfilePages> with SingleTickerProviderStateMixin {
   TeacherData? teacherData;
-  final authController = Get.put(AuthenticationController());
+  final authController = Get.put(AuthController());
 
   @override
   void initState() {

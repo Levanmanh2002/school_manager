@@ -21,7 +21,7 @@ import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
 
 mixin FeeMixin on State<FeePages> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final AuthenticationController authController = Get.put(AuthenticationController());
+  final AuthController authController = Get.put(AuthController());
   final FeesController feesController = Get.put(FeesController());
 
   final TextEditingController tenHocPhiController = TextEditingController();

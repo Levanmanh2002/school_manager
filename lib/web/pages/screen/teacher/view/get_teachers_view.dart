@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:school_web/main.dart';
-import 'package:school_web/web/controllers/home/home_controller.dart';
 import 'package:school_web/web/controllers/auth/auth_controller.dart';
+import 'package:school_web/web/controllers/home/home_controller.dart';
 import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/dashboard/controller/side_bar_controller.dart';
@@ -31,7 +31,7 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
 
   final HomeController homeController = Get.put(HomeController());
   final TeacherController teacherController = Get.put(TeacherController());
-  final AuthenticationController authController = Get.put(AuthenticationController());
+  final AuthController authController = Get.put(AuthController());
 
   ValueNotifier<int> tabSelected = ValueNotifier<int>(0);
 
@@ -341,7 +341,7 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
 class ItemOnTap extends StatelessWidget {
   const ItemOnTap({super.key, required this.authController});
 
-  final AuthenticationController authController;
+  final AuthController authController;
 
   @override
   Widget build(BuildContext context) {
