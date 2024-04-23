@@ -24,9 +24,9 @@ class SideBarController extends GetxController {
     const FeePages(), // 5
     const OtherPaymentPages(), // 6
     const ChangeMajorsPage(), // 7
-    const SystemPages(), // new
-    const NotificationsDetails(), // 8
-    const AddTeacherView(), // 9
-    const AddStudentView(), // 10
+    const SystemPages(), // 8
+    const NotificationsDetails(), // 8 -> 9
+    const AddTeacherView(), // 10
+    const AddStudentView(), // 11
   ];
 }

@@ -567,7 +567,7 @@ class ItemOnTap extends StatelessWidget {
 
     return InkWell(
       onTap: () => authController.teacherData.value?.system == 1 || authController.teacherData.value?.system == 2
-          ? sideBarController.index.value = 10
+          ? sideBarController.index.value = 11
           : showNoSystemWidget(
               context,
               title: 'Bạn không có quyền giáo viên',

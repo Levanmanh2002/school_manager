@@ -89,7 +89,7 @@ void showUpdateView(BuildContext context, TeacherData teacher) {
                                       ))
                                   .toList(),
                               value: systemController.selectedValue.value.isEmpty
-                                  ? null
+                                  ? teacher.system.toString()
                                   : systemController.selectedValue.value,
                               onChanged: (value) {
                                 if (value != null) {
@@ -161,7 +161,9 @@ void showUpdateView(BuildContext context, TeacherData teacher) {
                           if (systemController.selectedValue.value.isNotEmpty) {
                             systemController.updateSystem(
                               teacherId: teacher.sId.toString(),
-                              system: systemController.selectedValue.value,
+                              system: systemController.selectedValue.value.isEmpty
+                                  ? teacher.system.toString()
+                                  : systemController.selectedValue.value,
                               user: teacher.fullName.toString(),
                               grantedById: authController.teacherData.value!.sId.toString(),
                             );

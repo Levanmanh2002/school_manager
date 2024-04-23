@@ -88,35 +88,35 @@ class NotificationsView extends StatelessWidget {
                   notificationsController.updateMarkAsRead(notification.sId.toString());
 
                   if (notification.teacherId != null) {
-                    Navigator.pop(context);
+                    Get.back();
 
                     sideBarController.index.value = 1;
                   } else if (notification.studentId != null) {
-                    Navigator.pop(context);
+                    Get.back();
 
                     sideBarController.index.value = 2;
                   } else if (notification.systemIds != null) {
-                    Navigator.pop(context);
+                    Get.back();
 
-                    // sideBarController.index.value = 7;
+                    sideBarController.index.value = 8;
                   } else if (notification.classIds != null) {
-                    Navigator.pop(context);
+                    Get.back();
 
                     sideBarController.index.value = 3;
                   } else if (notification.uniformIds != null) {
-                    Navigator.pop(context);
+                    Get.back();
 
                     sideBarController.index.value = 6;
                   } else if (notification.feesIds != null) {
-                    Navigator.pop(context);
+                    Get.back();
 
                     sideBarController.index.value = 5;
                   } else if (notification.majorIds != null) {
-                    Navigator.pop(context);
+                    Get.back();
 
                     sideBarController.index.value = 4;
                   } else {
-                    Navigator.pop(context);
+                    Get.back();
                   }
                 },
                 child: Padding(

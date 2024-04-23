@@ -119,7 +119,7 @@ class NotificationsDetails extends StatelessWidget {
                                 } else if (notification.systemIds != null) {
                                   // Navigator.pop(context);
 
-                                  // sideBarController.index.value = 7;
+                                  sideBarController.index.value = 8;
                                 } else if (notification.classIds != null) {
                                   // Navigator.pop(context);
 
