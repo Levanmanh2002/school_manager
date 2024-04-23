@@ -15,6 +15,7 @@ import 'package:school_web/web/controllers/majors/majors_controller.dart';
 import 'package:school_web/web/controllers/notifications/notifications_controller.dart';
 import 'package:school_web/web/controllers/other/other_controller.dart';
 import 'package:school_web/web/controllers/student/student_controller.dart';
+import 'package:school_web/web/controllers/system/system_controller.dart';
 import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
 import 'package:school_web/web/l10n/app_localizations.dart';
 import 'package:school_web/web/l10n/language_constants.dart';
@@ -46,6 +47,7 @@ Future<void> main() async {
       Get.put(MajorsController());
       Get.put(FeesController());
       Get.put(OtherController());
+      Get.put(SystemController());
       // Get.put(ThemeController());
       final token = await const FlutterSecureStorage().read(key: 'token');
 

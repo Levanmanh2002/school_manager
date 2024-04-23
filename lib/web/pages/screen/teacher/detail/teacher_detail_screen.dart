@@ -178,7 +178,6 @@ class TeacherDetailScreen extends StatelessWidget {
                             ),
                           ),
                           _buildInfoItem(context, 'Trình độ học vấn', teacher.academicDegree ?? ''),
-                          _buildInfoItem(context, 'Chức vụ', teacher.role ?? ''),
                           _buildInfoItem(context, 'Kinh nghiệm', teacher.experience ?? ''),
                           _buildInfoItem(context, 'Ngày tham gia', formattedJoinDate),
                           _buildInfoItem(context, 'Loại hợp đồng', teacher.contractType ?? ''),

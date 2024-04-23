@@ -27,7 +27,6 @@ class _EditProfilePagesState extends State<EditProfilePages> {
   final authController = Get.put(AuthController());
   late final String? _selectedGender = authController.teacherData.value?.gender;
 
-  late bool isCivilServant = authController.teacherData.value?.civilServant ?? true;
   late bool isSeletedIsWorking = authController.teacherData.value?.isWorking ?? false;
 
   ValueNotifier<DateTime> selectedBirthDateNotifier = ValueNotifier<DateTime>(DateTime.now());
