@@ -214,148 +214,151 @@ class _OtherPaymentPagesState extends State<OtherPaymentPages> {
                 key: formKey,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 32, left: 16, right: 16, bottom: 24),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Thêm khoản thu mới',
-                        style: StyleThemeData.styleSize16Weight800(),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 24),
-                      CustomTextWidgets(
-                        controller: nameController,
-                        title: 'Tên khoản thu',
-                        hintText: 'Nhập tên khoản thu',
-                        validator: true,
-                        borderRadius: 8,
-                      ),
-                      const SizedBox(height: 16),
-                      CustomTextWidgets(
-                        controller: moneyController,
-                        title: 'Giá',
-                        hintText: 'Nhập giá',
-                        keyboardType: TextInputType.phone,
-                        validator: true,
-                        borderRadius: 8,
-                      ),
-                      const SizedBox(height: 16),
-                      CustomTextWidgets(
-                        controller: quantityController,
-                        title: 'Số lượng',
-                        hintText: 'Nhập số lượng',
-                        keyboardType: TextInputType.phone,
-                        validator: true,
-                        borderRadius: 8,
-                      ),
-                      const SizedBox(height: 16),
-                      CustomTextWidgets(
-                        controller: noteController,
-                        title: 'Ghi chú khoản thu',
-                        hintText: 'Nhập ghi chú khoản thu',
-                        validator: true,
-                        borderRadius: 8,
-                      ),
-                      const SizedBox(height: 16),
-                      Container(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          'Hình ảnh',
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: appTheme.textDesColor),
+                  child: Container(
+                    constraints: BoxConstraints(maxWidth: Responsive.isMobile(context) ? 311 : 500),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Thêm khoản thu mới',
+                          style: StyleThemeData.styleSize16Weight800(),
+                          textAlign: TextAlign.center,
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: InkWell(
-                          onTap: () => imageFromGallery(),
-                          child: ValueListenableBuilder<File?>(
-                              valueListenable: pickedImageNotifier,
-                              builder: (context, pickedImage, _) {
-                                return pickedImage != null
-                                    ? ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: SizedBox(
+                        const SizedBox(height: 24),
+                        CustomTextWidgets(
+                          controller: nameController,
+                          title: 'Tên khoản thu',
+                          hintText: 'Nhập tên khoản thu',
+                          validator: true,
+                          borderRadius: 8,
+                        ),
+                        const SizedBox(height: 16),
+                        CustomTextWidgets(
+                          controller: moneyController,
+                          title: 'Giá',
+                          hintText: 'Nhập giá',
+                          keyboardType: TextInputType.phone,
+                          validator: true,
+                          borderRadius: 8,
+                        ),
+                        const SizedBox(height: 16),
+                        CustomTextWidgets(
+                          controller: quantityController,
+                          title: 'Số lượng',
+                          hintText: 'Nhập số lượng',
+                          keyboardType: TextInputType.phone,
+                          validator: true,
+                          borderRadius: 8,
+                        ),
+                        const SizedBox(height: 16),
+                        CustomTextWidgets(
+                          controller: noteController,
+                          title: 'Ghi chú khoản thu',
+                          hintText: 'Nhập ghi chú khoản thu',
+                          validator: true,
+                          borderRadius: 8,
+                        ),
+                        const SizedBox(height: 16),
+                        Container(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Hình ảnh',
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: appTheme.textDesColor),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: InkWell(
+                            onTap: () => imageFromGallery(),
+                            child: ValueListenableBuilder<File?>(
+                                valueListenable: pickedImageNotifier,
+                                builder: (context, pickedImage, _) {
+                                  return pickedImage != null
+                                      ? ClipRRect(
+                                          borderRadius: BorderRadius.circular(8),
+                                          child: SizedBox(
+                                            width: 100,
+                                            height: 120,
+                                            child: Image.network(
+                                              pickedImage.path,
+                                              width: 24,
+                                              height: 24,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        )
+                                      : Container(
                                           width: 100,
                                           height: 120,
-                                          child: Image.network(
-                                            pickedImage.path,
-                                            width: 24,
-                                            height: 24,
-                                            fit: BoxFit.cover,
+                                          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(8),
+                                            color: appTheme.backgroundContainer,
                                           ),
-                                        ),
-                                      )
-                                    : Container(
-                                        width: 100,
-                                        height: 120,
-                                        padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(8),
-                                          color: appTheme.backgroundContainer,
-                                        ),
-                                        child: SvgPicture.asset(IconAssets.addIcon, width: 24, height: 24),
-                                      );
-                              }),
+                                          child: SvgPicture.asset(IconAssets.addIcon, width: 24, height: 24),
+                                        );
+                                }),
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 24),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                              clear();
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: appTheme.textDesColor),
-                              ),
-                              child: Text(
-                                'Hủy',
-                                style: StyleThemeData.styleSize16Weight600(color: appTheme.textDesColor, height: 0),
+                        const SizedBox(height: 24),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                                clear();
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: appTheme.textDesColor),
+                                ),
+                                child: Text(
+                                  'Hủy',
+                                  style: StyleThemeData.styleSize16Weight600(color: appTheme.textDesColor, height: 0),
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 12),
-                          InkWell(
-                            onTap: () {
-                              if (formKey.currentState!.validate()) {
-                                if (pickedImageNotifier.value != null) {
-                                  Get.back();
+                            const SizedBox(width: 12),
+                            InkWell(
+                              onTap: () {
+                                if (formKey.currentState!.validate()) {
+                                  if (pickedImageNotifier.value != null) {
+                                    Get.back();
 
-                                  showLoadingDialog(context, (p0) async {
-                                    await otherController.addUniform(
-                                      name: nameController.text,
-                                      money: moneyController.text,
-                                      quantity: quantityController.text,
-                                      note: noteController.text,
-                                      blobUrl: pickedImageNotifier.value!.path.toString(),
-                                    );
-                                  });
-                                } else {
-                                  showErrorStatus('Hãy chọn ít nhất 1 hình ảnh');
+                                    showLoadingDialog(context, (p0) async {
+                                      await otherController.addUniform(
+                                        name: nameController.text,
+                                        money: moneyController.text,
+                                        quantity: quantityController.text,
+                                        note: noteController.text,
+                                        blobUrl: pickedImageNotifier.value!.path.toString(),
+                                      );
+                                    });
+                                  } else {
+                                    showErrorStatus('Hãy chọn ít nhất 1 hình ảnh');
+                                  }
                                 }
-                              }
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: appTheme.appColor,
-                              ),
-                              child: Text(
-                                'Xác nhận',
-                                style: StyleThemeData.styleSize16Weight600(color: appTheme.whiteColor, height: 0),
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: appTheme.appColor,
+                                ),
+                                child: Text(
+                                  'Xác nhận',
+                                  style: StyleThemeData.styleSize16Weight600(color: appTheme.whiteColor, height: 0),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
