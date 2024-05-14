@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:school_web/main.dart';
-import 'package:school_web/web/constants/style.dart';
 import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/controllers/teacher/teacher_controller.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
@@ -158,13 +157,6 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                         : Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              // CircleAvatar(
-                              //   backgroundImage: const NetworkImage(
-                              //     'https://firebasestorage.googleapis.com/v0/b/school-manager-793a1.appspot.com/o/image_email%2Fadmin.png?alt=media&token=7523b31b-0184-420c-86b6-b2b873086d60',
-                              //   ),
-                              //   radius: 100,
-                              //   backgroundColor: appTheme.whiteColor,
-                              // ),
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(1000),
                                 child: CachedNetworkImage(
@@ -208,10 +200,10 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                 children: [
                                   Container(
                                     alignment: Alignment.topLeft,
-                                    child: const Text(
+                                    child: Text(
                                       '1. Thông tin cá nhân',
                                       style: TextStyle(
-                                        color: AppColors.blackColor,
+                                        color: appTheme.blackColor,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -377,8 +369,8 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                                         fontSize: 14,
                                                         fontWeight: FontWeight.w500,
                                                         color: selectedBirthDate != null
-                                                            ? AppColors.blackColor
-                                                            : AppColors.textDesColor,
+                                                            ? appTheme.blackColor
+                                                            : appTheme.textDesColor,
                                                       ),
                                                     ),
                                                   );
@@ -726,7 +718,7 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                       cancel: 'Đóng',
                       confirm: 'Đồng ý',
                       ontap: () {
-                        Navigator.pop(context);
+                        Get.back();
                         sideBarController.index.value = 1;
                         authController.loadData();
                       },

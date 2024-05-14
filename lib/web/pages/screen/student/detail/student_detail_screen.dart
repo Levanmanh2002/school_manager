@@ -67,17 +67,19 @@ class StudentDetailScreen extends StatelessWidget {
                     ? const SizedBox.shrink()
                     : GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => FullImageWidget(imageUrl: student.avatarUrl),
-                            ),
-                          );
+                          fullImageWidget(context, student.avatarUrl ?? '');
                         },
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage(student.avatarUrl ??
-                              'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512'),
-                          radius: 80,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(1000),
+                          child: CachedNetworkImage(
+                            imageUrl: student.avatarUrl ?? '',
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.cover,
+                            errorWidget: (context, url, error) {
+                              return Image.asset(ImagesAssets.noUrlImage, fit: BoxFit.cover);
+                            },
+                          ),
                         ),
                       ),
                 Responsive.isMobile(context) ? const SizedBox.shrink() : const SizedBox(width: 24),
@@ -88,18 +90,8 @@ class StudentDetailScreen extends StatelessWidget {
                       Responsive.isMobile(context)
                           ? GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => FullImageWidget(imageUrl: student.avatarUrl),
-                                  ),
-                                );
+                                fullImageWidget(context, student.avatarUrl ?? '');
                               },
-                              // child: CircleAvatar(
-                              //   backgroundImage: NetworkImage(student.avatarUrl ??
-                              //       'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512'),
-                              //   radius: 80,
-                              // ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(1000),
                                 child: CachedNetworkImage(

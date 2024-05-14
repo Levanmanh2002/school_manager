@@ -76,18 +76,8 @@ class TeacherDetailScreen extends StatelessWidget {
                     ? const SizedBox.shrink()
                     : GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => FullImageWidget(imageUrl: teacher.avatarUrl),
-                            ),
-                          );
+                          fullImageWidget(context, teacher.avatarUrl ?? '');
                         },
-                        // child: CircleAvatar(
-                        //   backgroundImage: NetworkImage(teacher.avatarUrl ??
-                        //       'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512'),
-                        //   radius: 80,
-                        // ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(1000),
                           child: CachedNetworkImage(
@@ -109,18 +99,8 @@ class TeacherDetailScreen extends StatelessWidget {
                       Responsive.isMobile(context)
                           ? GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => FullImageWidget(imageUrl: teacher.avatarUrl),
-                                  ),
-                                );
+                                fullImageWidget(context, teacher.avatarUrl ?? '');
                               },
-                              // child: CircleAvatar(
-                              //   backgroundImage: NetworkImage(teacher.avatarUrl ??
-                              //       'https://firebasestorage.googleapis.com/v0/b/school-manager-d9566.appspot.com/o/admin.png?alt=media&token=1d3acd26-4c07-4fb8-b0b4-a5e88d75a512'),
-                              //   radius: 80,
-                              // ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(1000),
                                 child: CachedNetworkImage(

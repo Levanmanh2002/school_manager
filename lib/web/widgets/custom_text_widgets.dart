@@ -30,6 +30,7 @@ class CustomTextWidgets extends StatelessWidget {
     this.checkLength = false,
     this.checkPhone = false,
     this.maxLines = 1,
+    this.height = 0,
   });
 
   final String title;
@@ -55,6 +56,7 @@ class CustomTextWidgets extends StatelessWidget {
   final bool checkLength;
   final bool checkPhone;
   final int? maxLines;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +95,7 @@ class CustomTextWidgets extends StatelessWidget {
             fillColor: fillColor,
             filled: fillColor != null ? true : null,
             hintText: enabled == false ? initialData : hintText,
-            hintStyle: StyleThemeData.styleSize14Weight400(color: colorHint ?? appTheme.textDesColor, height: 0),
+            hintStyle: StyleThemeData.styleSize14Weight400(color: colorHint ?? appTheme.textDesColor, height: height),
             errorStyle: TextStyle(color: appTheme.errorColor),
             labelStyle: StyleThemeData.styleSize14Weight400(color: color, height: 0),
             border: const OutlineInputBorder(),

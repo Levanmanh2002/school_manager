@@ -8,7 +8,6 @@ import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/dashboard/controller/side_bar_controller.dart';
 import 'package:school_web/web/pages/dashboard/widget/infor_account.dart';
 import 'package:school_web/web/pages/notifications/notifications.dart';
-import 'package:school_web/web/routes/pages.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
 import 'package:school_web/web/utils/assets/images.dart';
 
@@ -230,18 +229,10 @@ class _DashboardState extends State<Dashboard> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
               child: InkWell(
-                onTap: () {
-                  Get.toNamed(Routes.PROFILE);
-                },
+                onTap: () => sideBarController.index.value = 12,
                 child: Row(
                   mainAxisAlignment: Responsive.isTablet(context) ? MainAxisAlignment.center : MainAxisAlignment.start,
                   children: [
-                    // CircleAvatar(
-                    //   backgroundImage: NetworkImage(
-                    //     authController.teacherData.value?.avatarUrl ?? 'https://i.stack.imgur.com/l60Hf.png',
-                    //   ),
-                    //   radius: 20,
-                    // ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(1000),
                       child: CachedNetworkImage(

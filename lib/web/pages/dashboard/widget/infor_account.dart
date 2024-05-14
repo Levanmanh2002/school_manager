@@ -5,10 +5,8 @@ import 'package:school_web/main.dart';
 import 'package:school_web/web/controllers/auth/auth_controller.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/dashboard/controller/side_bar_controller.dart';
-import 'package:school_web/web/pages/language/language_value.dart';
 import 'package:school_web/web/pages/notifications/notifications.dart';
 import 'package:school_web/web/pages/search/search_view.dart';
-import 'package:school_web/web/routes/pages.dart';
 import 'package:school_web/web/utils/assets/images.dart';
 
 class InforAccount extends StatefulWidget {
@@ -30,25 +28,25 @@ class InforAccount extends StatefulWidget {
 }
 
 class _InforAccountState extends State<InforAccount> {
-  final languageNotifier = ValueNotifier<Language>(Language.english);
-  late Map<String, dynamic>? language;
-  late Language currentLanguage;
-  Function(Locale)? changeLocale;
+  // final languageNotifier = ValueNotifier<Language>(Language.english);
+  // late Map<String, dynamic>? language;
+  // late Language currentLanguage;
+  // Function(Locale)? changeLocale;
 
-  @override
-  void initState() {
-    super.initState();
-    getLocale().then((value) {
-      currentLanguage = value;
-      languageNotifier.value = value;
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   getLocale().then((value) {
+  //     currentLanguage = value;
+  //     languageNotifier.value = value;
+  //   });
+  // }
 
-  @override
-  void dispose() {
-    languageNotifier.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   languageNotifier.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -58,112 +56,6 @@ class _InforAccountState extends State<InforAccount> {
     } else {
       return _buildRowInforAccount(context);
     }
-  }
-
-  Widget _buildColumnInforAccount(BuildContext context) {
-    return Container(
-      color: appTheme.whiteColor,
-      padding: const EdgeInsets.all(24),
-      child: Obx(
-        () => Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                NotificationsView(sideBarController: widget.sideBarController),
-                const SizedBox(width: 16),
-                Container(
-                  height: 56,
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40),
-                    color: appTheme.background700Color,
-                  ),
-                  child: Row(
-                    children: [
-                      // CircleAvatar(
-                      //   backgroundImage: NetworkImage(
-                      //     widget.authController.teacherData.value?.avatarUrl ?? 'https://i.stack.imgur.com/l60Hf.png',
-                      //   ),
-                      //   radius: 25,
-                      // ),
-
-                      const SizedBox(width: 8),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            widget.authController.teacherData.value?.fullName ?? 'EDU Management',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: appTheme.blackColor,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            maxLines: 1,
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            widget.authController.teacherData.value?.system == 1
-                                ? 'Admin'
-                                : widget.authController.teacherData.value?.system == 2
-                                    ? 'Manager'
-                                    : widget.authController.teacherData.value?.system == 3
-                                        ? 'Teacher'
-                                        : widget.authController.teacherData.value?.system == 4
-                                            ? 'System'
-                                            : 'EDU Management',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: appTheme.textDesColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(width: 12),
-                      Icon(Icons.arrow_drop_down_outlined, size: 30, color: appTheme.textDesColor),
-                      const SizedBox(width: 12),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 24),
-                Container(
-                  height: 56,
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40),
-                    color: appTheme.background700Color,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'VN',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: appTheme.blackColor,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Icon(Icons.arrow_drop_down_outlined, size: 30, color: appTheme.textDesColor),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            // const SizedBox(height: 24),
-            // SearchView(
-            //   isClearVisible: isClearVisible,
-            //   searchController: searchController,
-            //   vertical: 24,
-            // ),
-          ],
-        ),
-      ),
-    );
   }
 
   Widget _buildRowInforAccount(BuildContext context) {
@@ -184,7 +76,7 @@ class _InforAccountState extends State<InforAccount> {
             NotificationsView(sideBarController: widget.sideBarController),
             const SizedBox(width: 16),
             InkWell(
-              onTap: () => Get.toNamed(Routes.PROFILE),
+              onTap: () => widget.sideBarController.index.value = 12,
               child: Container(
                 height: 48,
                 padding: const EdgeInsets.all(4),
@@ -194,12 +86,6 @@ class _InforAccountState extends State<InforAccount> {
                 ),
                 child: Row(
                   children: [
-                    // CircleAvatar(
-                    //   backgroundImage: NetworkImage(
-                    //     widget.authController.teacherData.value?.avatarUrl ?? 'https://i.stack.imgur.com/l60Hf.png',
-                    //   ),
-                    //   radius: 25,
-                    // ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(1000),
                       child: CachedNetworkImage(
@@ -227,7 +113,7 @@ class _InforAccountState extends State<InforAccount> {
                           ),
                           maxLines: 1,
                         ),
-                        const SizedBox(height: 4),
+                        // const SizedBox(height: 4),flu
                         Text(
                           widget.authController.teacherData.value?.system == 1
                               ? 'Admin'
@@ -314,4 +200,110 @@ class _InforAccountState extends State<InforAccount> {
       ),
     );
   }
+
+  // Widget _buildColumnInforAccount(BuildContext context) {
+  //   return Container(
+  //     color: appTheme.whiteColor,
+  //     padding: const EdgeInsets.all(24),
+  //     child: Obx(
+  //       () => Column(
+  //         children: [
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.end,
+  //             children: [
+  //               NotificationsView(sideBarController: widget.sideBarController),
+  //               const SizedBox(width: 16),
+  //               Container(
+  //                 height: 56,
+  //                 padding: const EdgeInsets.all(4),
+  //                 decoration: BoxDecoration(
+  //                   borderRadius: BorderRadius.circular(40),
+  //                   color: appTheme.background700Color,
+  //                 ),
+  //                 child: Row(
+  //                   children: [
+  //                     // CircleAvatar(
+  //                     //   backgroundImage: NetworkImage(
+  //                     //     widget.authController.teacherData.value?.avatarUrl ?? 'https://i.stack.imgur.com/l60Hf.png',
+  //                     //   ),
+  //                     //   radius: 25,
+  //                     // ),
+
+  //                     const SizedBox(width: 8),
+  //                     Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       mainAxisAlignment: MainAxisAlignment.center,
+  //                       children: [
+  //                         Text(
+  //                           widget.authController.teacherData.value?.fullName ?? 'EDU Management',
+  //                           style: TextStyle(
+  //                             fontSize: 16,
+  //                             fontWeight: FontWeight.w500,
+  //                             color: appTheme.blackColor,
+  //                             overflow: TextOverflow.ellipsis,
+  //                           ),
+  //                           maxLines: 1,
+  //                         ),
+  //                         const SizedBox(height: 4),
+  //                         Text(
+  //                           widget.authController.teacherData.value?.system == 1
+  //                               ? 'Admin'
+  //                               : widget.authController.teacherData.value?.system == 2
+  //                                   ? 'Manager'
+  //                                   : widget.authController.teacherData.value?.system == 3
+  //                                       ? 'Teacher'
+  //                                       : widget.authController.teacherData.value?.system == 4
+  //                                           ? 'System'
+  //                                           : 'EDU Management',
+  //                           style: TextStyle(
+  //                             fontSize: 12,
+  //                             fontWeight: FontWeight.w400,
+  //                             color: appTheme.textDesColor,
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     const SizedBox(width: 12),
+  //                     Icon(Icons.arrow_drop_down_outlined, size: 30, color: appTheme.textDesColor),
+  //                     const SizedBox(width: 12),
+  //                   ],
+  //                 ),
+  //               ),
+  //               const SizedBox(width: 24),
+  //               Container(
+  //                 height: 56,
+  //                 padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+  //                 decoration: BoxDecoration(
+  //                   borderRadius: BorderRadius.circular(40),
+  //                   color: appTheme.background700Color,
+  //                 ),
+  //                 child: Row(
+  //                   mainAxisAlignment: MainAxisAlignment.center,
+  //                   children: [
+  //                     Text(
+  //                       'VN',
+  //                       style: TextStyle(
+  //                         fontSize: 16,
+  //                         fontWeight: FontWeight.w500,
+  //                         color: appTheme.blackColor,
+  //                       ),
+  //                     ),
+  //                     const SizedBox(width: 8),
+  //                     Icon(Icons.arrow_drop_down_outlined, size: 30, color: appTheme.textDesColor),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //           // const SizedBox(height: 24),
+  //           // SearchView(
+  //           //   isClearVisible: isClearVisible,
+  //           //   searchController: searchController,
+  //           //   vertical: 24,
+  //           // ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }

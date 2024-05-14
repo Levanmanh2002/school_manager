@@ -24,6 +24,7 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     loadData();
+    getProfileData();
     super.onInit();
   }
 
@@ -115,9 +116,6 @@ class AuthController extends GetxController {
       http.StreamedResponse response = await request.send();
 
       final res = await json.decode(await response.stream.bytesToString());
-
-      print(request.body);
-      print(res['status']);
 
       if (res['status'] == 'check_email') {
         showErrorStatus('Email đã tồn tại');

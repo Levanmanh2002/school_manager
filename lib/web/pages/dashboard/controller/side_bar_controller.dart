@@ -4,6 +4,8 @@ import 'package:school_web/web/pages/majors/majors_pages.dart';
 import 'package:school_web/web/pages/notifications/notifications_details.dart';
 import 'package:school_web/web/pages/other_payment/other_payment_pages.dart';
 import 'package:school_web/web/pages/fees/fee_page.dart';
+import 'package:school_web/web/pages/profile/edit_profile_pages.dart';
+import 'package:school_web/web/pages/profile/profile_pages.dart';
 import 'package:school_web/web/pages/screen/classes/view/class_info_view.dart';
 import 'package:school_web/web/pages/screen/student/view/add_student_view.dart';
 import 'package:school_web/web/pages/screen/student/view/get_student_view.dart';
@@ -28,5 +30,7 @@ class SideBarController extends GetxController {
     const NotificationsDetails(), // 8 -> 9
     const AddTeacherView(), // 10
     const AddStudentView(), // 11
+    const ProfilePages(), // 12
+    const EditProfilePages(), // 13
   ];
 }
