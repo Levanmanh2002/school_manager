@@ -8,6 +8,8 @@ import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/pages/dashboard/controller/side_bar_controller.dart';
 import 'package:school_web/web/pages/dashboard/widget/infor_account.dart';
 import 'package:school_web/web/pages/notifications/notifications.dart';
+import 'package:school_web/web/pages/screen/student/detail/student_detail_screen.dart';
+import 'package:school_web/web/pages/screen/teacher/detail/teacher_detail_screen.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
 import 'package:school_web/web/utils/assets/images.dart';
 
@@ -113,7 +115,17 @@ class _DashboardState extends State<Dashboard> {
                 ),
                 Expanded(
                   child: Obx(
-                    () => sideBarController.pageRoutes[sideBarController.index.value],
+                    () {
+                      final pageIndex = sideBarController.index.value;
+
+                      if (pageIndex == 14 && sideBarController.currentStudent.value != null) {
+                        return StudentDetailScreen(student: sideBarController.currentStudent.value!);
+                      } else if (pageIndex == 15 && sideBarController.currentTeacher.value != null) {
+                        return TeacherDetailScreen(teacher: sideBarController.currentTeacher.value!);
+                      } else {
+                        return sideBarController.pageRoutes[pageIndex]!;
+                      }
+                    },
                   ),
                 ),
               ],

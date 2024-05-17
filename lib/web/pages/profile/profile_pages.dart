@@ -245,7 +245,7 @@ class _ProfilePagesState extends State<ProfilePages> with SingleTickerProviderSt
                                     width: Responsive.isMobile(context) ? null : 200,
                                     child: CustomTextWidgets(
                                       title: 'Địa chỉ',
-                                      initialData: authController.teacherData.value?.address,
+                                      initialData: authController.teacherData.value?.address ?? 'N/A',
                                       enabled: false,
                                       colorHint: colorHint,
                                       borderRadius: borderRadius,
@@ -257,7 +257,7 @@ class _ProfilePagesState extends State<ProfilePages> with SingleTickerProviderSt
                                     width: Responsive.isMobile(context) ? null : 200,
                                     child: CustomTextWidgets(
                                       title: 'Thành phố',
-                                      initialData: authController.teacherData.value?.city,
+                                      initialData: authController.teacherData.value?.city ?? 'N/A',
                                       enabled: false,
                                       colorHint: colorHint,
                                       borderRadius: borderRadius,
@@ -269,7 +269,7 @@ class _ProfilePagesState extends State<ProfilePages> with SingleTickerProviderSt
                                     width: Responsive.isMobile(context) ? null : 200,
                                     child: CustomTextWidgets(
                                       title: 'Quận/Huyện',
-                                      initialData: authController.teacherData.value?.district,
+                                      initialData: authController.teacherData.value?.district ?? 'N/A',
                                       enabled: false,
                                       colorHint: colorHint,
                                       borderRadius: borderRadius,
@@ -281,7 +281,7 @@ class _ProfilePagesState extends State<ProfilePages> with SingleTickerProviderSt
                                     width: Responsive.isMobile(context) ? null : 200,
                                     child: CustomTextWidgets(
                                       title: 'Phường/Xã',
-                                      initialData: authController.teacherData.value?.ward,
+                                      initialData: authController.teacherData.value?.ward ?? 'N/A',
                                       enabled: false,
                                       colorHint: colorHint,
                                       borderRadius: borderRadius,

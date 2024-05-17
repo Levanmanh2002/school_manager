@@ -200,6 +200,7 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
                               unselectedLabelColor: appTheme.textDesColor,
                               indicatorColor: appTheme.appColor,
                               indicatorWeight: 1,
+                              dividerHeight: 0,
                               tabs: const [
                                 Tab(text: 'Tất cả'),
                                 Tab(text: 'Đang học'),

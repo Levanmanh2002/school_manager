@@ -2,10 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:school_web/main.dart';
 import 'package:school_web/web/models/teacher.dart';
-import 'package:school_web/web/pages/screen/teacher/detail/teacher_detail_screen.dart';
+import 'package:school_web/web/pages/dashboard/controller/side_bar_controller.dart';
 
 Widget tableInfoTeacherWidget(TeacherData teacherData, BuildContext context) {
+  final SideBarController sideBarController = Get.find();
+
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 16),
     child: Column(
@@ -81,19 +85,14 @@ Widget tableInfoTeacherWidget(TeacherData teacherData, BuildContext context) {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
-                  color: teacherData.isWorking == true ? const Color(0xFF3A73C2) : const Color(0xFFFC8805),
+                  color: teacherData.isWorking == true ? appTheme.appColor : const Color(0xFFFC8805),
                   height: 1.5,
                 ),
               ),
             ),
             InkWell(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TeacherDetailScreen(teacher: teacherData),
-                  ),
-                );
+                sideBarController.navigateToTeacherDetail(teacherData);
               },
               child: Container(
                 width: 80,

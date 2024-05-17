@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:school_web/main.dart';
 import 'package:school_web/web/constants/style.dart';
 import 'package:school_web/web/models/student.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/utils/assets/images.dart';
+import 'package:school_web/web/widgets/box_shadow_widget.dart';
 import 'package:school_web/web/widgets/custom_text_widgets.dart';
 import 'package:school_web/web/widgets/full_screen_image_screen.dart';
 
@@ -15,8 +17,6 @@ class StudentDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late bool isStudying = student.isStudying ?? true;
-
     final birthDateJson = student.birthDate.toString();
 
     final dateFormatter = DateFormat('dd/MM/yyyy');
@@ -27,147 +27,348 @@ class StudentDetailScreen extends StatelessWidget {
     }
 
     final formattedBirthDate = birthDate != null ? dateFormatter.format(birthDate) : 'N/A';
+
+    final colorHint = appTheme.blackColor;
+    double borderRadius = 8;
+    const height = 1.5;
+
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: AppColors.blackColor),
-        title: Text(
-          student.fullName ?? '',
-          style: const TextStyle(color: AppColors.blackColor, fontSize: 16, fontWeight: FontWeight.w500),
-        ),
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: Responsive.isMobile(context)
-              ? const EdgeInsets.only(left: 24, right: 24, bottom: 36)
-              : const EdgeInsets.only(left: 24 + 24, right: 24 + 24, bottom: 48),
-          child: Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Colors.white,
-              boxShadow: const [
-                BoxShadow(
-                  color: Color(0x143A73C2),
-                  blurRadius: 8.0,
-                  offset: Offset(0, 0),
+              ? const EdgeInsets.symmetric(horizontal: 12, vertical: 24)
+              : const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Thông tin học sinh',
+                  style: TextStyle(
+                    fontSize: Responsive.isMobile(context) ? 18 : 24,
+                    fontWeight: FontWeight.w600,
+                    color: appTheme.blackColor,
+                  ),
                 ),
-                BoxShadow(
-                  color: Color(0x143A73C2),
-                  blurRadius: 8.0,
-                  offset: Offset(0, 0),
-                ),
-              ],
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Responsive.isMobile(context)
-                    ? const SizedBox.shrink()
-                    : GestureDetector(
-                        onTap: () {
-                          fullImageWidget(context, student.avatarUrl ?? '');
-                        },
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(1000),
-                          child: CachedNetworkImage(
-                            imageUrl: student.avatarUrl ?? '',
-                            width: 80,
-                            height: 80,
-                            fit: BoxFit.cover,
-                            errorWidget: (context, url, error) {
-                              return Image.asset(ImagesAssets.noUrlImage, fit: BoxFit.cover);
+              ),
+              const SizedBox(height: 24),
+              BoxShadowWidget(
+                padding: const EdgeInsets.all(24),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Responsive.isMobile(context)
+                        ? const SizedBox.shrink()
+                        : GestureDetector(
+                            onTap: () {
+                              fullImageWidget(context, student.avatarUrl ?? '');
                             },
-                          ),
-                        ),
-                      ),
-                Responsive.isMobile(context) ? const SizedBox.shrink() : const SizedBox(width: 24),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Responsive.isMobile(context)
-                          ? GestureDetector(
-                              onTap: () {
-                                fullImageWidget(context, student.avatarUrl ?? '');
-                              },
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(1000),
-                                child: CachedNetworkImage(
-                                  imageUrl: student.avatarUrl.toString(),
-                                  width: 80,
-                                  height: 80,
-                                  fit: BoxFit.cover,
-                                  errorWidget: (context, url, error) {
-                                    return Image.asset(ImagesAssets.noUrlImage, fit: BoxFit.cover);
-                                  },
-                                ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(1000),
+                              child: CachedNetworkImage(
+                                imageUrl: student.avatarUrl ?? '',
+                                width: 150,
+                                height: 150,
+                                fit: BoxFit.cover,
+                                errorWidget: (context, url, error) {
+                                  return Image.asset(ImagesAssets.noUrlImage, fit: BoxFit.cover);
+                                },
                               ),
-                            )
-                          : const SizedBox.shrink(),
-                      Responsive.isMobile(context) ? const SizedBox(height: 16) : const SizedBox.shrink(),
-                      Wrap(
-                        spacing: 12,
-                        runSpacing: Responsive.isMobile(context) ? 12 : 32,
-                        runAlignment: WrapAlignment.center,
-                        alignment: WrapAlignment.start,
+                            ),
+                          ),
+                    Responsive.isMobile(context) ? const SizedBox.shrink() : const SizedBox(width: 24),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment:
+                            Responsive.isMobile(context) ? CrossAxisAlignment.center : CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            alignment: Alignment.topLeft,
-                            padding: const EdgeInsets.symmetric(horizontal: 32),
-                            child: const Text(
-                              '1. Thông tin chung',
-                              style: TextStyle(color: AppColors.blackColor, fontSize: 16, fontWeight: FontWeight.w600),
+                          Responsive.isMobile(context)
+                              ? GestureDetector(
+                                  onTap: () {
+                                    fullImageWidget(context, student.avatarUrl ?? '');
+                                  },
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(1000),
+                                    child: CachedNetworkImage(
+                                      imageUrl: student.avatarUrl.toString(),
+                                      width: 150,
+                                      height: 150,
+                                      fit: BoxFit.cover,
+                                      errorWidget: (context, url, error) {
+                                        return Image.asset(ImagesAssets.noUrlImage, fit: BoxFit.cover);
+                                      },
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
+                          Responsive.isMobile(context) ? const SizedBox(height: 16) : const SizedBox.shrink(),
+                          Text(
+                            '1. Thông tin cá nhân',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: appTheme.blackColor),
+                          ),
+                          const SizedBox(height: 12),
+                          Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Wrap(
+                              spacing: 12,
+                              runSpacing: Responsive.isMobile(context) ? 12 : 32,
+                              children: [
+                                SizedBox(
+                                  width: Responsive.isMobile(context) ? null : 200,
+                                  child: CustomTextWidgets(
+                                    title: 'Mã số sinh viên',
+                                    initialData: student.mssv ?? 'N/A',
+                                    enabled: false,
+                                    colorHint: colorHint,
+                                    borderRadius: borderRadius,
+                                    height: height,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  width: Responsive.isMobile(context) ? null : 200,
+                                  child: CustomTextWidgets(
+                                    title: 'Họ tên',
+                                    initialData: student.fullName ?? 'N/A',
+                                    enabled: false,
+                                    colorHint: colorHint,
+                                    borderRadius: borderRadius,
+                                    height: height,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  width: Responsive.isMobile(context) ? null : 200,
+                                  child: CustomTextWidgets(
+                                    title: 'Email',
+                                    initialData: student.gmail ?? 'N/A',
+                                    enabled: false,
+                                    colorHint: colorHint,
+                                    borderRadius: borderRadius,
+                                    height: height,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  width: Responsive.isMobile(context) ? null : 200,
+                                  child: CustomTextWidgets(
+                                    title: 'Số điện thoại',
+                                    initialData: student.phone ?? 'N/A',
+                                    enabled: false,
+                                    colorHint: colorHint,
+                                    borderRadius: borderRadius,
+                                    height: height,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  width: Responsive.isMobile(context) ? null : 200,
+                                  child: CustomTextWidgets(
+                                    title: 'CCCD',
+                                    initialData: student.cccd ?? 'N/A',
+                                    enabled: false,
+                                    colorHint: colorHint,
+                                    borderRadius: borderRadius,
+                                    height: height,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  width: Responsive.isMobile(context) ? null : 200,
+                                  child: CustomTextWidgets(
+                                    title: 'Giới tính',
+                                    initialData: student.gender ?? 'N/A',
+                                    enabled: false,
+                                    colorHint: colorHint,
+                                    borderRadius: borderRadius,
+                                    height: height,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  width: Responsive.isMobile(context) ? null : 200,
+                                  child: CustomTextWidgets(
+                                    title: 'Năm sinh',
+                                    initialData: formattedBirthDate,
+                                    enabled: false,
+                                    colorHint: colorHint,
+                                    borderRadius: borderRadius,
+                                    height: height,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  width: Responsive.isMobile(context) ? null : 200,
+                                  child: CustomTextWidgets(
+                                    title: 'Đối tượng',
+                                    initialData: student.beneficiary ?? 'N/A',
+                                    enabled: false,
+                                    colorHint: colorHint,
+                                    borderRadius: borderRadius,
+                                    height: height,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                              ],
                             ),
                           ),
-                          _buildInfoItem('Mã số sinh viên', student.mssv ?? '', context),
-                          _buildInfoItem('Tên sinh viên', student.fullName ?? '', context),
-                          _buildInfoItem('Gmail', student.gmail ?? '', context),
-                          _buildInfoItem('Số điện thoại', student.phone ?? '', context),
-                          _buildInfoItem('Căn cước công dân', student.cccd ?? '', context),
-                          _buildInfoItem('Giới tính', student.gender ?? '', context),
-                          _buildInfoItem('Ngày sinh', formattedBirthDate, context),
-                          Container(
-                            alignment: Alignment.topLeft,
-                            padding: const EdgeInsets.symmetric(horizontal: 32),
-                            child: const Text(
-                              '2. Địa chỉ',
-                              style: TextStyle(color: AppColors.blackColor, fontSize: 16, fontWeight: FontWeight.w600),
+                          const SizedBox(height: 24),
+                          Text(
+                            '2. Địa chỉ',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: appTheme.blackColor),
+                          ),
+                          const SizedBox(height: 12),
+                          Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Wrap(
+                              spacing: 12,
+                              runSpacing: Responsive.isMobile(context) ? 12 : 32,
+                              children: [
+                                SizedBox(
+                                  width: Responsive.isMobile(context) ? null : 200,
+                                  child: CustomTextWidgets(
+                                    title: 'Địa chỉ',
+                                    initialData: student.address ?? 'N/A',
+                                    enabled: false,
+                                    colorHint: colorHint,
+                                    borderRadius: borderRadius,
+                                    height: height,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  width: Responsive.isMobile(context) ? null : 200,
+                                  child: CustomTextWidgets(
+                                    title: 'Thành phố',
+                                    initialData: student.city ?? 'N/A',
+                                    enabled: false,
+                                    colorHint: colorHint,
+                                    borderRadius: borderRadius,
+                                    height: height,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  width: Responsive.isMobile(context) ? null : 200,
+                                  child: CustomTextWidgets(
+                                    title: 'Quận/Huyện',
+                                    initialData: student.district ?? 'N/A',
+                                    enabled: false,
+                                    colorHint: colorHint,
+                                    borderRadius: borderRadius,
+                                    height: height,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  width: Responsive.isMobile(context) ? null : 200,
+                                  child: CustomTextWidgets(
+                                    title: 'Phường/Xã',
+                                    initialData: student.ward ?? 'N/A',
+                                    enabled: false,
+                                    colorHint: colorHint,
+                                    borderRadius: borderRadius,
+                                    height: height,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                              ],
                             ),
                           ),
-                          _buildInfoItem('Địa chỉ', student.address ?? '', context),
-                          _buildInfoItem('Thành phố', student.city ?? '', context),
-                          _buildInfoItem('Quận/Huyện', student.district ?? '', context),
-                          _buildInfoItem('Phường/Xã', student.ward ?? '', context),
-                          Container(
-                            alignment: Alignment.topLeft,
-                            padding: const EdgeInsets.symmetric(horizontal: 32),
-                            child: const Text(
-                              '3. Quá trình học',
-                              style: TextStyle(color: AppColors.blackColor, fontSize: 16, fontWeight: FontWeight.w600),
-                            ),
+                          const SizedBox(height: 24),
+                          Text(
+                            '3. Thông tin liên hệ',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: appTheme.blackColor),
                           ),
-                          // _buildInfoItem('Trình độ học vấn', student.educationLevel ?? '', context),
-                          // _buildInfoItem('Học lực học sinh', student.academicPerformance ?? '', context),
-                          // _buildInfoItem('Hạnh kiểm học sinh', student.conduct ?? '', context),
-                          // _buildInfoItem('học lực lớp 10', student.classRanking10 ?? '', context),
-                          // _buildInfoItem('học lực lớp 11', student.classRanking11 ?? '', context),
-                          // _buildInfoItem('học lực lớp 12', student.classRanking12 ?? '', context),
-                          // _buildInfoItem('Năm tốt nghiệp', student.graduationYear ?? '', context),
-                          _buildInfoItem(
-                            'Tình trạng học sinh',
-                            isStudying ? 'Học sinh đang học' : 'Học sinh đã nghỉ học',
-                            context,
+                          const SizedBox(height: 12),
+                          Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Wrap(
+                              spacing: 12,
+                              runSpacing: Responsive.isMobile(context) ? 12 : 32,
+                              children: [
+                                SizedBox(
+                                  width: Responsive.isMobile(context) ? null : 200,
+                                  child: CustomTextWidgets(
+                                    title: 'Dân tộc',
+                                    initialData: student.ethnicity ?? 'N/A',
+                                    enabled: false,
+                                    colorHint: colorHint,
+                                    borderRadius: borderRadius,
+                                    height: height,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  width: Responsive.isMobile(context) ? null : 200,
+                                  child: CustomTextWidgets(
+                                    title: 'Họ tên Cha',
+                                    initialData: student.fatherFullName ?? 'N/A',
+                                    enabled: false,
+                                    colorHint: colorHint,
+                                    borderRadius: borderRadius,
+                                    height: height,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  width: Responsive.isMobile(context) ? null : 200,
+                                  child: CustomTextWidgets(
+                                    title: 'Họ tên Mẹ',
+                                    initialData: student.motherFullName ?? 'N/A',
+                                    enabled: false,
+                                    colorHint: colorHint,
+                                    borderRadius: borderRadius,
+                                    height: height,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  width: Responsive.isMobile(context) ? null : 200,
+                                  child: CustomTextWidgets(
+                                    title: 'Số liên hệ',
+                                    initialData: student.contactPhone ?? 'N/A',
+                                    enabled: false,
+                                    colorHint: colorHint,
+                                    borderRadius: borderRadius,
+                                    height: height,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  width: Responsive.isMobile(context) ? null : 200,
+                                  child: CustomTextWidgets(
+                                    title: 'Địa chỉ liên hệ',
+                                    initialData: student.contactAddress ?? 'N/A',
+                                    enabled: false,
+                                    colorHint: colorHint,
+                                    borderRadius: borderRadius,
+                                    height: height,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  width: Responsive.isMobile(context) ? null : 200,
+                                  child: CustomTextWidgets(
+                                    title: 'Ghi chú',
+                                    initialData: student.notes ?? 'N/A',
+                                    enabled: false,
+                                    colorHint: colorHint,
+                                    borderRadius: borderRadius,
+                                    height: height,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 32),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

@@ -2,11 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:school_web/main.dart';
 import 'package:school_web/web/models/student.dart';
-import 'package:school_web/web/pages/screen/student/detail/student_detail_screen.dart';
+import 'package:school_web/web/pages/dashboard/controller/side_bar_controller.dart';
 
 Widget tableInfoStudentWidget(Students studentData, BuildContext context) {
+  final SideBarController sideBarController = Get.find();
+
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 16),
     child: Column(
@@ -123,12 +126,7 @@ Widget tableInfoStudentWidget(Students studentData, BuildContext context) {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => StudentDetailScreen(student: studentData),
-                  ),
-                );
+                sideBarController.navigateToStudentDetail(studentData);
               },
               child: Container(
                 width: 80,

@@ -161,6 +161,7 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
                         unselectedLabelColor: appTheme.textDesColor,
                         indicatorColor: appTheme.appColor,
                         indicatorWeight: 1,
+                        dividerHeight: 0,
                         tabs: const [
                           Tab(text: 'Đang làm việc'),
                           Tab(text: 'Nghỉ việc'),

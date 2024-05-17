@@ -132,6 +132,7 @@ class AppSchoolWebState extends State<AppSchoolWeb> {
         // initialRoute: Routes.SIGNIN,
         getPages: AppPages.pages,
         theme: ThemeData(
+          useMaterial3: false,
           scaffoldBackgroundColor: primaryBg,
           textTheme: const TextTheme().apply(bodyColor: Colors.black),
           pageTransitionsTheme: const PageTransitionsTheme(builders: {
