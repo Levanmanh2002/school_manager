@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,6 +13,7 @@ import 'package:school_web/web/controllers/other/other_controller.dart';
 import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/style/style_theme.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
+import 'package:school_web/web/utils/assets/images.dart';
 import 'package:school_web/web/utils/status/status.dart';
 import 'package:school_web/web/widgets/box_shadow_widget.dart';
 import 'package:school_web/web/widgets/custom_text_widgets.dart';
@@ -134,18 +136,22 @@ class _OtherPaymentPagesState extends State<OtherPaymentPages> {
                         child: BoxShadowWidget(
                           child: Column(
                             children: [
-                              Flexible(
-                                child: Container(
-                                  alignment: Alignment.topCenter,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
-                                    image: DecorationImage(
-                                      image: NetworkImage(other.image ?? ''),
-                                    ),
+                              Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: CachedNetworkImage(
+                                    imageUrl: other.image ?? '',
+                                    width: Get.width,
+                                    height: 180,
+                                    fit: BoxFit.cover,
+                                    errorWidget: (context, url, error) {
+                                      return Image.asset(ImagesAssets.noUrlImage, fit: BoxFit.cover);
+                                    },
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: 12),
                               Container(
                                 alignment: Alignment.centerLeft,
                                 padding: const EdgeInsets.all(12),

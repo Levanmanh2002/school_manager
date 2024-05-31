@@ -54,7 +54,7 @@ class _GetTeachersViewState extends State<GetTeachersView> with TickerProviderSt
     searchController.dispose();
     isClearVisible.dispose();
     tabSelected.dispose();
-  }
+  } 
 
   @override
   Widget build(BuildContext context) {

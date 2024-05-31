@@ -905,6 +905,7 @@ class _ClassesInfoViewState extends State<ClassesInfoView> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 12),
                     listStudent(),
                   ],
                 ),

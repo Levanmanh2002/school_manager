@@ -27,10 +27,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.macOS:
         return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -72,10 +69,21 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyBaVgIsihMw_49-VJ3nZMGZeIHF-ggCp_o',
-    appId: '1:158873137678:ios:e51c3a35355e5168e6425f',
+    appId: '1:158873137678:ios:22efad56e5059ba9e6425f',
     messagingSenderId: '158873137678',
     projectId: 'school-manager-793a1',
     storageBucket: 'school-manager-793a1.appspot.com',
-    iosBundleId: 'com.example.schoolWeb.RunnerTests',
+    iosBundleId: 'com.example.schoolWeb',
   );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyC8rXUdn_lpGKVWV7iGdiEXb4lueFg_9-Q',
+    appId: '1:158873137678:web:6143c8669cf00975e6425f',
+    messagingSenderId: '158873137678',
+    projectId: 'school-manager-793a1',
+    authDomain: 'school-manager-793a1.firebaseapp.com',
+    storageBucket: 'school-manager-793a1.appspot.com',
+    measurementId: 'G-XD1N9TJ62M',
+  );
+
 }

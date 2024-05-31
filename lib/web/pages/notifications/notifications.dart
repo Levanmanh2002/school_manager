@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -51,7 +53,7 @@ class NotificationsView extends StatelessWidget {
                       'Thông báo gần đây',
                       style: StyleThemeData.styleSize16Weight500(color: appTheme.appColor),
                     ),
-                    const SizedBox(width: 60),
+                    Responsive.isMobile(context) ? const Spacer() : const SizedBox(width: 60),
                     InkWell(
                       onTap: () {
                         if (authController.teacherData.value?.system == 1 ||
@@ -162,10 +164,15 @@ class NotificationsView extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(notification.title ?? '', style: StyleThemeData.styleSize16Weight600()),
+                          Text(
+                            notification.title ?? '',
+                            style: StyleThemeData.styleSize16Weight600(),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                           const SizedBox(height: 4),
                           Container(
-                            constraints: BoxConstraints(maxWidth: Responsive.isMobile(context) ? 220 : double.infinity),
+                            constraints: BoxConstraints(maxWidth: Responsive.isMobile(context) ? 180 : double.infinity),
                             child: Text(
                               notification.message ?? '',
                               style: StyleThemeData.styleSize14Weight400(color: appTheme.textDesColor),

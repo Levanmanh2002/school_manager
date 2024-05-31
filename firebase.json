@@ -1,16 +1,55 @@
 {
-  "hosting": {
-    "public": "build/web",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  }
+    "hosting": {
+        "public": "build/web",
+        "ignore": [
+            "firebase.json",
+            "**/.*",
+            "**/node_modules/**"
+        ],
+        "rewrites": [
+            {
+                "source": "**",
+                "destination": "/index.html"
+            }
+        ]
+    },
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "school-manager-793a1",
+                    "appId": "1:158873137678:android:ac4a8ad2c40fea49e6425f",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "ios": {
+                "default": {
+                    "projectId": "school-manager-793a1",
+                    "appId": "1:158873137678:ios:22efad56e5059ba9e6425f",
+                    "uploadDebugSymbols": false,
+                    "fileOutput": "ios/Runner/GoogleService-Info.plist"
+                }
+            },
+            "macos": {
+                "default": {
+                    "projectId": "school-manager-793a1",
+                    "appId": "1:158873137678:ios:22efad56e5059ba9e6425f",
+                    "uploadDebugSymbols": false,
+                    "fileOutput": "macos/Runner/GoogleService-Info.plist"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "school-manager-793a1",
+                    "configurations": {
+                        "android": "1:158873137678:android:ac4a8ad2c40fea49e6425f",
+                        "ios": "1:158873137678:ios:22efad56e5059ba9e6425f",
+                        "macos": "1:158873137678:ios:22efad56e5059ba9e6425f",
+                        "web": "1:158873137678:web:c5334d51a88ae0a4e6425f",
+                        "windows": "1:158873137678:web:6143c8669cf00975e6425f"
+                    }
+                }
+            }
+        }
+    }
 }

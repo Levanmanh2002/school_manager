@@ -219,30 +219,30 @@ class _EditProfilePagesState extends State<EditProfilePages> {
                                   ),
                                 ),
                               ),
-                        Responsive.isMobile(context) ? const SizedBox.shrink() : const SizedBox(height: 24),
-                        Responsive.isMobile(context)
-                            ? const SizedBox.shrink()
-                            : InkWell(
-                                onTap: () async {
-                                  final result = await ImagePickerDialog.imgFromGallery();
-                                  if (result.isNotEmpty) {
-                                    selectedImagePath = result[0];
-                                    updateAvatar();
-                                  }
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: appTheme.appColor,
-                                  ),
-                                  child: Text(
-                                    'Chọn ảnh',
-                                    style: TextStyle(
-                                        fontSize: 14, fontWeight: FontWeight.w700, color: appTheme.whiteColor),
-                                  ),
-                                ),
-                              ),
+                        // Responsive.isMobile(context) ? const SizedBox.shrink() : const SizedBox(height: 24),
+                        // Responsive.isMobile(context)
+                        //     ? const SizedBox.shrink()
+                        //     : InkWell(
+                        //         onTap: () async {
+                        //           final result = await ImagePickerDialog.imgFromGallery();
+                        //           if (result.isNotEmpty) {
+                        //             selectedImagePath = result[0];
+                        //             updateAvatar();
+                        //           }
+                        //         },
+                        //         child: Container(
+                        //           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        //           decoration: BoxDecoration(
+                        //             borderRadius: BorderRadius.circular(8),
+                        //             color: appTheme.appColor,
+                        //           ),
+                        //           child: Text(
+                        //             'Chọn ảnh',
+                        //             style: TextStyle(
+                        //                 fontSize: 14, fontWeight: FontWeight.w700, color: appTheme.whiteColor),
+                        //           ),
+                        //         ),
+                        //       ),
                       ],
                     ),
                     Responsive.isMobile(context) ? const SizedBox.shrink() : const SizedBox(width: 24),

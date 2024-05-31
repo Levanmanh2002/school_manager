@@ -186,32 +186,25 @@ class _GetStudentViewState extends State<GetStudentView> with TickerProviderStat
                   ),
                   Row(
                     children: [
-                      Expanded(
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Expanded(
-                            child: TabBar(
-                              key: ValueKey<int>(tabSelected.value),
-                              controller: _tabListController,
-                              isScrollable: true,
-                              labelStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                              unselectedLabelStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                              labelColor: appTheme.appColor,
-                              unselectedLabelColor: appTheme.textDesColor,
-                              indicatorColor: appTheme.appColor,
-                              indicatorWeight: 1,
-                              dividerHeight: 0,
-                              tabs: const [
-                                Tab(text: 'Tất cả'),
-                                Tab(text: 'Đang học'),
-                                Tab(text: 'Học sinh mới'),
-                                Tab(text: 'Nghỉ học'),
-                                Tab(text: 'Đình chỉ'),
-                                Tab(text: 'Bị đuổi học'),
-                              ],
-                            ),
-                          ),
-                        ),
+                      TabBar(
+                        key: ValueKey<int>(tabSelected.value),
+                        controller: _tabListController,
+                        isScrollable: true,
+                        labelStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                        unselectedLabelStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                        labelColor: appTheme.appColor,
+                        unselectedLabelColor: appTheme.textDesColor,
+                        indicatorColor: appTheme.appColor,
+                        indicatorWeight: 1,
+                        dividerHeight: 0,
+                        tabs: const [
+                          Tab(text: 'Tất cả'),
+                          Tab(text: 'Đang học'),
+                          Tab(text: 'Học sinh mới'),
+                          Tab(text: 'Nghỉ học'),
+                          Tab(text: 'Đình chỉ'),
+                          Tab(text: 'Bị đuổi học'),
+                        ],
                       ),
                       Responsive.isMobile(context)
                           ? const SizedBox.shrink()
