@@ -14,6 +14,7 @@ import 'package:school_web/web/pages/dashboard/config/responsive.dart';
 import 'package:school_web/web/style/style_theme.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
 import 'package:school_web/web/utils/assets/images.dart';
+import 'package:school_web/web/utils/formatter/no_initial_spaceInput_formatter_widgets.dart';
 import 'package:school_web/web/utils/status/status.dart';
 import 'package:school_web/web/widgets/box_shadow_widget.dart';
 import 'package:school_web/web/widgets/custom_text_widgets.dart';
@@ -237,6 +238,11 @@ class _OtherPaymentPagesState extends State<OtherPaymentPages> {
                           hintText: 'Nhập tên khoản thu',
                           validator: true,
                           borderRadius: 8,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
+                            LengthLimitingTextInputFormatter(20),
+                            NoInitialSpaceInputFormatterWidgets(),
+                          ],
                         ),
                         const SizedBox(height: 16),
                         CustomTextWidgets(
@@ -246,6 +252,11 @@ class _OtherPaymentPagesState extends State<OtherPaymentPages> {
                           keyboardType: TextInputType.phone,
                           validator: true,
                           borderRadius: 8,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
+                            LengthLimitingTextInputFormatter(50),
+                            NoInitialSpaceInputFormatterWidgets(),
+                          ],
                         ),
                         const SizedBox(height: 16),
                         CustomTextWidgets(
@@ -255,6 +266,11 @@ class _OtherPaymentPagesState extends State<OtherPaymentPages> {
                           keyboardType: TextInputType.phone,
                           validator: true,
                           borderRadius: 8,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
+                            LengthLimitingTextInputFormatter(20),
+                            NoInitialSpaceInputFormatterWidgets(),
+                          ],
                         ),
                         const SizedBox(height: 16),
                         CustomTextWidgets(
@@ -263,6 +279,11 @@ class _OtherPaymentPagesState extends State<OtherPaymentPages> {
                           hintText: 'Nhập ghi chú khoản thu',
                           validator: true,
                           borderRadius: 8,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
+                            LengthLimitingTextInputFormatter(300),
+                            NoInitialSpaceInputFormatterWidgets(),
+                          ],
                         ),
                         const SizedBox(height: 16),
                         Container(

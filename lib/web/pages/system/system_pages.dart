@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:school_web/main.dart';
@@ -12,6 +13,7 @@ import 'package:school_web/web/pages/system/update_view.dart';
 import 'package:school_web/web/pages/system/widget/item_info_list_widget.dart';
 import 'package:school_web/web/style/style_theme.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
+import 'package:school_web/web/utils/formatter/no_initial_spaceInput_formatter_widgets.dart';
 import 'package:school_web/web/widgets/box_shadow_widget.dart';
 import 'package:school_web/web/widgets/custom_text_widgets.dart';
 import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
@@ -69,6 +71,11 @@ class _SystemPagesState extends State<SystemPages> {
                         onChanged: (search) {
                           teacherController.searchTeachers(search);
                         },
+                        inputFormatters: [
+                          FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
+                          LengthLimitingTextInputFormatter(50),
+                          NoInitialSpaceInputFormatterWidgets(),
+                        ],
                       ),
                     ),
                     Padding(

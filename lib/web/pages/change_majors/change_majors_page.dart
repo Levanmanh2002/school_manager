@@ -366,6 +366,7 @@ class _ChangeMajorsPageState extends State<ChangeMajorsPage> {
                           borderRadius: BorderRadius.circular(8),
                           color: appTheme.appColor,
                         ),
+                        alignment: Alignment.center,
                         child: changeMajorsController.isLoadingSearch.isTrue
                             ? Center(
                                 child: SizedBox(

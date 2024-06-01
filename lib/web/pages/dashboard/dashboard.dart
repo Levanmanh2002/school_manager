@@ -28,6 +28,19 @@ class _DashboardState extends State<Dashboard> {
   final searchController = TextEditingController();
   final ValueNotifier<bool> isClearVisible = ValueNotifier<bool>(false);
 
+  String getGreeting() {
+    var now = DateTime.now();
+    var hour = now.hour;
+
+    if (hour < 12) {
+      return 'Chào buổi sáng';
+    } else if (hour < 18) {
+      return 'Chào buổi chiều';
+    } else {
+      return 'Chào buổi tối';
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -69,7 +82,7 @@ class _DashboardState extends State<Dashboard> {
                     const SizedBox(height: 4),
                     Obx(
                       () => Text(
-                        'Chào buổi sáng, ${authController.teacherData.value?.fullName ?? 'EDU Management'}! ',
+                        '${getGreeting()}, ${authController.teacherData.value?.fullName ?? 'EDU Management'}! ',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,

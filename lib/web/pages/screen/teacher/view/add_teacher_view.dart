@@ -2,6 +2,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:school_web/main.dart';
@@ -12,6 +13,7 @@ import 'package:school_web/web/pages/dashboard/controller/side_bar_controller.da
 import 'package:school_web/web/style/style_theme.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
 import 'package:school_web/web/utils/assets/images.dart';
+import 'package:school_web/web/utils/formatter/no_initial_spaceInput_formatter_widgets.dart';
 import 'package:school_web/web/widgets/custom_text_widgets.dart';
 import 'package:school_web/web/widgets/show_dialog/show_no_system_widget.dart';
 
@@ -225,6 +227,11 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                           validator: true,
                                           checkLength: true,
                                           borderRadius: 8,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
+                                            NoInitialSpaceInputFormatterWidgets(),
+                                            LengthLimitingTextInputFormatter(20),
+                                          ],
                                         ),
                                       ),
                                       SizedBox(
@@ -235,6 +242,11 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                           hintText: 'Nhập mã giáo viên',
                                           validator: true,
                                           borderRadius: 8,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
+                                            NoInitialSpaceInputFormatterWidgets(),
+                                            LengthLimitingTextInputFormatter(20),
+                                          ],
                                         ),
                                       ),
                                       SizedBox(
@@ -247,6 +259,11 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                           validator: true,
                                           checkEmail: true,
                                           borderRadius: 8,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
+                                            NoInitialSpaceInputFormatterWidgets(),
+                                            LengthLimitingTextInputFormatter(30),
+                                          ],
                                         ),
                                       ),
                                       SizedBox(
@@ -258,6 +275,11 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                           validator: true,
                                           checkLength: true,
                                           borderRadius: 8,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
+                                            NoInitialSpaceInputFormatterWidgets(),
+                                            LengthLimitingTextInputFormatter(20),
+                                          ],
                                         ),
                                       ),
                                       SizedBox(
@@ -268,6 +290,11 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                           hintText: 'Nhập CCCD',
                                           validator: true,
                                           borderRadius: 8,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
+                                            NoInitialSpaceInputFormatterWidgets(),
+                                            LengthLimitingTextInputFormatter(30),
+                                          ],
                                         ),
                                       ),
                                       SizedBox(
@@ -281,6 +308,11 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                           validator: true,
                                           checkPhone: true,
                                           borderRadius: 8,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
+                                            NoInitialSpaceInputFormatterWidgets(),
+                                            LengthLimitingTextInputFormatter(20),
+                                          ],
                                         ),
                                       ),
                                       SizedBox(
@@ -403,6 +435,11 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                           title: 'Địa chỉ',
                                           hintText: 'Nhập số nhà và tên đường',
                                           borderRadius: 8,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
+                                            NoInitialSpaceInputFormatterWidgets(),
+                                            LengthLimitingTextInputFormatter(50),
+                                          ],
                                         ),
                                       ),
                                       SizedBox(
@@ -608,6 +645,11 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                           title: 'Học vấn',
                                           hintText: 'Nhập học vấn',
                                           borderRadius: 8,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
+                                            NoInitialSpaceInputFormatterWidgets(),
+                                            LengthLimitingTextInputFormatter(50),
+                                          ],
                                         ),
                                       ),
                                       SizedBox(
@@ -617,6 +659,11 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                           title: 'Chức vụ',
                                           hintText: 'Nhập chức vụ',
                                           borderRadius: 8,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
+                                            NoInitialSpaceInputFormatterWidgets(),
+                                            LengthLimitingTextInputFormatter(50),
+                                          ],
                                         ),
                                       ),
                                       SizedBox(
@@ -626,6 +673,11 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                           title: 'Kinh nghiệm giảng dạy',
                                           hintText: 'Nhập kinh nghiệm',
                                           borderRadius: 8,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
+                                            NoInitialSpaceInputFormatterWidgets(),
+                                            LengthLimitingTextInputFormatter(50),
+                                          ],
                                         ),
                                       ),
                                       SizedBox(
@@ -683,6 +735,11 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                                           title: 'Loại hợp đồng',
                                           hintText: 'Nhập tên hợp đồng',
                                           borderRadius: 8,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
+                                            NoInitialSpaceInputFormatterWidgets(),
+                                            LengthLimitingTextInputFormatter(50),
+                                          ],
                                         ),
                                       ),
                                     ],

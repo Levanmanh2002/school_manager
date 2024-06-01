@@ -121,6 +121,7 @@ mixin FeeMixin on State<FeePages> {
                           borderRadius: BorderRadius.circular(8),
                           color: appTheme.appColor,
                         ),
+                        alignment: Alignment.center,
                         child: feesController.isLoadingSearch.isTrue
                             ? Center(
                                 child: SizedBox(
@@ -393,6 +394,7 @@ mixin FeeMixin on State<FeePages> {
                               color: appTheme.whiteColor,
                               border: Border.all(color: appTheme.textDesColor),
                             ),
+                            alignment: Alignment.center,
                             child: Text(
                               'Hủy',
                               style: StyleThemeData.styleSize16Weight600(color: appTheme.textDesColor, height: 0),
@@ -439,6 +441,7 @@ mixin FeeMixin on State<FeePages> {
                                 borderRadius: BorderRadius.circular(8),
                                 color: appTheme.appColor,
                               ),
+                              alignment: Alignment.center,
                               child: feesController.isLoadingCreate.isTrue || feesController.isLoadingUpdate.isTrue
                                   ? Center(
                                       child: SizedBox(

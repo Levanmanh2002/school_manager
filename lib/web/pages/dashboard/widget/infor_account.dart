@@ -113,7 +113,7 @@ class _InforAccountState extends State<InforAccount> {
                           ),
                           maxLines: 1,
                         ),
-                        // const SizedBox(height: 4),flu
+                        // const SizedBox(height: 4),
                         Text(
                           widget.authController.teacherData.value?.system == 1
                               ? 'Admin'

@@ -1,9 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:school_web/main.dart';
 import 'package:school_web/web/controllers/auth/auth_controller.dart';
+import 'package:school_web/web/utils/assets/images.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AppBarWidget extends StatelessWidget {
   const AppBarWidget({super.key});
+
+  String getGreeting() {
+    var now = DateTime.now();
+    var hour = now.hour;
+
+    if (hour < 12) {
+      return 'Chào buổi sáng';
+    } else if (hour < 18) {
+      return 'Chào buổi chiều';
+    } else {
+      return 'Chào buổi tối';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +40,7 @@ class AppBarWidget extends StatelessWidget {
               const SizedBox(height: 4),
               Obx(
                 () => Text(
-                  'Chào buổi sáng, ${authController.teacherData.value?.fullName ?? 'EDU Management'}! ',
+                  '${getGreeting()},  ${authController.teacherData.value?.fullName ?? 'EDU Management'}! ',
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
@@ -36,36 +52,31 @@ class AppBarWidget extends StatelessWidget {
             ],
           ),
         ),
-        // const Spacer(),
-        // InkWell(
-        //   onTap: () => authController.teacherData.value?.system == 1 || authController.teacherData.value?.system == 2
-        //       ? Get.toNamed(Routes.CREATE)
-        //       : showNoSystemWidget(
-        //           context,
-        //           title: 'Bạn không có quyền thêm lịch học',
-        //           des: 'Rất tiếc, bạn không có quyền thêm lịch học. Vui lòng liên hệ với người quản trị để được hỗ trợ',
-        //           cancel: 'Hủy',
-        //           confirm: 'Xác nhận',
-        //           ontap: () => Navigator.pop(context),
-        //         ),
-        //   child: Container(
-        //     padding: const EdgeInsets.all(12),
-        //     decoration: BoxDecoration(
-        //       borderRadius: BorderRadius.circular(12),
-        //       color: const Color(0xFF3A73C2),
-        //     ),
-        //     child: Row(
-        //       children: [
-        //         SvgPicture.asset('assets/icons/timetable.svg'),
-        //         const SizedBox(width: 8),
-        //         const Text(
-        //           'Thêm lịch học',
-        //           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Color(0xFFFFFFFF)),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
+        const Spacer(),
+        InkWell(
+          onTap: () async {
+            await launchUrl(
+              Uri.parse('https://drive.google.com/file/d/1wPiAOidlUWKlNHzCL-T7G-OGZ6II5pWo/view?usp=sharing'),
+            );
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: appTheme.appColor,
+            ),
+            child: Row(
+              children: [
+                Image.asset(ImagesAssets.adminImage, width: 24),
+                const SizedBox(width: 8),
+                Text(
+                  'Tải app EDU',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: appTheme.whiteColor),
+                ),
+              ],
+            ),
+          ),
+        ),
         const SizedBox(width: 16),
       ],
     );

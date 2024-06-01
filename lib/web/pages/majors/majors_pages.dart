@@ -364,8 +364,9 @@ class _MajorsPagesState extends State<MajorsPages> {
                   TextFormField(
                     controller: nameEditController,
                     inputFormatters: [
-                      LengthLimitingTextInputFormatter(50),
+                      FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
                       NoInitialSpaceInputFormatterWidgets(),
+                      LengthLimitingTextInputFormatter(30),
                     ],
                     decoration: InputDecoration(
                       hintText: majorsData.name,
@@ -412,8 +413,9 @@ class _MajorsPagesState extends State<MajorsPages> {
                   TextFormField(
                     controller: desEditController,
                     inputFormatters: [
-                      LengthLimitingTextInputFormatter(300),
+                      FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
                       NoInitialSpaceInputFormatterWidgets(),
+                      LengthLimitingTextInputFormatter(300),
                     ],
                     decoration: InputDecoration(
                       hintText: majorsData.description,

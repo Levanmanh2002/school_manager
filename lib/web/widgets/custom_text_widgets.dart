@@ -30,7 +30,6 @@ class CustomTextWidgets extends StatelessWidget {
     this.checkLength = false,
     this.checkPhone = false,
     this.maxLines = 1,
-    this.height = 0,
   });
 
   final String title;
@@ -56,7 +55,6 @@ class CustomTextWidgets extends StatelessWidget {
   final bool checkLength;
   final bool checkPhone;
   final int? maxLines;
-  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +85,7 @@ class CustomTextWidgets extends StatelessWidget {
           controller: controller,
           enabled: enabled,
           inputFormatters: inputFormatters,
-          cursorColor: Colors.red,
+          cursorColor: appTheme.appColor,
           onChanged: onChanged,
           maxLines: maxLines,
           decoration: InputDecoration(
@@ -95,12 +93,12 @@ class CustomTextWidgets extends StatelessWidget {
             fillColor: fillColor,
             filled: fillColor != null ? true : null,
             hintText: enabled == false ? initialData : hintText,
-            hintStyle: StyleThemeData.styleSize14Weight400(color: colorHint ?? appTheme.textDesColor, height: height),
+            hintStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: colorHint ?? appTheme.textDesColor),
             errorStyle: TextStyle(color: appTheme.errorColor),
-            labelStyle: StyleThemeData.styleSize14Weight400(color: color, height: 0),
+            labelStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: color ?? appTheme.blackColor),
             border: const OutlineInputBorder(),
             prefix: showBorder != null ? null : const SizedBox(width: 12),
-            contentPadding: contentPadding ?? const EdgeInsets.symmetric(vertical: 16),
+            contentPadding: contentPadding ?? const EdgeInsets.symmetric(vertical: 14),
             prefixIcon: prefixIcon,
             suffixIcon: suffixIcon,
             errorBorder: OutlineInputBorder(
@@ -121,7 +119,7 @@ class CustomTextWidgets extends StatelessWidget {
             ),
           ),
           keyboardType: keyboardType,
-          style: StyleThemeData.styleSize14Weight400(color: color, height: 0),
+          // style: StyleThemeData.styleSize14Weight400(color: color, height: 0),
           validator: (value) {
             if (validator != false) {
               if (value == null || value.isEmpty) {

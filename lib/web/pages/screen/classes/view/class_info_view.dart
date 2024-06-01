@@ -2,6 +2,7 @@
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:school_web/main.dart';
@@ -17,6 +18,7 @@ import 'package:school_web/web/pages/screen/classes/detail/class_info_detail.dar
 import 'package:school_web/web/pages/screen/student/detail/student_detail_screen.dart';
 import 'package:school_web/web/style/style_theme.dart';
 import 'package:school_web/web/utils/assets/icons.dart';
+import 'package:school_web/web/utils/formatter/no_initial_spaceInput_formatter_widgets.dart';
 import 'package:school_web/web/widgets/box_shadow_widget.dart';
 import 'package:school_web/web/widgets/button_status_widget.dart';
 import 'package:school_web/web/widgets/custom_text_widgets.dart';
@@ -464,6 +466,11 @@ class _ClassesInfoViewState extends State<ClassesInfoView> {
                       hintText: 'Nhập tên lớp',
                       validator: true,
                       borderRadius: 8,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
+                        NoInitialSpaceInputFormatterWidgets(),
+                        LengthLimitingTextInputFormatter(20),
+                      ],
                     ),
                     const SizedBox(height: 24),
                     Row(
@@ -717,6 +724,11 @@ class _ClassesInfoViewState extends State<ClassesInfoView> {
                       hintText: classInfo.className!.isNotEmpty ? classInfo.className.toString() : 'Nhập tên lớp',
                       borderRadius: 8,
                       validator: true,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
+                        NoInitialSpaceInputFormatterWidgets(),
+                        LengthLimitingTextInputFormatter(20),
+                      ],
                     ),
                     const SizedBox(height: 12),
                     Container(
@@ -1023,6 +1035,11 @@ class _ClassesInfoViewState extends State<ClassesInfoView> {
                   onChanged: (query) {
                     studentController.searchStudent(query);
                   },
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(RegExp(r'\s\s\s+')),
+                    NoInitialSpaceInputFormatterWidgets(),
+                    LengthLimitingTextInputFormatter(20),
+                  ],
                 );
               },
             ),
