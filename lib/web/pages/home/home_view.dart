@@ -48,50 +48,51 @@ class HomeView extends StatelessWidget {
                 ),
               ),
             ),
-      bottomNavigationBar: Container(
-        height: 60,
-        color: Colors.white,
-        child: Row(
-          children: [
-            const SizedBox(width: 24),
-            const Text(
-              '© 2023 EDU Management',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                height: 1.5,
-                color: Color(0xFF7E8695),
-              ),
-            ),
-            const Spacer(),
-            InkWell(
-              onTap: () async {
-                await launchUrl(
-                  Uri.parse('https://drive.google.com/file/d/1wPiAOidlUWKlNHzCL-T7G-OGZ6II5pWo/view?usp=sharing'),
-                );
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: appTheme.appColor,
-                ),
-                child: Row(
-                  children: [
-                    Image.asset(ImagesAssets.adminImage, width: 24),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Tải app EDU',
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: appTheme.whiteColor),
+      bottomNavigationBar: Responsive.isMobile(context)
+          ? Container(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Row(
+                children: [
+                  const SizedBox(width: 24),
+                  const Text(
+                    '© 2023 EDU Management',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      height: 1.5,
+                      color: Color(0xFF7E8695),
                     ),
-                  ],
-                ),
+                  ),
+                  const Spacer(),
+                  InkWell(
+                    onTap: () async {
+                      await launchUrl(
+                        Uri.parse('https://drive.google.com/file/d/1wPiAOidlUWKlNHzCL-T7G-OGZ6II5pWo/view?usp=sharing'),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: appTheme.appColor,
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset(ImagesAssets.adminImage, width: 24),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Tải app EDU',
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: appTheme.whiteColor),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 24),
+                ],
               ),
-            ),
-            const SizedBox(width: 24),
-          ],
-        ),
-      ),
+            )
+          : const SizedBox.shrink(),
     );
   }
 }
