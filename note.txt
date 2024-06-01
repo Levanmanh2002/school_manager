@@ -18,6 +18,8 @@ Deploy Firebase
 - dart pub global activate flutterfire_cli
 - flutterfire configure --project=school-manager-793a1
 
+- firebase hosting "public": "build/web"
+
 - firebase init hosting
 - firebase deploy
 
