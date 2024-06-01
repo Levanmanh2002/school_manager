@@ -67,7 +67,7 @@ class HomeView extends StatelessWidget {
                   InkWell(
                     onTap: () async {
                       await launchUrl(
-                        Uri.parse('https://drive.google.com/file/d/1wPiAOidlUWKlNHzCL-T7G-OGZ6II5pWo/view?usp=sharing'),
+                        Uri.parse('https://drive.google.com/file/d/1aNsJfewNhhfQ224-Ka4kHK_oCY4KtBgj/view?usp=sharing'),
                       );
                     },
                     child: Container(
